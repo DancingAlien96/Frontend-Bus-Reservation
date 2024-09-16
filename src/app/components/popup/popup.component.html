@@ -1,0 +1,10 @@
+<h2 mat-dialog-title>{{data.id}}</h2>
+<mat-dialog-content>
+<p>{{data.usuario}}</p>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button (click)="decline()">rechazar</button>
+  <button mat-button (click)="accept()">aceptar</button>
+  <button mat-button [mat-dialog-close]="data.id" cdkFocusInitial>cancelar</button>
+</mat-dialog-actions>
+
