@@ -1,35 +1,39 @@
 /* You can add global styles to this file, and also import other style files */
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
-
-.container{
-  margin: 1rem;
+html,
+body {
+	height: 100%;
+}
+body {
+	margin: 0;
+	font-family: Roboto, 'Helvetica Neue', sans-serif;
 }
 
+.container {
+	margin: 1rem;
+}
 
-.ErrorSnackBar{
-  .mdc-snackbar__surface{
-      --mdc-snackbar-container-color:red;
-      --mdc-snackbar-supporting-text-color: white;
-      --mat-snack-bar-button-color: white;    
-  }
-  
- }
+.ErrorSnackBar {
+	.mdc-snackbar__surface {
+		--mdc-snackbar-container-color: red;
+		--mdc-snackbar-supporting-text-color: white;
+		--mat-snack-bar-button-color: white;
+	}
+}
 
- .OkSnackBar{
-  .mdc-snackbar__surface{
-      --mdc-snackbar-container-color:green;
-      --mdc-snackbar-supporting-text-color: white;
-      --mat-snack-bar-button-color: white;    
-  }
- }
-
-
-
+.OkSnackBar {
+	.mdc-snackbar__surface {
+		--mdc-snackbar-container-color: green;
+		--mdc-snackbar-supporting-text-color: white;
+		--mat-snack-bar-button-color: white;
+	}
+}
 
 .mat-mdc-form-field {
-    --mat-form-field-state-layer-color: transparent;
-    --mdc-filled-text-field-container-color: transparent; 
-  }
+	--mat-form-field-state-layer-color: transparent;
+	--mdc-filled-text-field-container-color: transparent;
+}
 
+.container {
+	padding: 20px;
+}
