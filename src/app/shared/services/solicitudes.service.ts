@@ -1,20 +1,21 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { SolicitudesInterfaces } from '../interfaces/solicitudes-interfaces';
+import { SolicitudesInterfaces, SolicitudPostInterface } from '../interfaces/solicitudes.interface';
 import { Observable } from 'rxjs';
+import { environment } from '../../../enviroment/environment.prod';
 
 @Injectable({
-  providedIn: 'root'
+	providedIn: 'root'
 })
 export class SolicitudesService {
- readonly url = "http://localhost:5000/api/v1/solicitud";
-  constructor(private http:HttpClient) {
+	readonly url = environment.api;
+	constructor(private http: HttpClient) {}
 
+	getSolicitudes(): Observable<SolicitudesInterfaces[]> {
+		return this.http.get<SolicitudesInterfaces[]>(`${this.url}/solicitud`);
+	}
 
-   }
-
-   
-   getSolicitudes(): Observable<SolicitudesInterfaces[]>{
-    return this.http.get<SolicitudesInterfaces[]>(this.url);
-    }
+	postSolicitud(solicitud: SolicitudPostInterface): Observable<SolicitudPostInterface> {
+		return this.http.post<SolicitudPostInterface>(`${this.url}/solicitud`, solicitud);
+	}
 }
