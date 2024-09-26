@@ -72,7 +72,9 @@
 				<td class="hour-td">
 					<mat-form-field appearance="outline">
 						<mat-label>Hora de entrega</mat-label>
-						<input type="time" matInput formControlName="horaEntrega" />
+						<input matInput formControlName="horaEntrega" [ngxMatTimepicker]="etimepk" />
+						<ngx-mat-timepicker #etimepk></ngx-mat-timepicker>
+						<ngx-mat-timepicker-toggle matSuffix [for]="etimepk"></ngx-mat-timepicker-toggle>
 						@if (formSubmit.controls['horaEntrega'].hasError('required')) {
 						<mat-error>Requerido</mat-error>
 						}
@@ -96,7 +98,9 @@
 				<td class="hour-td">
 					<mat-form-field appearance="outline">
 						<mat-label>Hora de devolución</mat-label>
-						<input type="time" matInput formControlName="horaDevolucion" />
+						<input matInput formControlName="horaDevolucion" [ngxMatTimepicker]="dtimepk" />
+						<ngx-mat-timepicker #dtimepk></ngx-mat-timepicker>
+						<ngx-mat-timepicker-toggle matSuffix [for]="dtimepk"></ngx-mat-timepicker-toggle>
 						@if (formSubmit.controls['horaDevolucion'].hasError('required')) {
 						<mat-error>Requerido</mat-error>
 						}
@@ -121,6 +125,7 @@
 			<mat-radio-button value="0">Sin piloto</mat-radio-button>
 			<mat-radio-button value="1">Con piloto</mat-radio-button>
 		</mat-radio-group>
+		<br />
 		<br />
 		<button mat-flat-button color="primary" (click)="onSubmit()">Enviar</button>
 	</form>

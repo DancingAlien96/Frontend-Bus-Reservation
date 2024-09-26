@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Injectable, TemplateRef } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
@@ -14,6 +14,7 @@ import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 import { SolicitudesService } from '../../shared/services/solicitudes.service';
 import { MatIconModule } from '@angular/material/icon';
 import { provideMomentDateAdapter } from '@angular/material-moment-adapter';
+import { NgxMatTimepickerFieldComponent, NgxMatTimepickerModule } from 'ngx-mat-timepicker';
 import 'moment/locale/es';
 
 export const MY_FORMATS = {
@@ -41,7 +42,8 @@ export const MY_FORMATS = {
 		MatRadioModule,
 		MatSelectModule,
 		MatButtonModule,
-		MatIconModule
+		MatIconModule,
+		NgxMatTimepickerModule
 	],
 	templateUrl: './formulario-solicitud.component.html',
 	styleUrls: ['./formulario-solicitud.component.css'],
