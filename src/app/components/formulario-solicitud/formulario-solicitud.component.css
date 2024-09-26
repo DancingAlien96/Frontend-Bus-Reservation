@@ -6,3 +6,7 @@ mat-form-field {
 .error-hint {
 	color: red;
 }
+
+.date-td {
+	width: 100%;
+}

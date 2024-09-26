@@ -4,8 +4,8 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatRadioModule } from '@angular/material/radio';
-import { MatNativeDateModule, provideNativeDateAdapter } from '@angular/material/core';
-import { CommonModule, Time } from '@angular/common';
+import { MAT_DATE_LOCALE, MatNativeDateModule } from '@angular/material/core';
+import { CommonModule } from '@angular/common';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { VehiculoInterface, SolicitudPostInterface } from '../../shared/interfaces';
@@ -13,6 +13,20 @@ import { VehiculoService } from '../../shared/services/vehiculo.service';
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 import { SolicitudesService } from '../../shared/services/solicitudes.service';
 import { MatIconModule } from '@angular/material/icon';
+import { provideMomentDateAdapter } from '@angular/material-moment-adapter';
+import 'moment/locale/es';
+
+export const MY_FORMATS = {
+	parse: {
+		dateInput: 'LL'
+	},
+	display: {
+		dateInput: 'LL',
+		monthYearLabel: 'MMM YYYY',
+		dateA11yLabel: 'LL',
+		monthYearA11yLabel: 'MMMM YYYY'
+	}
+};
 
 @Component({
 	selector: 'app-formulario-solicitud',
@@ -31,16 +45,12 @@ import { MatIconModule } from '@angular/material/icon';
 	],
 	templateUrl: './formulario-solicitud.component.html',
 	styleUrls: ['./formulario-solicitud.component.css'],
-	providers: [provideNativeDateAdapter()]
+	providers: [{ provide: MAT_DATE_LOCALE, useValue: 'es-GT' }, provideMomentDateAdapter(MY_FORMATS)]
 })
 export default class FormularioSolicitudComponent {
 	solicitud!: SolicitudPostInterface;
 	vehiculos: VehiculoInterface[] = [];
 	formSubmit: FormGroup;
-	fechasGroup: FormGroup = new FormGroup({
-		entrega: new FormControl<Date>(new Date(), Validators.required),
-		devolucion: new FormControl<Date>(new Date(), Validators.required)
-	});
 
 	constructor(
 		private fb: FormBuilder,
@@ -52,7 +62,8 @@ export default class FormularioSolicitudComponent {
 			nombreSolicitante: [null, Validators.required],
 			destino: [null, [Validators.required, Validators.maxLength(150)]],
 			diligencia: [null, Validators.required],
-			fechas: this.fechasGroup,
+			entrega: new FormControl<Date>(new Date(), Validators.required),
+			devolucion: new FormControl<Date>(new Date(), Validators.required),
 			horaEntrega: ['08:00', Validators.required],
 			horaDevolucion: ['16:00', Validators.required],
 			vehiculo: [null, Validators.required],
@@ -61,10 +72,10 @@ export default class FormularioSolicitudComponent {
 	}
 
 	onSubmit() {
-		if (this.formSubmit.valid && this.fechasGroup.valid) {
+		if (this.formSubmit.valid) {
 			this.solicitud = this.solicitud || {};
-			const entregaFecha = this.fechasGroup.get('entrega')?.value;
-			const devolucionFecha = this.fechasGroup.get('devolucion')?.value;
+			const entregaFecha = this.formSubmit.get('entrega')?.value;
+			const devolucionFecha = this.formSubmit.get('devolucion')?.value;
 			const horaEntrega = this.formSubmit.get('horaEntrega')?.value;
 			const horaDevolucion = this.formSubmit.get('horaDevolucion')?.value;
 			const timestampEntrega = this.combinarFechaHora(entregaFecha, horaEntrega);
@@ -101,12 +112,14 @@ export default class FormularioSolicitudComponent {
 				ENTREGADO: false,
 				DEVUELTO: false
 			};
-			this.sps.postSolicitud(this.solicitud).subscribe((resp) => {
-				if (resp) {
-					this.openSnackBar(2);
-					this.formSubmit.reset();
-				}
-			});
+			console.log(this.solicitud);
+
+			// this.sps.postSolicitud(this.solicitud).subscribe((resp) => {
+			// 	if (resp) {
+			// 		this.openSnackBar(2);
+			// 		this.formSubmit.reset();
+			// 	}
+			// });
 		} else {
 			this.openSnackBar(1);
 		}
@@ -115,7 +128,6 @@ export default class FormularioSolicitudComponent {
 	ngOnInit() {
 		this.vs.getVehiculos().subscribe((data) => {
 			this.vehiculos = data;
-			console.log(this.vehiculos);
 		});
 	}
 
