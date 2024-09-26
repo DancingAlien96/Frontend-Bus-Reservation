@@ -116,12 +116,12 @@ export default class FormularioSolicitudComponent {
 			};
 			console.log(this.solicitud);
 
-			// this.sps.postSolicitud(this.solicitud).subscribe((resp) => {
-			// 	if (resp) {
-			// 		this.openSnackBar(2);
-			// 		this.formSubmit.reset();
-			// 	}
-			// });
+			this.sps.postSolicitud(this.solicitud).subscribe((resp) => {
+				if (resp) {
+					this.openSnackBar(2);
+					this.formSubmit.reset();
+				}
+			});
 		} else {
 			this.openSnackBar(1);
 		}
