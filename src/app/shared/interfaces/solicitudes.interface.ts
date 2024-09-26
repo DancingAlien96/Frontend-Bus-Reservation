@@ -27,13 +27,14 @@ export interface SolicitudPostInterface {
 	SOLICITUD: {
 		ID_USUARIO: number;
 		ID_VEHICULO: number;
+		NOMBRE_SOLICITANTE: string;
 		DESTINO: string;
 		DILIGENCIA: string;
 		FECHA_CREACION: Date;
 		FECHA_HORA_ENTREGA: Date;
 		FECHA_HORA_DEVOLUCION: Date;
 		CON_PILOTO: boolean;
-		NOMBRE_PILOTO: string;
+		NOMBRE_PILOTO: string | null;
 		ESTADO: number;
 		MODIFICABLE: boolean;
 		MOTIVO_RECHAZO: string | null;

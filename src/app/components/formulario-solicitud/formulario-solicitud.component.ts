@@ -12,6 +12,7 @@ import { VehiculoInterface, SolicitudPostInterface } from '../../shared/interfac
 import { VehiculoService } from '../../shared/services/vehiculo.service';
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 import { SolicitudesService } from '../../shared/services/solicitudes.service';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
 	selector: 'app-formulario-solicitud',
@@ -22,10 +23,11 @@ import { SolicitudesService } from '../../shared/services/solicitudes.service';
 		CommonModule,
 		ReactiveFormsModule,
 		MatDatepickerModule,
-		MatRadioModule,
 		MatNativeDateModule,
+		MatRadioModule,
 		MatSelectModule,
-		MatButtonModule
+		MatButtonModule,
+		MatIconModule
 	],
 	templateUrl: './formulario-solicitud.component.html',
 	styleUrls: ['./formulario-solicitud.component.css'],
@@ -47,26 +49,15 @@ export default class FormularioSolicitudComponent {
 		private _snackBar: MatSnackBar
 	) {
 		this.formSubmit = this.fb.group({
-			destino: [null, Validators.required],
+			nombreSolicitante: [null, Validators.required],
+			destino: [null, [Validators.required, Validators.maxLength(150)]],
 			diligencia: [null, Validators.required],
 			fechas: this.fechasGroup,
 			horaEntrega: ['08:00', Validators.required],
 			horaDevolucion: ['16:00', Validators.required],
 			vehiculo: [null, Validators.required],
-			conPiloto: ['0', Validators.required],
-			nombrePiloto: [{ value: null, disabled: true }, Validators.required]
+			conPiloto: ['0', Validators.required]
 		});
-	}
-
-	onRadioButtonChange(event: any) {
-		if (event.value === '0') {
-			this.formSubmit.get('nombrePiloto')?.setValue(null);
-			this.formSubmit.get('nombrePiloto')?.disable();
-			this.formSubmit.get('nombrePiloto')?.clearValidators();
-		} else {
-			this.formSubmit.get('nombrePiloto')?.enable();
-			this.formSubmit.get('nombrePiloto')?.setValidators([Validators.required]);
-		}
 	}
 
 	onSubmit() {
@@ -96,13 +87,14 @@ export default class FormularioSolicitudComponent {
 			this.solicitud.SOLICITUD = {
 				ID_USUARIO: this.solicitud.USUARIO.ID_USUARIO,
 				ID_VEHICULO: this.solicitud.VEHICULO.ID_VEHICULO,
+				NOMBRE_SOLICITANTE: this.formSubmit.get('nombreSolicitante')?.value,
 				DESTINO: this.formSubmit.get('destino')?.value,
 				DILIGENCIA: this.formSubmit.get('diligencia')?.value,
 				FECHA_CREACION: new Date(),
 				FECHA_HORA_ENTREGA: new Date(timestampEntrega),
 				FECHA_HORA_DEVOLUCION: new Date(timestampDevolucion),
 				CON_PILOTO: this.formSubmit.get('conPiloto')?.value,
-				NOMBRE_PILOTO: this.formSubmit.get('nombrePiloto')?.value,
+				NOMBRE_PILOTO: null,
 				ESTADO: 1,
 				MODIFICABLE: true,
 				MOTIVO_RECHAZO: null,
