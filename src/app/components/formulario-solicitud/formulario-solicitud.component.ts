@@ -62,10 +62,10 @@ export default class FormularioSolicitudComponent {
 			nombreSolicitante: [null, Validators.required],
 			destino: [null, [Validators.required, Validators.maxLength(150)]],
 			diligencia: [null, Validators.required],
-			entrega: new FormControl<Date>(new Date(), Validators.required),
-			devolucion: new FormControl<Date>(new Date(), Validators.required),
-			horaEntrega: ['08:00', Validators.required],
-			horaDevolucion: ['16:00', Validators.required],
+			entrega: new FormControl<Date | null>(null, Validators.required),
+			devolucion: new FormControl<Date | null>(null, Validators.required),
+			horaEntrega: [null, Validators.required],
+			horaDevolucion: [null, Validators.required],
 			vehiculo: [null, Validators.required],
 			conPiloto: ['0', Validators.required]
 		});
@@ -158,6 +158,10 @@ export default class FormularioSolicitudComponent {
 	combinarFechaHora(fecha: Date, hora: string): Date {
 		const fechaConHora = new Date(fecha);
 		fechaConHora.setHours(parseInt(hora.split(':')[0]));
+		fechaConHora.setMinutes(parseInt(hora.split(':')[1]));
+		fechaConHora.setSeconds(0);
+		fechaConHora.setMilliseconds(0);
+
 		return fechaConHora;
 	}
 }

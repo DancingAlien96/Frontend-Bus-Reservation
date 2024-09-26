@@ -60,7 +60,6 @@
 					<mat-form-field appearance="outline">
 						<mat-label>Fecha de entrega</mat-label>
 						<input matInput [matDatepicker]="pke" formControlName="entrega" />
-						<mat-hint>DD/MM/YYYY</mat-hint>
 						<mat-datepicker-toggle matIconSuffix [for]="pke"></mat-datepicker-toggle>
 						<mat-datepicker #pke></mat-datepicker>
 						@if (formSubmit.controls["entrega"].hasError('')) {
@@ -74,7 +73,6 @@
 					<mat-form-field appearance="outline">
 						<mat-label>Hora de entrega</mat-label>
 						<input type="time" matInput formControlName="horaEntrega" />
-						<mat-hint>hh:mm tt</mat-hint>
 						@if (formSubmit.controls['horaEntrega'].hasError('required')) {
 						<mat-error>Requerido</mat-error>
 						}
@@ -86,7 +84,6 @@
 					<mat-form-field appearance="outline">
 						<mat-label>Fecha de devolución</mat-label>
 						<input matInput [matDatepicker]="pkd" formControlName="devolucion" />
-						<mat-hint>DD/MM/YYYY</mat-hint>
 						<mat-datepicker-toggle matIconSuffix [for]="pkd"></mat-datepicker-toggle>
 						<mat-datepicker #pkd></mat-datepicker>
 						@if (formSubmit.controls["devolucion"].hasError('')) {
@@ -100,7 +97,6 @@
 					<mat-form-field appearance="outline">
 						<mat-label>Hora de devolución</mat-label>
 						<input type="time" matInput formControlName="horaDevolucion" />
-						<mat-hint>hh:mm tt</mat-hint>
 						@if (formSubmit.controls['horaDevolucion'].hasError('required')) {
 						<mat-error>Requerido</mat-error>
 						}
