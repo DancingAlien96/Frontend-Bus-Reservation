@@ -15,4 +15,10 @@ export class VehiculoService {
 	getVehiculos(): Observable<VehiculoInterface[]> {
 		return this.http.get<VehiculoInterface[]>(`${this.url}/vehiculo`);
 	}
+
+
+	getVehiculo(idVehiculo:number):Observable<VehiculoInterface>{
+		return this.http.get<VehiculoInterface>(`${this.url}/vehiculo/${idVehiculo}`)
+	}
+
 }

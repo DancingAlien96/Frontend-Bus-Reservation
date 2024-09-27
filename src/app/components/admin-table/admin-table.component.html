@@ -1,6 +1,16 @@
 <div class="container">
+	
+	<mat-tab-group (selectedIndexChange)="filterByTab($event)">
+		<mat-tab label="Todas"></mat-tab>
+		<mat-tab label="Aprobadas"></mat-tab>
+		<mat-tab label="Finalizadas"></mat-tab>
+		<mat-tab label="Pendientes"></mat-tab>
+		<mat-tab label="Rechazadas"></mat-tab>
+		<mat-tab label="Eliminadas"></mat-tab>
+	  </mat-tab-group>
+	  
 	<mat-form-field>
-		<mat-label>Filter</mat-label>
+		<mat-label>Buscar</mat-label>
 		<input matInput (keyup)="applyFilter($event)" placeholder="Ex. Solicitud" #input />
 	</mat-form-field>
 
