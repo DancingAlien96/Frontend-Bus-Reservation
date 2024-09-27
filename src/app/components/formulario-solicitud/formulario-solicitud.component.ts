@@ -1,17 +1,33 @@
-import { Component } from '@angular/core';
+import { Component, Injectable, TemplateRef } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatRadioModule } from '@angular/material/radio';
-import { MatNativeDateModule, provideNativeDateAdapter } from '@angular/material/core';
-import { CommonModule, Time } from '@angular/common';
+import { MAT_DATE_LOCALE, MatNativeDateModule } from '@angular/material/core';
+import { CommonModule } from '@angular/common';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { VehiculoInterface, SolicitudPostInterface } from '../../shared/interfaces';
 import { VehiculoService } from '../../shared/services/vehiculo.service';
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 import { SolicitudesService } from '../../shared/services/solicitudes.service';
+import { MatIconModule } from '@angular/material/icon';
+import { provideMomentDateAdapter } from '@angular/material-moment-adapter';
+import { NgxMatTimepickerFieldComponent, NgxMatTimepickerModule } from 'ngx-mat-timepicker';
+import 'moment/locale/es';
+
+export const MY_FORMATS = {
+	parse: {
+		dateInput: 'LL'
+	},
+	display: {
+		dateInput: 'LL',
+		monthYearLabel: 'MMM YYYY',
+		dateA11yLabel: 'LL',
+		monthYearA11yLabel: 'MMMM YYYY'
+	}
+};
 
 @Component({
 	selector: 'app-formulario-solicitud',
@@ -22,23 +38,21 @@ import { SolicitudesService } from '../../shared/services/solicitudes.service';
 		CommonModule,
 		ReactiveFormsModule,
 		MatDatepickerModule,
-		MatRadioModule,
 		MatNativeDateModule,
+		MatRadioModule,
 		MatSelectModule,
-		MatButtonModule
+		MatButtonModule,
+		MatIconModule,
+		NgxMatTimepickerModule
 	],
 	templateUrl: './formulario-solicitud.component.html',
 	styleUrls: ['./formulario-solicitud.component.css'],
-	providers: [provideNativeDateAdapter()]
+	providers: [{ provide: MAT_DATE_LOCALE, useValue: 'es-GT' }, provideMomentDateAdapter(MY_FORMATS)]
 })
 export default class FormularioSolicitudComponent {
 	solicitud!: SolicitudPostInterface;
 	vehiculos: VehiculoInterface[] = [];
 	formSubmit: FormGroup;
-	fechasGroup: FormGroup = new FormGroup({
-		entrega: new FormControl<Date>(new Date(), Validators.required),
-		devolucion: new FormControl<Date>(new Date(), Validators.required)
-	});
 
 	constructor(
 		private fb: FormBuilder,
@@ -47,33 +61,23 @@ export default class FormularioSolicitudComponent {
 		private _snackBar: MatSnackBar
 	) {
 		this.formSubmit = this.fb.group({
-			destino: [null, Validators.required],
+			nombreSolicitante: [null, Validators.required],
+			destino: [null, [Validators.required, Validators.maxLength(150)]],
 			diligencia: [null, Validators.required],
-			fechas: this.fechasGroup,
-			horaEntrega: ['08:00', Validators.required],
-			horaDevolucion: ['16:00', Validators.required],
+			entrega: new FormControl<Date | null>(null, Validators.required),
+			devolucion: new FormControl<Date | null>(null, Validators.required),
+			horaEntrega: [null, Validators.required],
+			horaDevolucion: [null, Validators.required],
 			vehiculo: [null, Validators.required],
-			conPiloto: ['0', Validators.required],
-			nombrePiloto: [{ value: null, disabled: true }, Validators.required]
+			conPiloto: ['0', Validators.required]
 		});
 	}
 
-	onRadioButtonChange(event: any) {
-		if (event.value === '0') {
-			this.formSubmit.get('nombrePiloto')?.setValue(null);
-			this.formSubmit.get('nombrePiloto')?.disable();
-			this.formSubmit.get('nombrePiloto')?.clearValidators();
-		} else {
-			this.formSubmit.get('nombrePiloto')?.enable();
-			this.formSubmit.get('nombrePiloto')?.setValidators([Validators.required]);
-		}
-	}
-
 	onSubmit() {
-		if (this.formSubmit.valid && this.fechasGroup.valid) {
+		if (this.formSubmit.valid) {
 			this.solicitud = this.solicitud || {};
-			const entregaFecha = this.fechasGroup.get('entrega')?.value;
-			const devolucionFecha = this.fechasGroup.get('devolucion')?.value;
+			const entregaFecha = this.formSubmit.get('entrega')?.value;
+			const devolucionFecha = this.formSubmit.get('devolucion')?.value;
 			const horaEntrega = this.formSubmit.get('horaEntrega')?.value;
 			const horaDevolucion = this.formSubmit.get('horaDevolucion')?.value;
 			const timestampEntrega = this.combinarFechaHora(entregaFecha, horaEntrega);
@@ -96,19 +100,22 @@ export default class FormularioSolicitudComponent {
 			this.solicitud.SOLICITUD = {
 				ID_USUARIO: this.solicitud.USUARIO.ID_USUARIO,
 				ID_VEHICULO: this.solicitud.VEHICULO.ID_VEHICULO,
+				NOMBRE_SOLICITANTE: this.formSubmit.get('nombreSolicitante')?.value,
 				DESTINO: this.formSubmit.get('destino')?.value,
 				DILIGENCIA: this.formSubmit.get('diligencia')?.value,
 				FECHA_CREACION: new Date(),
 				FECHA_HORA_ENTREGA: new Date(timestampEntrega),
 				FECHA_HORA_DEVOLUCION: new Date(timestampDevolucion),
 				CON_PILOTO: this.formSubmit.get('conPiloto')?.value,
-				NOMBRE_PILOTO: this.formSubmit.get('nombrePiloto')?.value,
+				NOMBRE_PILOTO: null,
 				ESTADO: 1,
 				MODIFICABLE: true,
 				MOTIVO_RECHAZO: null,
 				ENTREGADO: false,
 				DEVUELTO: false
 			};
+			console.log(this.solicitud);
+
 			this.sps.postSolicitud(this.solicitud).subscribe((resp) => {
 				if (resp) {
 					this.openSnackBar(2);
@@ -123,7 +130,6 @@ export default class FormularioSolicitudComponent {
 	ngOnInit() {
 		this.vs.getVehiculos().subscribe((data) => {
 			this.vehiculos = data;
-			console.log(this.vehiculos);
 		});
 	}
 
@@ -154,6 +160,10 @@ export default class FormularioSolicitudComponent {
 	combinarFechaHora(fecha: Date, hora: string): Date {
 		const fechaConHora = new Date(fecha);
 		fechaConHora.setHours(parseInt(hora.split(':')[0]));
+		fechaConHora.setMinutes(parseInt(hora.split(':')[1]));
+		fechaConHora.setSeconds(0);
+		fechaConHora.setMilliseconds(0);
+
 		return fechaConHora;
 	}
 }
