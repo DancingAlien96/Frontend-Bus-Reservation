@@ -1,16 +1,16 @@
-
 table {
-    width: 100%;
-  }
-  
-  .mat-mdc-form-field {
-    font-size: 14px;
-    width: 100%;
-  }
-  
-  td, th {
-    width: 25%;
-  }
-  .stylerow:hover{
-    cursor: pointer;
-  }
+	width: 100%;
+}
+
+.mat-mdc-form-field {
+	font-size: 14px;
+	width: 100%;
+}
+
+td,
+th {
+	width: auto;
+}
+.stylerow:hover {
+	cursor: pointer;
+}

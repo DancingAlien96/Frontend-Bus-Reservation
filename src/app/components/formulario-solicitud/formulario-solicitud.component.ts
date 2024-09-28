@@ -14,7 +14,7 @@ import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 import { SolicitudesService } from '../../shared/services/solicitudes.service';
 import { MatIconModule } from '@angular/material/icon';
 import { provideMomentDateAdapter } from '@angular/material-moment-adapter';
-import { NgxMatTimepickerFieldComponent, NgxMatTimepickerModule } from 'ngx-mat-timepicker';
+import { NgxMatTimepickerModule } from 'ngx-mat-timepicker';
 import 'moment/locale/es';
 
 export const MY_FORMATS = {

@@ -1,79 +1,79 @@
 <h2 mat-dialog-title></h2>
 <mat-dialog-content>
 	@if (currentPage == 1) {
-		<mat-card class="popup-card">
-			<mat-card-header>
-			  <mat-card-title>Solicitud #{{ data.ID_SOLICITUD }}</mat-card-title>
-			  <mat-card-subtitle>Creada el {{ data.FECHA_CREACION | date: 'medium' }}</mat-card-subtitle>
-			</mat-card-header>
-		  
-			<mat-card-content class="grid-container">
-			  <section>
+	<mat-card class="popup-card">
+		<mat-card-header>
+			<mat-card-title>Solicitud #{{ data.ID_SOLICITUD }}</mat-card-title>
+			<mat-card-subtitle>Creada el {{ data.FECHA_CREACION | date : 'medium' }}</mat-card-subtitle>
+		</mat-card-header>
+
+		<mat-card-content class="grid-container">
+			<section>
 				<h3>Detalles de la Solicitud</h3>
-			
-				<p><strong>Vehículo Solicitado:</strong> <a class="vehiculo-detalles" (click)="pageAndDetails(2,data.ID_VEHICULO)">ver mas detalles</a></p>
+
+				<p>
+					<strong>Vehículo Solicitado:</strong>
+					<a class="vehiculo-detalles" (click)="pageAndDetails(2, data.ID_VEHICULO)">ver mas detalles</a>
+				</p>
 				<p><strong>Destino del viaje:</strong> {{ data.DESTINO }}</p>
 				<p><strong>Diligencia a realizar:</strong> {{ data.DILIGENCIA }}</p>
-			  </section>
-		  
-			  <section>
+			</section>
+
+			<section>
 				<h3>Fechas</h3>
-				<p><strong>Fecha y Hora de Entrega:</strong> {{ data.FECHA_HORA_ENTREGA | date: 'medium' }}</p>
-				<p><strong>Fecha y Hora de Devolución:</strong> {{ data.FECHA_HORA_DEVOLUCION | date: 'medium' }}</p>
-			  </section>
-		  
-			  <section>
+				<p>
+					<strong>Fecha y Hora de Entrega:</strong> {{ data.FECHA_HORA_ENTREGA | date : "d 'de' MMMM 'de' y h:mm a" }}
+				</p>
+				<p>
+					<strong>Fecha y Hora de Devolución:</strong>
+					{{ data.FECHA_HORA_DEVOLUCION | date : "d 'de' MMMM 'de' y h:mm a" }}
+				</p>
+			</section>
+
+			<section>
 				<h3>Piloto</h3>
 				<p><strong>Con Piloto:</strong> {{ data.CON_PILOTO ? 'Sí' : 'No' }}</p>
 				<p><strong>Nombre del conductor:</strong> {{ data.NOMBRE_PILOTO }}</p>
-			  </section>
-		  
-			  <section>
+			</section>
+
+			<section>
 				<h3>Estado de la Solicitud</h3>
 				<p><strong>Estado:</strong> {{ data.ESTADO }}</p>
-			  </section>
-			</mat-card-content>
-		  </mat-card>
-		  
-	
-	}
+			</section>
+		</mat-card-content>
+	</mat-card>
 
-	@if (currentPage==2) {
-		<mat-card class="popup-card">
-			
-				<mat-icon (click)="page(1)" fontIcon="arrow_back" class="button-back"></mat-icon>
-			
+	} @if (currentPage==2) {
+	<mat-card class="popup-card">
+		<mat-icon (click)="page(1)" fontIcon="arrow_back" class="button-back"></mat-icon>
 
-			<mat-card-header>
-			  <mat-card-title>Detalles del Vehículo</mat-card-title>
-			  
-			</mat-card-header>
-		  
-			<mat-card-content class="grid-container">
-			  <section>
-				<p><strong>Placa del Vehículo:</strong> {{vehiculo.PLACA}}</p>
+		<mat-card-header>
+			<mat-card-title>Detalles del Vehículo</mat-card-title>
+		</mat-card-header>
+
+		<mat-card-content class="grid-container">
+			<section>
+				<p><strong>Placa del Vehículo:</strong> {{ vehiculo.PLACA }}</p>
 				<p><strong>Tipo de Vehículo:</strong> {{ vehiculo.TIPO }}</p>
-			  </section>
-		  
-			  <section>
-				<p><strong>Marca del Vehículo:</strong> {{ vehiculo.MARCA}}</p>
-				<p><strong>Color del Vehículo:</strong> {{vehiculo.COLOR}}</p>
-			  </section>
-		  
-			  <section>
-				<p><strong>Registro del Inventario:</strong> {{vehiculo.REGISTRO_DE_INVENTARIO}}</p>
+			</section>
+
+			<section>
+				<p><strong>Marca del Vehículo:</strong> {{ vehiculo.MARCA }}</p>
+				<p><strong>Color del Vehículo:</strong> {{ vehiculo.COLOR }}</p>
+			</section>
+
+			<section>
+				<p><strong>Registro del Inventario:</strong> {{ vehiculo.REGISTRO_DE_INVENTARIO }}</p>
 				<p><strong>Kilometraje del Vehículo:</strong> {{ vehiculo.KILOMETRAJE }}</p>
-			  </section>
-		  
-			  <section>
-				
-				<p><strong>Nivel de Combustible:</strong> {{ vehiculo.NIVEL_DE_COMBUSTIBLE}}</p>
-			  </section>
-			</mat-card-content>
-		  </mat-card>
-		
+			</section>
+
+			<section>
+				<p><strong>Nivel de Combustible:</strong> {{ vehiculo.NIVEL_DE_COMBUSTIBLE }}</p>
+			</section>
+		</mat-card-content>
+	</mat-card>
+
 	}
-	
 </mat-dialog-content>
 <mat-dialog-actions>
 	<button mat-button (click)="decline()">rechazar</button>
