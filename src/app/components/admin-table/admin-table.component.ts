@@ -114,7 +114,7 @@ export class AdminTableComponent implements AfterViewInit {
 				let estadoLabel = this.getEstadoLabel(data.ESTADO); // Usa la función que convierte el estado a su label
 
 				const dataStr =
-					`${data.ID_SOLICITUD} ${data.FECHA_CREACION} ${data.FECHA_HORA_ENTREGA} ${data.FECHA_HORA_DEVOLUCION} ${data.USUARIO?.NOMBRE_COMPLETO} ${estadoLabel}`.toLowerCase();
+					`${data.ID_SOLICITUD} ${data.FECHA_CREACION} ${data.FECHA_HORA_ENTREGA} ${data.FECHA_HORA_DEVOLUCION} ${data.NOMBRE_SOLICITANTE} ${estadoLabel}`.toLowerCase();
 
 				return dataStr.includes(filter.trim().toLowerCase());
 			};
@@ -133,23 +133,7 @@ export class AdminTableComponent implements AfterViewInit {
 	openDialog(row: SolicitudesInterfaces) {
 		this.dialog.open(PopupComponent, {
 			width: '80%',
-			data: {
-				ID_SOLICITUD: row.ID_SOLICITUD,
-				ID_VEHICULO: row.ID_VEHICULO,
-				DESTINO: row.DESTINO,
-				DILIGENCIA: row.DILIGENCIA,
-				FECHA_CREACION: row.FECHA_CREACION,
-				FECHA_HORA_ENTREGA: row.FECHA_HORA_ENTREGA,
-				FECHA_HORA_DEVOLUCION: row.FECHA_HORA_DEVOLUCION,
-				CON_PILOTO: row.CON_PILOTO,
-				NOMBRE_PILOTO: row.NOMBRE_PILOTO,
-				ESTADO: row.ESTADO,
-				MODIFICABLE: row.MODIFICABLE,
-				MOTIVO_RECHAZO: row.MOTIVO_RECHAZO,
-				ENTREGADO: row.ENTREGADO,
-				DEVUELTO: row.DEVUELTO,
-				ID_USUARIO: row.ID_USUARIO
-			}
+			data: row
 		});
 	}
 }

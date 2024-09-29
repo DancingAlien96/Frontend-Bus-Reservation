@@ -8,9 +8,9 @@ export interface SolicitudesInterfaces {
 	NOMBRE_SOLICITANTE: string;
 	DESTINO: string;
 	DILIGENCIA: string;
-	FECHA_CREACION: Date;
-	FECHA_HORA_ENTREGA: Date;
-	FECHA_HORA_DEVOLUCION: Date;
+	FECHA_CREACION: string;
+	FECHA_HORA_ENTREGA: string;
+	FECHA_HORA_DEVOLUCION: string;
 	CON_PILOTO: boolean;
 	NOMBRE_PILOTO: string;
 	ESTADO: number;
@@ -31,9 +31,9 @@ export interface SolicitudPostInterface {
 		NOMBRE_SOLICITANTE: string;
 		DESTINO: string;
 		DILIGENCIA: string;
-		FECHA_CREACION: Date;
-		FECHA_HORA_ENTREGA: Date;
-		FECHA_HORA_DEVOLUCION: Date;
+		FECHA_CREACION: string;
+		FECHA_HORA_ENTREGA: string;
+		FECHA_HORA_DEVOLUCION: string;
 		CON_PILOTO: boolean;
 		NOMBRE_PILOTO: string | null;
 		ESTADO: number;
@@ -71,7 +71,7 @@ export interface FdcvInterface {
 	GALONES: number;
 	PRECIO: number;
 	TOTAL: number;
-	FECHA_LLENADO: Date;
+	FECHA_LLENADO: string;
 	OBSERVACIONES: string;
-	FECHA_HORA_ENTREGA: Date;
+	FECHA_HORA_ENTREGA: string;
 }
