@@ -1,3 +1,4 @@
+import { PersonalService } from './../../shared/services/personal.service';
 import { PdfSolicitudComponent } from './../../shared/pdf/pdf-solicitud/pdf-solicitud.component';
 import { CommonModule } from '@angular/common';
 import { Component, Inject } from '@angular/core';
@@ -49,7 +50,8 @@ export class PopupComponent {
 		@Inject(MAT_DIALOG_DATA)
 		public data: SolicitudesInterfaces,
 		private toast: MatSnackBar,
-		private vehiculoService: VehiculoService
+		private vehiculoService: VehiculoService,
+		private personalService: PersonalService
 	) {}
 
 	pageAndDetails(pagenumber: number, idVehiculo: number): void {
@@ -86,6 +88,6 @@ export class PopupComponent {
 	}
 
 	onPDF(): void {
-		PdfSolicitudComponent.createPDF(this.data);
+		PdfSolicitudComponent.createPDF(this.data, this.personalService);
 	}
 }
