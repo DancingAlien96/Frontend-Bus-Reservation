@@ -5,6 +5,7 @@ import { routes } from './app.routes';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, provideHttpClient, withInterceptors } from '@angular/common/http';
+import { authenticationInterceptor } from './shared/interceptors/authentication.interceptor';
 
 //Colocar fechas en español
 import localeEs from '@angular/common/locales/es';

@@ -9,6 +9,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 import { RouterLink, RouterOutlet } from '@angular/router';
+import { OptionInterface } from '../../shared/interfaces/options.interface';
+import { LoginService } from '../../shared/services/login.service';
+import { AuthService } from '../../shared/services/auth.service';
 
 @Component({
 	selector: 'app-navigation',
@@ -28,7 +31,34 @@ import { RouterLink, RouterOutlet } from '@angular/router';
 })
 export class NavigationComponent {
 	private breakpointObserver = inject(BreakpointObserver);
+	menuOption: OptionInterface[] = [];
+	constructor(private authService:AuthService) {
+		this.menuOption.push({
+			idoption: 1,
+			name: 'Solicitudes',
+			icon: 'list',
+			rute: ''
+		});
+		this.menuOption.push({
+			idoption: 2,
+			name: 'Formulario de solicitud',
+			icon: 'assignment',
+			rute: 'form-solicitud'
+		});
+		this.menuOption.push({
+			idoption: 3,
+			name: 'Cerrar Sesion',
+			icon: 'logout',
+			rute:null
+			
+		});
+	}
+	whenClick(item:any){
+		if(item == 3){
+			this.authService.logOut();
+		}
 
+	}
 	isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset).pipe(
 		map((result) => result.matches),
 		shareReplay()

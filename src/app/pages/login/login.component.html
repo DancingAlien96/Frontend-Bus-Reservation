@@ -1,0 +1,43 @@
+<div class="login-container">
+    <mat-card class="login-card">
+      <mat-card-header>
+       
+    
+        
+        <img  src="https://campus.cunori.edu.gt/pluginfile.php/1/core_admin/logo/0x200/1715037487/logotipo-usac%20%281%29.png" class="img-fluid" alt="Campus Virtual">
+     
+      </mat-card-header>
+  
+      <mat-card-content style="margin-top: 1rem;">
+        <form [formGroup]="formSubmit" (ngSubmit)="onSubmit()">
+          
+          <!-- Campo del email -->
+          <mat-form-field class="example-full-width">
+            <mat-label>Usuario</mat-label>
+            <input matInput placeholder="Escribe tu usuario" formControlName="USERNAME" />
+            @if ((this.formSubmit.get('email')?.hasError('required')) ) {
+              <mat-error>el usuario es requerido!</mat-error>
+            }
+          
+          </mat-form-field>
+  
+          <!-- Campo de Contraseña -->
+          <mat-form-field class="example-full-width">
+            <mat-label>Contraseña</mat-label>
+            <input matInput placeholder="Escribe tu constraseña" formControlName="PASSWORD" type="password" />
+            @if ((this.formSubmit.get('password')?.hasError('required')) ) {
+              <mat-error>la contraseña es requerida!</mat-error>
+            }
+          </mat-form-field>
+  
+          <!-- Botón de Enviar -->
+          <button mat-raised-button color="primary" type="submit" [disabled]="formSubmit.invalid">
+            Iniciar Sesión
+          </button>
+        </form>
+      </mat-card-content>
+  
+     
+    </mat-card>
+  </div>
+  
