@@ -9,17 +9,26 @@ import { SolicitudesInterfaces } from '../../shared/interfaces/solicitudes.inter
 import { PopupComponent } from '../popup/popup.component';
 import { MatDialog } from '@angular/material/dialog';
 import { PaginatorService } from '../../shared/services/paginator.service';
-import {MatTabsModule} from '@angular/material/tabs';
+import { MatTabsModule } from '@angular/material/tabs';
+import { DateFormatPipe } from '../../shared/pipes/date-time-format.pipe';
 
 @Component({
 	providers: [
-		{ provide: MatPaginatorIntl, useClass: PaginatorService }, // Proveedor personalizado
-	  ],
+		{ provide: MatPaginatorIntl, useClass: PaginatorService } // Proveedor personalizado
+	],
 	selector: 'app-admin-table',
 	styleUrl: './admin-table.component.css',
 	templateUrl: './admin-table.component.html',
 	standalone: true,
-	imports: [MatFormFieldModule, MatInputModule, MatTableModule, MatSortModule, MatPaginatorModule, MatTabsModule]
+	imports: [
+		MatFormFieldModule,
+		MatInputModule,
+		MatTableModule,
+		MatSortModule,
+		MatPaginatorModule,
+		MatTabsModule,
+		DateFormatPipe
+	]
 })
 export class AdminTableComponent implements AfterViewInit {
 	savedstate: string | null = null;
@@ -28,7 +37,7 @@ export class AdminTableComponent implements AfterViewInit {
 		'FECHA_CREACION',
 		'FECHA_HORA_ENTREGA',
 		'FECHA_HORA_DEVOLUCION',
-		'USUARIO.NOMBRE_COMPLETO',
+		'NOMBRE_SOLICITANTE',
 		'ESTADO'
 	];
 	dataSource!: MatTableDataSource<SolicitudesInterfaces>;
@@ -43,31 +52,30 @@ export class AdminTableComponent implements AfterViewInit {
 	}
 
 	filterByTab(index: number) {
-		switch(index) {
-		  case 0: // todas
-			this.dataSource.filter = '';
-			break;
-		  case 1: // aprobadas
-			this.dataSource.filter = 'aprobada';
-			break;
-		  case 2: // finalizadas
-			this.dataSource.filter = 'finalizada';
-			break;
-		  case 3: // pendientes
-			this.dataSource.filter = 'pendiente';
-			break;
-		  case 4: // rechazadas
-			this.dataSource.filter = 'rechazada';
-			break;
-		 case 5: //eliminadas
-			this.dataSource.filter = 'eliminada';
-			break;
-		  default:
-			this.dataSource.filter = '';
-			break;
+		switch (index) {
+			case 0: // todas
+				this.dataSource.filter = '';
+				break;
+			case 1: // aprobadas
+				this.dataSource.filter = 'aprobada';
+				break;
+			case 2: // finalizadas
+				this.dataSource.filter = 'finalizada';
+				break;
+			case 3: // pendientes
+				this.dataSource.filter = 'pendiente';
+				break;
+			case 4: // rechazadas
+				this.dataSource.filter = 'rechazada';
+				break;
+			case 5: //eliminadas
+				this.dataSource.filter = 'eliminada';
+				break;
+			default:
+				this.dataSource.filter = '';
+				break;
 		}
-	  }
-	
+	}
 
 	getEstadoLabel(estado: number): string {
 		let estadoLabel = '';
@@ -97,7 +105,6 @@ export class AdminTableComponent implements AfterViewInit {
 	}
 	getAllRequest() {
 		this.solicitudesService.getSolicitudes().subscribe((data) => {
-		
 			this.dataSource = new MatTableDataSource(data); // Asigna los datos al dataSource
 			this.dataSource.paginator = this.paginator;
 			this.dataSource.sort = this.sort;
@@ -107,7 +114,7 @@ export class AdminTableComponent implements AfterViewInit {
 				let estadoLabel = this.getEstadoLabel(data.ESTADO); // Usa la función que convierte el estado a su label
 
 				const dataStr =
-					`${data.ID_SOLICITUD} ${data.FECHA_CREACION} ${data.FECHA_HORA_ENTREGA} ${data.FECHA_HORA_DEVOLUCION} ${data.USUARIO?.NOMBRE_COMPLETO} ${estadoLabel}`.toLowerCase();
+					`${data.ID_SOLICITUD} ${data.FECHA_CREACION} ${data.FECHA_HORA_ENTREGA} ${data.FECHA_HORA_DEVOLUCION} ${data.NOMBRE_SOLICITANTE} ${estadoLabel}`.toLowerCase();
 
 				return dataStr.includes(filter.trim().toLowerCase());
 			};
@@ -123,30 +130,10 @@ export class AdminTableComponent implements AfterViewInit {
 		}
 	}
 
-	openDialog(row:SolicitudesInterfaces) {
-
-
+	openDialog(row: SolicitudesInterfaces) {
 		this.dialog.open(PopupComponent, {
 			width: '80%',
-			data: {
-			ID_SOLICITUD: row.ID_SOLICITUD,
-			ID_VEHICULO :row.ID_VEHICULO, 
-			DESTINO: row.DESTINO,
-			DILIGENCIA: row.DILIGENCIA,
-			FECHA_CREACION: row.FECHA_CREACION,
-			FECHA_HORA_ENTREGA: row.FECHA_HORA_ENTREGA,
-			FECHA_HORA_DEVOLUCION: row.FECHA_HORA_DEVOLUCION,
-			CON_PILOTO: row.CON_PILOTO,
-			NOMBRE_PILOTO: row.NOMBRE_PILOTO,
-			ESTADO: row.ESTADO,
-			MODIFICABLE: row.MODIFICABLE,
-			MOTIVO_RECHAZO: row.MOTIVO_RECHAZO,
-			ENTREGADO: row.ENTREGADO,
-			DEVUELTO: row.DEVUELTO,
-			ID_USUARIO: row.ID_USUARIO 
-			 
-
-			 }
+			data: row
 		});
 	}
 }

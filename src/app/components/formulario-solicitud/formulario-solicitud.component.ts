@@ -14,7 +14,7 @@ import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 import { SolicitudesService } from '../../shared/services/solicitudes.service';
 import { MatIconModule } from '@angular/material/icon';
 import { provideMomentDateAdapter } from '@angular/material-moment-adapter';
-import { NgxMatTimepickerFieldComponent, NgxMatTimepickerModule } from 'ngx-mat-timepicker';
+import { NgxMatTimepickerModule } from 'ngx-mat-timepicker';
 import 'moment/locale/es';
 
 export const MY_FORMATS = {
@@ -103,9 +103,9 @@ export default class FormularioSolicitudComponent {
 				NOMBRE_SOLICITANTE: this.formSubmit.get('nombreSolicitante')?.value,
 				DESTINO: this.formSubmit.get('destino')?.value,
 				DILIGENCIA: this.formSubmit.get('diligencia')?.value,
-				FECHA_CREACION: new Date(),
-				FECHA_HORA_ENTREGA: new Date(timestampEntrega),
-				FECHA_HORA_DEVOLUCION: new Date(timestampDevolucion),
+				FECHA_CREACION: new Date().toJSON(),
+				FECHA_HORA_ENTREGA: new Date(timestampEntrega).toJSON(),
+				FECHA_HORA_DEVOLUCION: new Date(timestampDevolucion).toJSON(),
 				CON_PILOTO: this.formSubmit.get('conPiloto')?.value,
 				NOMBRE_PILOTO: null,
 				ESTADO: 1,

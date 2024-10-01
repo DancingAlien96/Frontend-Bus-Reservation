@@ -1,3 +1,4 @@
+import { PdfSolicitudComponent } from './../../shared/pdf/pdf-solicitud/pdf-solicitud.component';
 import { CommonModule } from '@angular/common';
 import { Component, Inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -14,10 +15,10 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 import { RouterModule } from '@angular/router';
-import {MatChipsModule} from '@angular/material/chips';
-import {MatCardModule} from '@angular/material/card';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatCardModule } from '@angular/material/card';
 import { VehiculoService } from '../../shared/services/vehiculo.service';
-import { VehiculoInterface } from '../../shared/interfaces';
+import { SolicitudesInterfaces, VehiculoInterface } from '../../shared/interfaces';
 import { MatIcon } from '@angular/material/icon';
 @Component({
 	selector: 'app-popup',
@@ -42,48 +43,25 @@ import { MatIcon } from '@angular/material/icon';
 })
 export class PopupComponent {
 	vehiculo!: VehiculoInterface;
-	currentPage:number=1;
+	currentPage: number = 1;
 	constructor(
 		public dialogRef: MatDialogRef<any>,
-		@Inject(MAT_DIALOG_DATA) public data: {
-			ID_SOLICITUD: number,
-			ID_VEHICULO :number, 
-			DESTINO: string,
-			DILIGENCIA: string,
-			FECHA_CREACION: Date,
-			FECHA_HORA_ENTREGA: Date,
-			FECHA_HORA_DEVOLUCION: Date,
-			CON_PILOTO: boolean,
-			NOMBRE_PILOTO: string,
-			ESTADO: number,
-			MODIFICABLE: boolean,
-			MOTIVO_RECHAZO: string,
-			ENTREGADO: boolean,
-			DEVUELTO: boolean,
-			ID_USUARIO: number 
-			
-			 },
-		private toast: MatSnackBar, private vehiculoService:VehiculoService
-	) {
+		@Inject(MAT_DIALOG_DATA)
+		public data: SolicitudesInterfaces,
+		private toast: MatSnackBar,
+		private vehiculoService: VehiculoService
+	) {}
 
-	}
-
-
-	pageAndDetails(pagenumber:number,idVehiculo:number ):void{
-         this.currentPage= pagenumber;
-		this.vehiculoService.getVehiculo(idVehiculo).subscribe(res=>{
-			this.vehiculo= res;
+	pageAndDetails(pagenumber: number, idVehiculo: number): void {
+		this.currentPage = pagenumber;
+		this.vehiculoService.getVehiculo(idVehiculo).subscribe((res) => {
+			this.vehiculo = res;
 			console.log(res);
-		})
-
-
-		
-		 
+		});
 	}
 
-
-    page(pagenumber:number):void{
-		this.currentPage=pagenumber;
+	page(pagenumber: number): void {
+		this.currentPage = pagenumber;
 	}
 
 	decline(): void {
@@ -105,5 +83,9 @@ export class PopupComponent {
 		this.toast.open('solicitud aceptada', 'cerrar', config);
 
 		this.dialogRef.close();
+	}
+
+	onPDF(): void {
+		PdfSolicitudComponent.createPDF(this.data);
 	}
 }
