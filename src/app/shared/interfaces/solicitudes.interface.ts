@@ -5,6 +5,7 @@ export interface SolicitudesInterfaces {
 	ID_SOLICITUD: number;
 	ID_USUARIO: number;
 	ID_VEHICULO: number;
+	NOMBRE_SOLICITANTE: string;
 	DESTINO: string;
 	DILIGENCIA: string;
 	FECHA_CREACION: Date;

@@ -101,10 +101,10 @@ export class AdminTableComponent implements AfterViewInit {
 			this.dataSource = new MatTableDataSource(data); // Asigna los datos al dataSource
 			this.dataSource.paginator = this.paginator;
 			this.dataSource.sort = this.sort;
-			console.log(data);
+			//console.log(data);
 
 			this.dataSource.filterPredicate = (data: SolicitudesInterfaces, filter: string) => {
-				let estadoLabel = this.getEstadoLabel(data.ESTADO); // Usa la función que convierte el estado a su label
+				let estadoLabel = this.getEstadoLabel(data.ESTADO); 
 
 				const dataStr =
 					`${data.ID_SOLICITUD} ${data.FECHA_CREACION} ${data.FECHA_HORA_ENTREGA} ${data.FECHA_HORA_DEVOLUCION} ${data.USUARIO?.NOMBRE_COMPLETO} ${estadoLabel}`.toLowerCase();

@@ -9,9 +9,13 @@
 	>
 		<mat-toolbar>Menu</mat-toolbar>
 		<mat-nav-list>
-			<a mat-list-item [routerLink]="['']">Solicitudes</a>
-			<a mat-list-item [routerLink]="['/form-solicitud']">Nueva solicitud</a>
-			<a mat-list-item href="#">Link 3</a>
+			@for (item of this.menuOption; track $index) {
+				
+				<a mat-list-item routerLink="{{ item.rute }}" (click)="whenClick(item.idoption)">
+					<mat-icon>{{ item.icon }}</mat-icon> {{ item.name }}
+					
+				</a>
+				}
 		</mat-nav-list>
 	</mat-sidenav>
 	<mat-sidenav-content>
