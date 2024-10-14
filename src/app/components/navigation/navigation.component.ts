@@ -34,10 +34,16 @@ export class NavigationComponent {
 	menuOption: OptionInterface[] = [];
 	constructor(private authService: AuthService) {
 		this.menuOption.push({
+			idoption: 0,
+			name: 'Inicio',
+			icon: 'home',
+			rute: 'home'
+		});
+		this.menuOption.push({
 			idoption: 1,
 			name: 'Solicitudes',
 			icon: 'list',
-			rute: ''
+			rute: 'solicitudes'
 		});
 		this.menuOption.push({
 			idoption: 2,

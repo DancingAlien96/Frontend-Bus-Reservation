@@ -19,10 +19,12 @@ import { RouterModule } from '@angular/router';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatCardModule } from '@angular/material/card';
 import { VehiculoService } from '../../shared/services/vehiculo.service';
-import { SolicitudesInterfaces, VehiculoInterface } from '../../shared/interfaces';
+import { BitacoraCondicionesInterface, SolicitudesInterfaces, VehiculoInterface } from '../../shared/interfaces';
 import { MatIcon } from '@angular/material/icon';
-import {MatSelectModule} from '@angular/material/select';
+import { MatSelectModule } from '@angular/material/select';
 import { EstadosInterface } from '../../shared/interfaces/options.interface';
+import { CombustiblePipe } from '../../shared/pipes/condiciones.pipe';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 @Component({
 	selector: 'app-popup',
 	standalone: true,
@@ -40,18 +42,22 @@ import { EstadosInterface } from '../../shared/interfaces/options.interface';
 		MatChipsModule,
 		MatCardModule,
 		MatIcon,
-		MatSelectModule
+		MatSelectModule,
+		CombustiblePipe,
+		MatProgressBarModule
 	],
 	templateUrl: './popup.component.html',
 	styleUrl: './popup.component.css'
 })
 export class PopupComponent {
 	vehiculo?: VehiculoInterface;
+	condiciones?: BitacoraCondicionesInterface;
+	selected: number = 1;
 	estados: EstadosInterface[] = [
-		{id: '1', estado: 'Rechazada'},
-		{id: '2', estado: 'Aprobada'},
-		{id: '3', estado: 'Pendiente'},
-	  ];
+		{ id: 0, estado: 'Pendiente' },
+		{ id: 1, estado: 'Rechazada' },
+		{ id: 2, estado: 'Aprobada' }
+	];
 	currentPage: number = 1;
 	constructor(
 		public dialogRef: MatDialogRef<any>,
@@ -60,12 +66,15 @@ export class PopupComponent {
 		private toast: MatSnackBar,
 		private vehiculoService: VehiculoService,
 		private personalService: PersonalService
-	) {}
+	) {
+		console.log(data);
+	}
 
 	pageAndDetails(pagenumber: number, idVehiculo: number): void {
 		this.currentPage = pagenumber;
 		this.vehiculoService.getVehiculo(idVehiculo).subscribe((res) => {
 			this.vehiculo = res;
+			this.condiciones = res.BITACORA_CONDICIONES;
 			console.log(res);
 		});
 	}
@@ -74,10 +83,7 @@ export class PopupComponent {
 		this.currentPage = pagenumber;
 	}
 
-	
-	
-  
-	save():void{
+	save(): void {
 		const config = new MatSnackBarConfig();
 
 		config.horizontalPosition = 'center';
@@ -86,7 +92,7 @@ export class PopupComponent {
 		config.duration = 3000;
 		this.toast.open('guardado', 'cerrar', config);
 
-		this.dialogRef.close();	
+		this.dialogRef.close();
 	}
 	onPDF(): void {
 		PdfSolicitudComponent.createPDF(this.data, this.personalService);

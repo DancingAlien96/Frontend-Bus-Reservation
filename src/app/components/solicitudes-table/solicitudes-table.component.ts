@@ -17,9 +17,9 @@ import { CookieService } from 'ngx-cookie-service';
 	providers: [
 		{ provide: MatPaginatorIntl, useClass: PaginatorService } // Proveedor personalizado
 	],
-	selector: 'app-admin-table',
-	styleUrl: './admin-table.component.css',
-	templateUrl: './admin-table.component.html',
+	selector: 'app-solicitudes-table',
+	styleUrl: './solicitudes-table.component.css',
+	templateUrl: './solicitudes-table.component.html',
 	standalone: true,
 	imports: [
 		MatFormFieldModule,
@@ -31,8 +31,7 @@ import { CookieService } from 'ngx-cookie-service';
 		DateFormatPipe
 	]
 })
-export class AdminTableComponent implements AfterViewInit {
-
+export class SolicitudesTableComponent implements AfterViewInit {
 	savedstate: string | null = null;
 
 	displayedColumns: string[] = [
@@ -48,7 +47,11 @@ export class AdminTableComponent implements AfterViewInit {
 	@ViewChild(MatPaginator) paginator!: MatPaginator;
 	@ViewChild(MatSort) sort!: MatSort;
 
-	constructor(private solicitudesService: SolicitudesService, private dialog: MatDialog, private cookies:CookieService) {}
+	constructor(
+		private solicitudesService: SolicitudesService,
+		private dialog: MatDialog,
+		private cookies: CookieService
+	) {}
 
 	ngAfterViewInit() {
 		this.getAllRequest();
@@ -107,53 +110,46 @@ export class AdminTableComponent implements AfterViewInit {
 		return estadoLabel;
 	}
 	getAllRequest() {
-        const usuarioCookie = this.cookies.get('usuario');
+		const usuarioCookie = this.cookies.get('usuario');
 		const usuario = JSON.parse(usuarioCookie);
 		const id = usuario.ID_USUARIO;
 		const rol = usuario.ROL.ID_ROL;
 		console.log(rol);
 		console.log(id);
-		
-		   if(rol == 1){
+
+		if (rol == 1) {
 			this.solicitudesService.getSolicitudes().subscribe((data) => {
 				this.dataSource = new MatTableDataSource(data); // Asigna los datos al dataSource
 				this.dataSource.paginator = this.paginator;
 				this.dataSource.sort = this.sort;
 				//console.log(data);
-	
+
 				this.dataSource.filterPredicate = (data: SolicitudesInterfaces, filter: string) => {
-					let estadoLabel = this.getEstadoLabel(data.ESTADO); 
-	
+					let estadoLabel = this.getEstadoLabel(data.ESTADO);
+
 					const dataStr =
 						`${data.ID_SOLICITUD} ${data.FECHA_CREACION} ${data.FECHA_HORA_ENTREGA} ${data.FECHA_HORA_DEVOLUCION} ${data.NOMBRE_SOLICITANTE} ${estadoLabel}`.toLowerCase();
-	
+
 					return dataStr.includes(filter.trim().toLowerCase());
 				};
 			});
-	
-		   }	
-			
-	
-	
-	else{
-		this.solicitudesService.solicitudFiltrada(id).subscribe((data)=>{
-			this.dataSource = new MatTableDataSource(data); // Asigna los datos al dataSource
-			this.dataSource.paginator = this.paginator;
-			this.dataSource.sort = this.sort;
-			//console.log(data);
+		} else {
+			this.solicitudesService.solicitudFiltrada(id).subscribe((data) => {
+				this.dataSource = new MatTableDataSource(data); // Asigna los datos al dataSource
+				this.dataSource.paginator = this.paginator;
+				this.dataSource.sort = this.sort;
+				//console.log(data);
 
-			this.dataSource.filterPredicate = (data: SolicitudesInterfaces, filter: string) => {
-				let estadoLabel = this.getEstadoLabel(data.ESTADO);
+				this.dataSource.filterPredicate = (data: SolicitudesInterfaces, filter: string) => {
+					let estadoLabel = this.getEstadoLabel(data.ESTADO);
 
-				const dataStr =
-					`${data.ID_SOLICITUD} ${data.FECHA_CREACION} ${data.FECHA_HORA_ENTREGA} ${data.FECHA_HORA_DEVOLUCION} ${data.NOMBRE_SOLICITANTE} ${estadoLabel}`.toLowerCase();
+					const dataStr =
+						`${data.ID_SOLICITUD} ${data.FECHA_CREACION} ${data.FECHA_HORA_ENTREGA} ${data.FECHA_HORA_DEVOLUCION} ${data.NOMBRE_SOLICITANTE} ${estadoLabel}`.toLowerCase();
 
-				return dataStr.includes(filter.trim().toLowerCase());
-			};
-		})
-			
-	}
-		
+					return dataStr.includes(filter.trim().toLowerCase());
+				};
+			});
+		}
 	}
 
 	applyFilter(event: Event) {

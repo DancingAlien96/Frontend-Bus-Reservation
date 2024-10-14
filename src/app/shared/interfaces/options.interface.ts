@@ -1,14 +1,11 @@
 export interface OptionInterface {
 	idoption?: number;
 	name: string;
-	rute: string |null;
+	rute: string | null;
 	icon: string;
-
-    
 }
 
 export interface EstadosInterface {
-	id: string;
+	id: number;
 	estado: string;
-	  
 }

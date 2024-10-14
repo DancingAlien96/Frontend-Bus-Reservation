@@ -2,10 +2,10 @@ import { Component } from '@angular/core';
 import { SolicitudesTableComponent } from '../../components/solicitudes-table/solicitudes-table.component';
 
 @Component({
-	selector: 'app-home',
+	selector: 'app-solicitudes',
 	standalone: true,
 	imports: [SolicitudesTableComponent],
-	templateUrl: './home.component.html',
-	styleUrl: './home.component.css'
+	template: ` <app-solicitudes-table></app-solicitudes-table> `,
+	styles: []
 })
-export class HomeComponent {}
+export class SolicitudesComponent {}

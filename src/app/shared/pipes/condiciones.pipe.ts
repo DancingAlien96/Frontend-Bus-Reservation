@@ -50,7 +50,10 @@ export class NumberBeMeCdPipe implements PipeTransform {
 	standalone: true
 })
 export class CombustiblePipe implements PipeTransform {
-	transform(value: number) {
+	transform(value: number | undefined) {
+		if (value === undefined) {
+			return 'Sin definir';
+		}
 		switch (value) {
 			case 0.25:
 				return '1/4';

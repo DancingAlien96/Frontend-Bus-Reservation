@@ -1,4 +1,3 @@
-<h2 mat-dialog-title></h2>
 <mat-dialog-content>
 	@if (currentPage == 1) {
 	<mat-card class="popup-card">
@@ -24,11 +23,12 @@
 			<section>
 				<h3>Fechas</h3>
 				<p>
-					<strong>Fecha y Hora de Entrega:</strong> {{ data.FECHA_HORA_ENTREGA | date : "d 'de' MMMM 'de' y h:mm a" }}
+					<strong>Fecha y Hora de Entrega:</strong>
+					{{ data.FECHA_HORA_ENTREGA | date : "d 'de' MMMM 'de' y 'a las' h:mm a" }}
 				</p>
 				<p>
 					<strong>Fecha y Hora de Devolución:</strong>
-					{{ data.FECHA_HORA_DEVOLUCION | date : "d 'de' MMMM 'de' y h:mm a" }}
+					{{ data.FECHA_HORA_DEVOLUCION | date : "d 'de' MMMM 'de' y 'a las' h:mm a" }}
 				</p>
 			</section>
 
@@ -43,7 +43,7 @@
 				<p>
 					<mat-form-field>
 						<mat-label>Estado</mat-label>
-						<mat-select>
+						<mat-select [(value)]="data.ESTADO">
 							@for (estadoSelect of estados; track estadoSelect) {
 							<mat-option [value]="estadoSelect.id">{{ estadoSelect.estado }}</mat-option>
 							}
@@ -75,15 +75,16 @@
 
 			<section>
 				<p><strong>Registro del Inventario:</strong> {{ vehiculo?.REGISTRO_DE_INVENTARIO }}</p>
-				<p><strong>Kilometraje del Vehículo:</strong> {{ vehiculo?.KILOMETRAJE }}</p>
+				<p><strong>Kilometraje del Vehículo:</strong> {{ condiciones?.KILOMETRAJE }}</p>
 			</section>
 
 			<section>
-				<p><strong>Nivel de Combustible:</strong> {{ vehiculo?.NIVEL_DE_COMBUSTIBLE }}</p>
+				<p><strong>Nivel de Combustible:</strong> {{ condiciones?.NIVEL_COMBUSTIBLE | combustiblePipe }}</p>
+				<mat-progress-bar [mode]="'determinate'" [value]="(condiciones?.NIVEL_COMBUSTIBLE ?? 0) * 100">
+				</mat-progress-bar>
 			</section>
 		</mat-card-content>
 	</mat-card>
-
 	}
 </mat-dialog-content>
 <mat-dialog-actions>
