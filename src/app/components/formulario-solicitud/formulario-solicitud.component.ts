@@ -60,7 +60,7 @@ export default class FormularioSolicitudComponent {
 		private vs: VehiculoService,
 		private sps: SolicitudesService,
 		private _snackBar: MatSnackBar,
-		private cookies:CookieService
+		private cookies: CookieService
 	) {
 		this.formSubmit = this.fb.group({
 			nombreSolicitante: [null, Validators.required],
@@ -78,7 +78,10 @@ export default class FormularioSolicitudComponent {
 	onSubmit() {
 		const usuarioCookie = this.cookies.get('usuario');
 		const usuario = JSON.parse(usuarioCookie);
-		
+		console.log(usuario);
+		// quita el atributo rol de usuario
+		delete usuario.ROL;
+
 		if (this.formSubmit.valid) {
 			this.solicitud = this.solicitud || {};
 			const entregaFecha = this.formSubmit.get('entrega')?.value;
@@ -88,10 +91,12 @@ export default class FormularioSolicitudComponent {
 			const timestampEntrega = this.combinarFechaHora(entregaFecha, horaEntrega);
 			const timestampDevolucion = this.combinarFechaHora(devolucionFecha, horaDevolucion);
 
-			this.solicitud.VEHICULO = this.formSubmit.get('vehiculo')?.value;
-            
-			this.solicitud.USUARIO = usuario 
-            
+			const vehiculo = this.formSubmit.get('vehiculo')?.value;
+			delete vehiculo.BITACORA_CONDICIONES;
+
+			this.solicitud.VEHICULO = vehiculo;
+			this.solicitud.USUARIO = usuario;
+
 			this.solicitud.SOLICITUD = {
 				ID_USUARIO: this.solicitud.USUARIO.ID_USUARIO,
 				ID_VEHICULO: this.solicitud.VEHICULO.ID_VEHICULO,

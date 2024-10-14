@@ -16,40 +16,24 @@ import { UsuarioInterface } from '../../shared/interfaces/usuario.interface';
 	styleUrl: './login.component.css'
 })
 export class LoginComponent {
+	public formSubmit: FormGroup;
+	public user!: UsuarioInterface;
 
-  public formSubmit: FormGroup;
-  public user!: UsuarioInterface;
-
- constructor(private fb: FormBuilder, private loginService:LoginService, private cookies:CookieService)
-{this.formSubmit = this.fb.group({
-  USERNAME: [null, Validators.required],
-  PASSWORD: [null, [Validators.required]]
-});  }
-
-onSubmit() {
-  if (this.formSubmit.valid) {
-    //console.log(this.formSubmit.value);
-    this.loginService.access(this.formSubmit.value).subscribe(res=>{
-      console.log(res);
-      
-     this.cookies.set('token',res.token);
-     this.cookies.set('usuario', JSON.stringify(res.usuario)); 
-
-      
-    })
-  } else {
-    // naranjas
-  }
-}
+	constructor(private fb: FormBuilder, private loginService: LoginService, private cookies: CookieService) {
+		this.formSubmit = this.fb.group({
+			USERNAME: [null, Validators.required],
+			PASSWORD: [null, [Validators.required]]
+		});
+	}
 
 	onSubmit() {
 		if (this.formSubmit.valid) {
+			//console.log(this.formSubmit.value);
 			this.loginService.access(this.formSubmit.value).subscribe((res) => {
-				if (res.token) {
-					window.location.href = '/home';
-				}
+				console.log(res);
 
-				this.cookies.set('token', res);
+				this.cookies.set('token', res.token);
+				this.cookies.set('usuario', JSON.stringify(res.usuario));
 			});
 		} else {
 			// naranjas

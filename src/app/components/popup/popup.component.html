@@ -9,14 +9,13 @@
 
 		<mat-card-content class="grid-container">
 			<section>
-				<h3 >Detalles de la Solicitud</h3>
+				<h3>Detalles de la Solicitud</h3>
 
 				<div class="content-container">
-					
 					<p><strong>Vehículo Solicitado:</strong></p>
-					<p>{{data.VEHICULO.TIPO}}</p>
-					
-					<mat-icon (click)="pageAndDetails(2, data.ID_VEHICULO)"  fontIcon="info" class="button-back"></mat-icon>
+					<p>{{ data.VEHICULO.TIPO }}</p>
+
+					<mat-icon (click)="pageAndDetails(2, data.ID_VEHICULO)" fontIcon="info" class="button-back"></mat-icon>
 				</div>
 				<p><strong>Destino del viaje:</strong> {{ data.DESTINO }}</p>
 				<p><strong>Diligencia a realizar:</strong> {{ data.DILIGENCIA }}</p>
@@ -45,14 +44,11 @@
 					<mat-form-field>
 						<mat-label>Estado</mat-label>
 						<mat-select>
-						  @for (estadoSelect of estados; track estadoSelect) {
-							<mat-option [value]="estadoSelect.id">{{estadoSelect.estado}}</mat-option>
-						  }
+							@for (estadoSelect of estados; track estadoSelect) {
+							<mat-option [value]="estadoSelect.id">{{ estadoSelect.estado }}</mat-option>
+							}
 						</mat-select>
-					  </mat-form-field>
-					
-
-
+					</mat-form-field>
 				</p>
 			</section>
 		</mat-card-content>
@@ -68,8 +64,8 @@
 
 		<mat-card-content class="grid-container">
 			<section>
-				<p><strong>Placa del Vehículo:</strong> {{ vehiculo.PLACA}}</p>
-				<p><strong>Tipo de Vehículo:</strong> {{ vehiculo.TIPO }}</p>
+				<p><strong>Placa del Vehículo:</strong> {{ vehiculo?.PLACA }}</p>
+				<p><strong>Tipo de Vehículo:</strong> {{ vehiculo?.TIPO }}</p>
 			</section>
 
 			<section>
@@ -91,14 +87,13 @@
 	}
 </mat-dialog-content>
 <mat-dialog-actions>
-<div class="pop-container">
-	<div>
-		<button mat-button  class="pop-container-button" (click)="onPDF()">Generar PDF</button>
+	<div class="pop-container">
+		<div>
+			<button mat-button class="pop-container-button" (click)="onPDF()">Generar PDF</button>
+		</div>
+		<div>
+			<button class="pop-container-button" mat-button (click)="save()">guardar</button>
+			<button class="pop-container-button" mat-button [mat-dialog-close]="" cdkFocusInitial>cancelar</button>
+		</div>
 	</div>
-	<div>
-		<button  class="pop-container-button" mat-button (click)="save()">guardar</button>
-		<button class="pop-container-button"   mat-button [mat-dialog-close]=""cdkFocusInitial>cancelar</button>
-	</div>
-    
-</div>
 </mat-dialog-actions>
