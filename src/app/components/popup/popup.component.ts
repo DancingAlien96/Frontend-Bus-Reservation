@@ -52,10 +52,11 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 export class PopupComponent {
 	vehiculo?: VehiculoInterface;
 	condiciones?: BitacoraCondicionesInterface;
+	selected: number = 1;
 	estados: EstadosInterface[] = [
-		{ id: '1', estado: 'Rechazada' },
-		{ id: '2', estado: 'Aprobada' },
-		{ id: '3', estado: 'Pendiente' }
+		{ id: 0, estado: 'Pendiente' },
+		{ id: 1, estado: 'Rechazada' },
+		{ id: 2, estado: 'Aprobada' }
 	];
 	currentPage: number = 1;
 	constructor(
@@ -65,7 +66,9 @@ export class PopupComponent {
 		private toast: MatSnackBar,
 		private vehiculoService: VehiculoService,
 		private personalService: PersonalService
-	) {}
+	) {
+		console.log(data);
+	}
 
 	pageAndDetails(pagenumber: number, idVehiculo: number): void {
 		this.currentPage = pagenumber;

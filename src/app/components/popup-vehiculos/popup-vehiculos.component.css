@@ -1,8 +1,14 @@
 .popup-card {
 	margin: 20px;
 	padding: 20px;
+	padding-top: 0;
+	margin-top: 0;
 	background-color: #fafafa;
 	border-radius: 8px;
+}
+
+mat-dialog-content {
+	margin-top: 20px;
 }
 
 mat-card-header {
@@ -44,12 +50,36 @@ p {
 	color: #333;
 }
 
-.vehiculo-detalles:hover {
-	cursor: pointer;
-	color: var(--primaryColor);
+.vehiculo-detalles {
+	background-color: var(--primaryColor);
 }
 
 .button-back:hover {
 	cursor: pointer;
 	color: var(--primaryColor);
+}
+
+.pop-container {
+	display: flex;
+	justify-content: space-between;
+	width: 100%;
+	margin-top: 0.1rem;
+	margin-left: 2rem;
+	margin-right: 2rem;
+}
+
+.pop-container-button {
+	background-color: transparent;
+	/* ponerlo hasta la derecha */
+	margin-left: auto;
+}
+
+.pop-container-button:hover {
+	color: white;
+	background-color: var(--primaryColor);
+}
+
+.content-container {
+	display: flex;
+	align-items: center;
 }
