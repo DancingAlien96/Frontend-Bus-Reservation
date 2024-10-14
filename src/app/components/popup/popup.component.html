@@ -75,15 +75,16 @@
 
 			<section>
 				<p><strong>Registro del Inventario:</strong> {{ vehiculo?.REGISTRO_DE_INVENTARIO }}</p>
-				<p><strong>Kilometraje del Vehículo:</strong> {{ vehiculo?.KILOMETRAJE }}</p>
+				<p><strong>Kilometraje del Vehículo:</strong> {{ condiciones?.KILOMETRAJE }}</p>
 			</section>
 
 			<section>
-				<p><strong>Nivel de Combustible:</strong> {{ vehiculo?.NIVEL_DE_COMBUSTIBLE }}</p>
+				<p><strong>Nivel de Combustible:</strong> {{ condiciones?.NIVEL_COMBUSTIBLE | combustiblePipe }}</p>
+				<mat-progress-bar [mode]="'determinate'" [value]="(condiciones?.NIVEL_COMBUSTIBLE ?? 0) * 100">
+				</mat-progress-bar>
 			</section>
 		</mat-card-content>
 	</mat-card>
-
 	}
 </mat-dialog-content>
 <mat-dialog-actions>
