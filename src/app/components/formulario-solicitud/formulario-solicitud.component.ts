@@ -108,7 +108,7 @@ export default class FormularioSolicitudComponent {
 				FECHA_HORA_DEVOLUCION: new Date(timestampDevolucion).toJSON(),
 				CON_PILOTO: this.formSubmit.get('conPiloto')?.value,
 				NOMBRE_PILOTO: null,
-				ESTADO: 1,
+				ESTADO: 0,
 				MODIFICABLE: true,
 				MOTIVO_RECHAZO: null,
 				ENTREGADO: false,

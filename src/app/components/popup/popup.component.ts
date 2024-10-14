@@ -43,7 +43,7 @@ import { MatIcon } from '@angular/material/icon';
 	styleUrl: './popup.component.css'
 })
 export class PopupComponent {
-	vehiculo!: VehiculoInterface;
+	vehiculo?: VehiculoInterface;
 	currentPage: number = 1;
 	constructor(
 		public dialogRef: MatDialogRef<any>,
