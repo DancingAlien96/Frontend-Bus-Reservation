@@ -1,3 +1,4 @@
+import { PersonalService } from './../../shared/services/personal.service';
 import { PdfSolicitudComponent } from './../../shared/pdf/pdf-solicitud/pdf-solicitud.component';
 import { CommonModule } from '@angular/common';
 import { Component, Inject } from '@angular/core';
@@ -45,19 +46,20 @@ import { EstadosInterface } from '../../shared/interfaces/options.interface';
 	styleUrl: './popup.component.css'
 })
 export class PopupComponent {
+	vehiculo?: VehiculoInterface;
 	estados: EstadosInterface[] = [
 		{id: '1', estado: 'Rechazada'},
 		{id: '2', estado: 'Aprobada'},
 		{id: '3', estado: 'Pendiente'},
 	  ];
-	vehiculo!: VehiculoInterface;
 	currentPage: number = 1;
 	constructor(
 		public dialogRef: MatDialogRef<any>,
 		@Inject(MAT_DIALOG_DATA)
 		public data: SolicitudesInterfaces,
 		private toast: MatSnackBar,
-		private vehiculoService: VehiculoService
+		private vehiculoService: VehiculoService,
+		private personalService: PersonalService
 	) {}
 
 	pageAndDetails(pagenumber: number, idVehiculo: number): void {
@@ -87,6 +89,6 @@ export class PopupComponent {
 		this.dialogRef.close();	
 	}
 	onPDF(): void {
-		PdfSolicitudComponent.createPDF(this.data);
+		PdfSolicitudComponent.createPDF(this.data, this.personalService);
 	}
 }

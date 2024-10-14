@@ -3,7 +3,8 @@ import { Component } from '@angular/core';
 import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
-import { SolicitudesInterfaces } from '../../interfaces';
+import { PersonalInterface, SolicitudesInterfaces } from '../../interfaces';
+import { PersonalService } from '../../services/personal.service';
 
 @Component({
 	selector: 'app-pdf-solicitud',
@@ -13,9 +14,22 @@ import { SolicitudesInterfaces } from '../../interfaces';
 	styles: ''
 })
 export class PdfSolicitudComponent {
-	constructor() {}
+	constructor(private ps: PersonalService) {}
 
-	static async createPDF(solicitud: SolicitudesInterfaces) {
+	static async createPDF(solicitud: SolicitudesInterfaces, personalService: PersonalService) {
+		let textoDirector = '';
+		let textoAsistente = '';
+		personalService.getPersonal().subscribe({
+			next: (personalData: PersonalInterface[]) => {
+				personalData.forEach((personal) => {
+					if (personal.ID_PERSONAL === 1) {
+						textoDirector = `${personal.TITULO_ACADEMICO} ${personal.NOMBRE}`;
+					} else if (personal.ID_PERSONAL === 2) {
+						textoAsistente = `${personal.TITULO_ACADEMICO} ${personal.NOMBRE}`;
+					}
+				});
+			}
+		});
 		const fechaCreacionFormateada = new DateFormatPipe().transform(solicitud.FECHA_CREACION);
 		const fechaEntregaFormateada = new DateFormatPipe().transform(solicitud.FECHA_HORA_ENTREGA);
 		const horaEntregaFormateada = new TimeFormatPipe().transform(solicitud.FECHA_HORA_ENTREGA);
@@ -80,7 +94,7 @@ export class PdfSolicitudComponent {
 						{
 							stack: [
 								{
-									text: 'Lic. Zoot. Merlin Wilfrido Osorio López',
+									text: `${textoDirector}`,
 									alignment: 'left' // Alinea el nombre a la izquierda
 								},
 								{
@@ -210,12 +224,12 @@ export class PdfSolicitudComponent {
 				{
 					columns: [
 						{
-							text: 'Vo.Bo. Lic. Zoot. Merlin Wilfrido Osorio López \nDirector',
+							text: `Vo.Bo. ${textoDirector} \nDirector`,
 							alignment: 'center',
 							margin: [0, 40, 0, 20]
 						},
 						{
-							text: 'Licda. Leslie Carola Hernández Peralta\nAsistente de Dirección',
+							text: `${textoAsistente} \nAsistente de Dirección`,
 							alignment: 'center',
 							margin: [0, 40, 0, 20]
 						}

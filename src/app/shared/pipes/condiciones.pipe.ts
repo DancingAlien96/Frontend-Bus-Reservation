@@ -1,0 +1,67 @@
+import { Pipe, PipeTransform } from '@angular/core';
+
+@Pipe({
+	name: 'boolSiNoPipe',
+	standalone: true
+})
+export class BoolSiNoPipe implements PipeTransform {
+	transform(value: boolean) {
+		if (value) {
+			return 'Si';
+		}
+		return 'No';
+	}
+}
+
+@Pipe({
+	name: 'boolBuenoMaloPipe',
+	standalone: true
+})
+export class BoolBuenoMaloPipe implements PipeTransform {
+	transform(value: boolean) {
+		if (value) {
+			return 'Bueno';
+		}
+		return 'Malo';
+	}
+}
+
+@Pipe({
+	name: 'numberBeMeCdPipe',
+	standalone: true
+})
+export class NumberBeMeCdPipe implements PipeTransform {
+	transform(value: number) {
+		switch (value) {
+			case 1:
+				return 'Buen Estado';
+			case 2:
+				return 'Mal Estado';
+			case 3:
+				return 'Con Daños';
+			default:
+				return 'Sin definir';
+		}
+	}
+}
+
+@Pipe({
+	name: 'combustiblePipe',
+	standalone: true
+})
+export class CombustiblePipe implements PipeTransform {
+	transform(value: number) {
+		switch (value) {
+			case 0.25:
+				return '1/4';
+			case 0.5:
+				return '1/2';
+			case 0.75:
+				return '3/4';
+			case 1:
+				return 'Lleno';
+			default:
+				return 'Sin definir';
+		}
+	}
+}

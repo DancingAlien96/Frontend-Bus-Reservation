@@ -32,7 +32,7 @@ import { AuthService } from '../../shared/services/auth.service';
 export class NavigationComponent {
 	private breakpointObserver = inject(BreakpointObserver);
 	menuOption: OptionInterface[] = [];
-	constructor(private authService:AuthService) {
+	constructor(private authService: AuthService) {
 		this.menuOption.push({
 			idoption: 1,
 			name: 'Solicitudes',
@@ -47,17 +47,22 @@ export class NavigationComponent {
 		});
 		this.menuOption.push({
 			idoption: 3,
+			name: 'Vehiculos',
+			icon: 'directions_car',
+			rute: 'vehiculos'
+		});
+
+		this.menuOption.push({
+			idoption: 4,
 			name: 'Cerrar Sesion',
 			icon: 'logout',
-			rute:null
-			
+			rute: null
 		});
 	}
-	whenClick(item:any){
-		if(item == 3){
+	whenClick(item: any) {
+		if (item == 4) {
 			this.authService.logOut();
 		}
-
 	}
 	isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset).pipe(
 		map((result) => result.matches),

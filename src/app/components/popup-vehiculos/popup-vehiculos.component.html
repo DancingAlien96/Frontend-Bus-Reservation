@@ -1,0 +1,81 @@
+<h2 mat-dialog-title></h2>
+<mat-dialog-content>
+	<mat-card class="popup-card">
+		<mat-card-header>
+			<mat-card-title>Detalles del Vehículo</mat-card-title>
+		</mat-card-header>
+
+		<mat-card-content class="grid-container">
+			<section>
+				<p><strong>Placa del Vehículo:</strong> {{ vehiculo.PLACA }}</p>
+				<p><strong>Tipo de Vehículo:</strong> {{ vehiculo.TIPO }}</p>
+			</section>
+
+			<section>
+				<p><strong>Marca del Vehículo:</strong> {{ vehiculo.MARCA }}</p>
+				<p><strong>Color del Vehículo:</strong> {{ vehiculo.COLOR }}</p>
+			</section>
+
+			<section>
+				<p><strong>Registro del Inventario:</strong> {{ vehiculo.REGISTRO_DE_INVENTARIO }}</p>
+				<p><strong>Kilometraje del Vehículo:</strong> {{ condiciones.KILOMETRAJE }}</p>
+			</section>
+
+			<section>
+				<p><strong>Nivel de Combustible:</strong> {{ condiciones.NIVEL_COMBUSTIBLE | combustiblePipe }}</p>
+				<mat-progress-bar [mode]="'determinate'" [value]="condiciones.NIVEL_COMBUSTIBLE * 100"> </mat-progress-bar>
+			</section>
+		</mat-card-content>
+	</mat-card>
+	<mat-card class="popup-card">
+		<mat-card-header>
+			<mat-card-title>Condiciones del Vehículo</mat-card-title>
+		</mat-card-header>
+
+		<mat-card-content class="grid-container">
+			<section>
+				<h3>Documentos del vehículo</h3>
+				<p><strong>Tarjeta de circulación:</strong> {{ condiciones.TARJETA_CIRCULACION | boolSiNoPipe }}</p>
+			</section>
+			<section>
+				<h3>Llaves</h3>
+				<p><strong>Llave de encendido:</strong> {{ condiciones.LLAVES_ENCENDIDO | boolSiNoPipe }}</p>
+				<p><strong>Llave de tanque de gasolina:</strong> {{ condiciones.LLAVES_GASOLINA | boolSiNoPipe }}</p>
+				<p><strong>Llave de llanta de repuesto:</strong> {{ condiciones.LLAVES_LLANTA | boolSiNoPipe }}</p>
+			</section>
+			<section>
+				<h3>Motor</h3>
+				<p><strong>Encendido:</strong> {{ condiciones.ENCENDIDO_MOTOR | boolBuenoMaloPipe }}</p>
+
+				<h3>Retrovisores</h3>
+				<p><strong>Exteriores :</strong> {{ condiciones.RETROVISORES_EXTERIOR | boolSiNoPipe }}</p>
+				<p><strong>Interiores :</strong> {{ condiciones.RETROVISORES_INTERIOR | boolSiNoPipe }}</p>
+			</section>
+			<section>
+				<h3>Accesorios</h3>
+				<p><strong>Llanta de repuesto:</strong> {{ condiciones.LLANTA_REPUESTO | boolSiNoPipe }}</p>
+				<p><strong>Llave de chuchos:</strong> {{ condiciones.LLAVE_CHUCHOS | boolSiNoPipe }}</p>
+				<p><strong>Tricket:</strong> {{ condiciones.TRICKET | boolSiNoPipe }}</p>
+				<p><strong>Otros:</strong> {{ condiciones.OTROS }}</p>
+			</section>
+			<section>
+				<h3>Luces</h3>
+				<p><strong>Condiciones silvines:</strong> {{ condiciones.SILVINES | numberBeMeCdPipe }}</p>
+				<p><strong>Condiciones stops:</strong> {{ condiciones.STOP | numberBeMeCdPipe }}</p>
+				<p><strong>Condiciones de luz de retroceso:</strong> {{ condiciones.LUZ_RETROCESO | numberBeMeCdPipe }}</p>
+				<p><strong>Condiciones de luz de emergencia:</strong> {{ condiciones.LUZ_EMERGENCIA | numberBeMeCdPipe }}</p>
+			</section>
+			<section>
+				<p><strong>Condiciones de llantas:</strong> {{ condiciones.CONDICIONES_LLANTA | numberBeMeCdPipe }}</p>
+				<p><strong>Condiciones de limpiaparabrisas:</strong> {{ condiciones.LIMPIAPARABRISAS | numberBeMeCdPipe }}</p>
+				<p><strong>Observaciones:</strong> {{ condiciones.OBSERVACIONES }}</p>
+			</section>
+		</mat-card-content>
+	</mat-card>
+</mat-dialog-content>
+<mat-dialog-actions>
+	<button mat-button [mat-dialog-close]="vehiculo.ID_VEHICULO" cdkFocusInitial>Cancelar</button>
+	<!-- <button mat-button (click)="decline()">rechazar</button>
+	<button mat-button (click)="accept()">aceptar</button>
+	<button mat-button (click)="onPDF()">Generar PDF</button> -->
+</mat-dialog-actions>

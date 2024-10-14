@@ -9,13 +9,14 @@ import { CookieService } from 'ngx-cookie-service';
 import { UsuarioInterface } from '../../shared/interfaces/usuario.interface';
 
 @Component({
-  selector: 'app-login',
-  standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, MatInputModule, MatButtonModule, MatCardModule],
-  templateUrl: './login.component.html',
-  styleUrl: './login.component.css'
+	selector: 'app-login',
+	standalone: true,
+	imports: [CommonModule, ReactiveFormsModule, MatInputModule, MatButtonModule, MatCardModule],
+	templateUrl: './login.component.html',
+	styleUrl: './login.component.css'
 })
 export class LoginComponent {
+
   public formSubmit: FormGroup;
   public user!: UsuarioInterface;
 
@@ -41,5 +42,17 @@ onSubmit() {
   }
 }
 
+	onSubmit() {
+		if (this.formSubmit.valid) {
+			this.loginService.access(this.formSubmit.value).subscribe((res) => {
+				if (res.token) {
+					window.location.href = '/home';
+				}
 
+				this.cookies.set('token', res);
+			});
+		} else {
+			// naranjas
+		}
+	}
 }

@@ -143,7 +143,7 @@ export class AdminTableComponent implements AfterViewInit {
 			//console.log(data);
 
 			this.dataSource.filterPredicate = (data: SolicitudesInterfaces, filter: string) => {
-				let estadoLabel = this.getEstadoLabel(data.ESTADO); 
+				let estadoLabel = this.getEstadoLabel(data.ESTADO);
 
 				const dataStr =
 					`${data.ID_SOLICITUD} ${data.FECHA_CREACION} ${data.FECHA_HORA_ENTREGA} ${data.FECHA_HORA_DEVOLUCION} ${data.NOMBRE_SOLICITANTE} ${estadoLabel}`.toLowerCase();
