@@ -20,6 +20,8 @@ import { MatCardModule } from '@angular/material/card';
 import { VehiculoService } from '../../shared/services/vehiculo.service';
 import { SolicitudesInterfaces, VehiculoInterface } from '../../shared/interfaces';
 import { MatIcon } from '@angular/material/icon';
+import {MatSelectModule} from '@angular/material/select';
+import { EstadosInterface } from '../../shared/interfaces/options.interface';
 @Component({
 	selector: 'app-popup',
 	standalone: true,
@@ -36,12 +38,18 @@ import { MatIcon } from '@angular/material/icon';
 		RouterModule,
 		MatChipsModule,
 		MatCardModule,
-		MatIcon
+		MatIcon,
+		MatSelectModule
 	],
 	templateUrl: './popup.component.html',
 	styleUrl: './popup.component.css'
 })
 export class PopupComponent {
+	estados: EstadosInterface[] = [
+		{id: '1', estado: 'Rechazada'},
+		{id: '2', estado: 'Aprobada'},
+		{id: '3', estado: 'Pendiente'},
+	  ];
 	vehiculo!: VehiculoInterface;
 	currentPage: number = 1;
 	constructor(
@@ -64,27 +72,20 @@ export class PopupComponent {
 		this.currentPage = pagenumber;
 	}
 
-	decline(): void {
-		const config = new MatSnackBarConfig();
-		config.duration = 3000;
-		config.horizontalPosition = 'center';
-		config.verticalPosition = 'bottom';
-		config.panelClass = 'ErrorSnackBar';
-		this.toast.open('solicitud rechazada', 'cerrar', config);
-		this.dialogRef.close();
-	}
-	accept(): void {
+	
+	
+  
+	save():void{
 		const config = new MatSnackBarConfig();
 
 		config.horizontalPosition = 'center';
 		config.verticalPosition = 'bottom';
-		config.panelClass = 'OkSnackBar';
+		config.panelClass = 'OkSnackBar'; //tipo de snackbar
 		config.duration = 3000;
-		this.toast.open('solicitud aceptada', 'cerrar', config);
+		this.toast.open('guardado', 'cerrar', config);
 
-		this.dialogRef.close();
+		this.dialogRef.close();	
 	}
-
 	onPDF(): void {
 		PdfSolicitudComponent.createPDF(this.data);
 	}

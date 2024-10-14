@@ -6,3 +6,9 @@ export interface OptionInterface {
 
     
 }
+
+export interface EstadosInterface {
+	id: string;
+	estado: string;
+	  
+}

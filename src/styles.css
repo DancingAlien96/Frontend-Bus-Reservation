@@ -14,9 +14,7 @@ body {
 	font-family: Roboto, 'Helvetica Neue', sans-serif;
 }
 
-.container {
-	margin: 1rem;
-}
+
 
 .ErrorSnackBar {
 	.mdc-snackbar__surface {
@@ -28,7 +26,7 @@ body {
 
 .OkSnackBar {
 	.mdc-snackbar__surface {
-		--mdc-snackbar-container-color: green;
+		--mdc-snackbar-container-color: var(--primaryColor);
 		--mdc-snackbar-supporting-text-color: white;
 		--mat-snack-bar-button-color: white;
 	}

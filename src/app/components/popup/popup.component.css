@@ -44,9 +44,9 @@
     color: #333;
   }
   
-.vehiculo-detalles:hover{
-cursor: pointer;
-color: var(--primaryColor);
+.vehiculo-detalles{
+
+background-color: var(--primaryColor);
 }
 
 
@@ -54,4 +54,29 @@ color: var(--primaryColor);
   cursor: pointer;
   color: var(--primaryColor);
   
+}
+
+.pop-container{
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 0.1rem;
+  margin-left: 2rem;
+  margin-right: 2rem;
+ 
+}
+
+.pop-container-button:hover{
+  color:white;
+  background-color: var(--primaryColor);
+}
+
+
+.pop-container-button{
+  background-color: transparent;
+}
+
+.content-container{
+  display: flex;
+  align-items: center;
 }

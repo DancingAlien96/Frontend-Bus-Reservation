@@ -8,7 +8,8 @@ export interface UsuarioInterface {
 	FECHA_NACIMIENTO: Date;
 	TELEFONO_UNO: string;
 	TELEFONO_DOS: string;
-	ROL: RolInterface[];
+	ID_ROL:number;
+	ROL: RolInterface;
 }
 
 export interface UsuarioNoRolInterface {
