@@ -16,6 +16,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { provideMomentDateAdapter } from '@angular/material-moment-adapter';
 import { NgxMatTimepickerModule } from 'ngx-mat-timepicker';
 import 'moment/locale/es';
+import { CookieService } from 'ngx-cookie-service';
 
 export const MY_FORMATS = {
 	parse: {
@@ -58,7 +59,8 @@ export default class FormularioSolicitudComponent {
 		private fb: FormBuilder,
 		private vs: VehiculoService,
 		private sps: SolicitudesService,
-		private _snackBar: MatSnackBar
+		private _snackBar: MatSnackBar,
+		private cookies:CookieService
 	) {
 		this.formSubmit = this.fb.group({
 			nombreSolicitante: [null, Validators.required],
@@ -74,6 +76,9 @@ export default class FormularioSolicitudComponent {
 	}
 
 	onSubmit() {
+		const usuarioCookie = this.cookies.get('usuario');
+		const usuario = JSON.parse(usuarioCookie);
+		
 		if (this.formSubmit.valid) {
 			this.solicitud = this.solicitud || {};
 			const entregaFecha = this.formSubmit.get('entrega')?.value;
@@ -84,19 +89,9 @@ export default class FormularioSolicitudComponent {
 			const timestampDevolucion = this.combinarFechaHora(devolucionFecha, horaDevolucion);
 
 			this.solicitud.VEHICULO = this.formSubmit.get('vehiculo')?.value;
-
-			this.solicitud.USUARIO = {
-				ID_USUARIO: 1,
-				USERNAME: 'jdoe',
-				CORREO: 'jdoe@example.com',
-				NOMBRE_COMPLETO: 'John Doe',
-				CUI: 1234567890123,
-				REGISTRO_PERSONAL: 1001,
-				FECHA_NACIMIENTO: '1990-01-15',
-				TELEFONO_UNO: '555-1234',
-				TELEFONO_DOS: '555-5678'
-			};
-
+            
+			this.solicitud.USUARIO = usuario 
+            
 			this.solicitud.SOLICITUD = {
 				ID_USUARIO: this.solicitud.USUARIO.ID_USUARIO,
 				ID_VEHICULO: this.solicitud.VEHICULO.ID_VEHICULO,
