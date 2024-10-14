@@ -19,4 +19,9 @@ export class SolicitudesService {
 	postSolicitud(solicitud: SolicitudPostInterface): Observable<SolicitudPostInterface> {
 		return this.http.post<SolicitudPostInterface>(`${this.url}/solicitud`, solicitud);
 	}
+
+
+  solicitudFiltrada(id:number):Observable<any>{
+	return this.http.get(`${this.url}/solicitud/filter?user=${id}`);
+  }
 }
