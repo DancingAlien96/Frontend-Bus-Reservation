@@ -78,6 +78,7 @@ export default class FormularioSolicitudComponent {
 	onSubmit() {
 		const usuarioCookie = this.cookies.get('usuario');
 		const usuario = JSON.parse(usuarioCookie);
+
 		// quita el atributo rol de usuario
 		delete usuario.ROL;
 

@@ -1,5 +1,9 @@
 import { AfterViewInit, Component, ViewChild } from '@angular/core';
-import { MatPaginator, MatPaginatorIntl, MatPaginatorModule } from '@angular/material/paginator';
+import {
+  MatPaginator,
+  MatPaginatorIntl,
+  MatPaginatorModule,
+} from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatInputModule } from '@angular/material/input';
@@ -14,22 +18,22 @@ import { DateFormatPipe } from '../../shared/pipes/date-time-format.pipe';
 import { CookieService } from 'ngx-cookie-service';
 
 @Component({
-	providers: [
-		{ provide: MatPaginatorIntl, useClass: PaginatorService } // Proveedor personalizado
-	],
-	selector: 'app-solicitudes-table',
-	styleUrl: './solicitudes-table.component.css',
-	templateUrl: './solicitudes-table.component.html',
-	standalone: true,
-	imports: [
-		MatFormFieldModule,
-		MatInputModule,
-		MatTableModule,
-		MatSortModule,
-		MatPaginatorModule,
-		MatTabsModule,
-		DateFormatPipe
-	]
+  providers: [
+    { provide: MatPaginatorIntl, useClass: PaginatorService }, // Proveedor personalizado
+  ],
+  selector: 'app-solicitudes-table',
+  styleUrl: './solicitudes-table.component.css',
+  templateUrl: './solicitudes-table.component.html',
+  standalone: true,
+  imports: [
+    MatFormFieldModule,
+    MatInputModule,
+    MatTableModule,
+    MatSortModule,
+    MatPaginatorModule,
+    MatTabsModule,
+    DateFormatPipe,
+  ],
 })
 export class SolicitudesTableComponent implements AfterViewInit {
 	savedstate: string | null = null;
@@ -166,4 +170,5 @@ export class SolicitudesTableComponent implements AfterViewInit {
 			data: row
 		});
 	}
+
 }
