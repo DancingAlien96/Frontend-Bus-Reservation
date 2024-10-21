@@ -11,7 +11,7 @@
 		<mat-nav-list>
 			@for (item of this.menuOption; track $index) {
 				
-				<a mat-list-item routerLink="{{ item.rute }}" (click)="whenClick(item.idoption)">
+				<a mat-list-item routerLink="{{ item.rute }}" (click)="whenClick(item.name)">
 					<mat-icon>{{ item.icon }}</mat-icon> {{ item.name }}
 					
 				</a>
