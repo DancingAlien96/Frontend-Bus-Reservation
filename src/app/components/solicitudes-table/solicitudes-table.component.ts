@@ -115,44 +115,51 @@ export class SolicitudesTableComponent implements AfterViewInit {
 	}
 
 	getAllRequest() {
-		const usuarioCookie = this.cookies.get('usuario');
-		const usuario = JSON.parse(usuarioCookie);
-		const id = usuario.ID_USUARIO;
-		const rol = usuario.ROL.ID_ROL;
+		const usuarioSession = sessionStorage.getItem('usuario');
 
-		if (rol == 1) {
-			this.solicitudesService.getSolicitudes().subscribe((data) => {
-				this.dataSource = new MatTableDataSource(data); // Asigna los datos al dataSource
-				this.dataSource.paginator = this.paginator;
-				this.dataSource.sort = this.sort;
-				//console.log(data);
-
-				this.dataSource.filterPredicate = (data: SolicitudesInterfaces, filter: string) => {
-					let estadoLabel = this.getEstadoLabel(data.ESTADO);
-
-					const dataStr =
-						`${data.ID_SOLICITUD} ${data.FECHA_CREACION} ${data.FECHA_HORA_ENTREGA} ${data.FECHA_HORA_DEVOLUCION} ${data.NOMBRE_SOLICITANTE} ${estadoLabel}`.toLowerCase();
-
-					return dataStr.includes(filter.trim().toLowerCase());
-				};
-			});
-		} else {
-			this.solicitudesService.solicitudFiltrada(id).subscribe((data) => {
-				this.dataSource = new MatTableDataSource(data); // Asigna los datos al dataSource
-				this.dataSource.paginator = this.paginator;
-				this.dataSource.sort = this.sort;
-				//console.log(data);
-
-				this.dataSource.filterPredicate = (data: SolicitudesInterfaces, filter: string) => {
-					let estadoLabel = this.getEstadoLabel(data.ESTADO);
-
-					const dataStr =
-						`${data.ID_SOLICITUD} ${data.FECHA_CREACION} ${data.FECHA_HORA_ENTREGA} ${data.FECHA_HORA_DEVOLUCION} ${data.NOMBRE_SOLICITANTE} ${estadoLabel}`.toLowerCase();
-
-					return dataStr.includes(filter.trim().toLowerCase());
-				};
-			});
+        if(usuarioSession!= null){
+			const usuario = JSON.parse(usuarioSession);
+			const id = usuario.ID_USUARIO;
+			const rol = usuario.ROL.ID_ROL;
+			
+			if (rol == 1) {
+				this.solicitudesService.getSolicitudes().subscribe((data) => {
+					this.dataSource = new MatTableDataSource(data); // Asigna los datos al dataSource
+					this.dataSource.paginator = this.paginator;
+					this.dataSource.sort = this.sort;
+					//console.log(data);
+	
+					this.dataSource.filterPredicate = (data: SolicitudesInterfaces, filter: string) => {
+						let estadoLabel = this.getEstadoLabel(data.ESTADO);
+	
+						const dataStr =
+							`${data.ID_SOLICITUD} ${data.FECHA_CREACION} ${data.FECHA_HORA_ENTREGA} ${data.FECHA_HORA_DEVOLUCION} ${data.NOMBRE_SOLICITANTE} ${estadoLabel}`.toLowerCase();
+	
+						return dataStr.includes(filter.trim().toLowerCase());
+					};
+				});
+			} else {
+				this.solicitudesService.solicitudFiltrada(id).subscribe((data) => {
+					this.dataSource = new MatTableDataSource(data); // Asigna los datos al dataSource
+					this.dataSource.paginator = this.paginator;
+					this.dataSource.sort = this.sort;
+					//console.log(data);
+	
+					this.dataSource.filterPredicate = (data: SolicitudesInterfaces, filter: string) => {
+						let estadoLabel = this.getEstadoLabel(data.ESTADO);
+	
+						const dataStr =
+							`${data.ID_SOLICITUD} ${data.FECHA_CREACION} ${data.FECHA_HORA_ENTREGA} ${data.FECHA_HORA_DEVOLUCION} ${data.NOMBRE_SOLICITANTE} ${estadoLabel}`.toLowerCase();
+	
+						return dataStr.includes(filter.trim().toLowerCase());
+					};
+				});
+			}	
 		}
+
+
+		
+
 	}
 
 	applyFilter(event: Event) {
