@@ -25,6 +25,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { EstadosInterface } from '../../shared/interfaces/options.interface';
 import { CombustiblePipe } from '../../shared/pipes/condiciones.pipe';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { SolicitudesService } from '../../shared/services/solicitudes.service';
+import { DateFormatPipe } from '../../shared/pipes/date-time-format.pipe';
 @Component({
 	selector: 'app-popup',
 	standalone: true,
@@ -47,7 +49,8 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 		MatProgressBarModule
 	],
 	templateUrl: './popup.component.html',
-	styleUrl: './popup.component.css'
+	styleUrl: './popup.component.css',
+	providers: [DateFormatPipe]
 })
 export class PopupComponent {
 	vehiculo?: VehiculoInterface;
@@ -65,17 +68,17 @@ export class PopupComponent {
 		public data: SolicitudesInterfaces,
 		private toast: MatSnackBar,
 		private vehiculoService: VehiculoService,
-		private personalService: PersonalService
-	) {
-		console.log(data);
-	}
+		private personalService: PersonalService,
+		private solicitudesService: SolicitudesService,
+		private datePipe: DateFormatPipe
+	) {}
 
 	pageAndDetails(pagenumber: number, idVehiculo: number): void {
 		this.currentPage = pagenumber;
+
 		this.vehiculoService.getVehiculo(idVehiculo).subscribe((res) => {
 			this.vehiculo = res;
 			this.condiciones = res.BITACORA_CONDICIONES;
-			console.log(res);
 		});
 	}
 
