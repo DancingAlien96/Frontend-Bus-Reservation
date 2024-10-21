@@ -4,6 +4,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../../enviroment/environment.prod';
 import { SolicitudesInterfaces, SolicitudPostInterface } from '../interfaces/solicitudes.interface';
+import { VehiculoInterface } from '../interfaces';
 
 @Injectable({
 	providedIn: 'root'
@@ -20,8 +21,17 @@ export class SolicitudesService {
 		return this.http.post<SolicitudPostInterface>(`${this.url}/solicitud`, solicitud);
 	}
 
+	getSolicitudesByDateAndVehicle(
+		inicio: string | null,
+		fin: string | null,
+		vehiculo: VehiculoInterface
+	): Observable<SolicitudesInterfaces[]> {
+		return this.http.get<SolicitudesInterfaces[]>(
+			`${this.url}/solicitud/filter/fechas?inicio=${inicio}&fin=${fin}&vehiculo=${vehiculo.ID_VEHICULO}`
+		);
+	}
 
-  solicitudFiltrada(id:number):Observable<any>{
-	return this.http.get(`${this.url}/solicitud/filter?user=${id}`);
-  }
+	solicitudFiltrada(id: number): Observable<any> {
+		return this.http.get(`${this.url}/solicitud/filter?user=${id}`);
+	}
 }

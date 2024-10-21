@@ -83,3 +83,18 @@ p {
 	display: flex;
 	align-items: center;
 }
+
+.submit {
+	width: 100%;
+}
+
+.mensaje {
+	/* centrar el contenido del div */
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.red {
+	color: red;
+}

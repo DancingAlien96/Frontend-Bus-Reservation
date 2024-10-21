@@ -109,13 +109,12 @@ export class SolicitudesTableComponent implements AfterViewInit {
 		this.savedstate = estadoLabel;
 		return estadoLabel;
 	}
+
 	getAllRequest() {
 		const usuarioCookie = this.cookies.get('usuario');
 		const usuario = JSON.parse(usuarioCookie);
 		const id = usuario.ID_USUARIO;
 		const rol = usuario.ROL.ID_ROL;
-		console.log(rol);
-		console.log(id);
 
 		if (rol == 1) {
 			this.solicitudesService.getSolicitudes().subscribe((data) => {

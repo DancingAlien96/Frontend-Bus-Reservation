@@ -78,7 +78,6 @@ export default class FormularioSolicitudComponent {
 	onSubmit() {
 		const usuarioCookie = this.cookies.get('usuario');
 		const usuario = JSON.parse(usuarioCookie);
-		console.log(usuario);
 		// quita el atributo rol de usuario
 		delete usuario.ROL;
 
@@ -114,7 +113,6 @@ export default class FormularioSolicitudComponent {
 				ENTREGADO: false,
 				DEVUELTO: false
 			};
-			console.log(this.solicitud);
 
 			this.sps.postSolicitud(this.solicitud).subscribe((resp) => {
 				if (resp) {

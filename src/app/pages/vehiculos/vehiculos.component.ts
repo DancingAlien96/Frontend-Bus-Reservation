@@ -80,7 +80,6 @@ export class VehiculosComponent implements AfterViewInit {
 			this.dataSource = new MatTableDataSource(data); // Asigna los datos al dataSource
 			this.dataSource.paginator = this.paginator;
 			this.dataSource.sort = this.sort;
-			console.log(data);
 
 			this.dataSource.filterPredicate = (data: VehiculoInterface, filter: string) => {
 				let estadoLabel = this.getEstadoLabel(data.ESTADO);
