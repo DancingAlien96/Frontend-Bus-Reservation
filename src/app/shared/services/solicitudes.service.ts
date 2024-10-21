@@ -13,7 +13,7 @@ export class SolicitudesService {
 	constructor(private http: HttpClient) {}
 
 	getSolicitudes(): Observable<SolicitudesInterfaces[]> {
-		return this.http.get<SolicitudesInterfaces[]>(`${this.url}/solicitud`);
+		return this.http.get<SolicitudesInterfaces[]>(`${this.url}/solicitud`); //{withCredentials: true}
 	}
 
 	postSolicitud(solicitud: SolicitudPostInterface): Observable<SolicitudPostInterface> {

@@ -17,7 +17,7 @@ export const appConfig: ApplicationConfig = {
 		provideRouter(routes),
 		provideAnimationsAsync(),
 		importProvidersFrom(ReactiveFormsModule, HttpClientModule),
-		provideHttpClient(withInterceptors([])),
+		provideHttpClient(withInterceptors([authenticationInterceptor])),
 		{ provide: LOCALE_ID, useValue: 'es' } // Proveedor personalizado
 	] //
 };

@@ -1,5 +1,5 @@
 export interface OptionInterface {
-	idoption?: number;
+	idoption?: number | null;
 	name: string;
 	rute: string | null;
 	icon: string;

@@ -28,15 +28,16 @@ export class LoginComponent {
 
 	onSubmit() {
 		if (this.formSubmit.valid) {
-			//console.log(this.formSubmit.value);
 			this.loginService.access(this.formSubmit.value).subscribe((res) => {
 				console.log(res);
+			   
+				sessionStorage.setItem('token', res.token);
+				sessionStorage.setItem('usuario', JSON.stringify(res.usuario));
 
-				this.cookies.set('token', res.token);
-				this.cookies.set('usuario', JSON.stringify(res.usuario));
+				
 			});
 		} else {
-			// naranjas
+			
 		}
 	}
 }

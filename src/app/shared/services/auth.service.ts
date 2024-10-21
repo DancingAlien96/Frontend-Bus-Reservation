@@ -18,16 +18,15 @@ export class AuthService {
 
    
    isLoggedIn(): boolean {
-  // this.router.navigateByUrl("/");
-    // Verificamos si el token existe en las cookies
-    return this.cookies.check('token');
-
+  
+    const token = sessionStorage.getItem('token');
+    return !!token; // Convertimos el valor a booleano
     
   }
 
   
   logOut(){
-    return this.cookies.deleteAll();
+    return sessionStorage.clear();
   }
 
 

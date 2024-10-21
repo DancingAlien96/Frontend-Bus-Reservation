@@ -8,8 +8,9 @@ import { VehiculosComponent } from './pages/vehiculos/vehiculos.component';
 import { SolicitudesComponent } from './pages/solicitudes/solicitudes.component';
 
 export const routes: Routes = [
-	{ path: '', loadComponent: () => HomeComponent, title: 'Home', canActivate: [authGuard] },
-	{ path: 'home', redirectTo: '' },
+	{ path: 'home', loadComponent: () => HomeComponent, title: 'Home', canActivate: [authGuard] },
+	{ path: '', redirectTo: 'login', pathMatch: 'full' },  // Corregido
+
 	{
 		path: 'form-solicitud',
 		loadComponent: () => FormularioSolicitudComponent,
