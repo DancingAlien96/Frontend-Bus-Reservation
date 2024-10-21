@@ -81,3 +81,7 @@ p {
 	display: flex;
 	align-items: center;
 }
+
+.red {
+	color: red;
+}
