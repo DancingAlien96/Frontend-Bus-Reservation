@@ -15,105 +15,92 @@ import { AuthService } from '../../shared/services/auth.service';
 import { CookieService } from 'ngx-cookie-service';
 
 @Component({
-  selector: 'app-navigation',
-  templateUrl: './navigation.component.html',
-  styleUrl: './navigation.component.css',
-  standalone: true,
-  imports: [
-    MatToolbarModule,
-    MatButtonModule,
-    MatSidenavModule,
-    MatListModule,
-    MatIconModule,
-    AsyncPipe,
-    RouterOutlet,
-    RouterLink,
-  ],
+	selector: 'app-navigation',
+	templateUrl: './navigation.component.html',
+	styleUrl: './navigation.component.css',
+	standalone: true,
+	imports: [
+		MatToolbarModule,
+		MatButtonModule,
+		MatSidenavModule,
+		MatListModule,
+		MatIconModule,
+		AsyncPipe,
+		RouterOutlet,
+		RouterLink
+	]
 })
 export class NavigationComponent {
-  private breakpointObserver = inject(BreakpointObserver);
-  menuOption: OptionInterface[] = [];
-  constructor(
-    private authService: AuthService,
-    private cookies: CookieService,
-	private router:Router
-  ) {
-    const usuarioSession = sessionStorage.getItem('usuario');
+	private breakpointObserver = inject(BreakpointObserver);
+	menuOption: OptionInterface[] = [];
+	constructor(private authService: AuthService, private cookies: CookieService, private router: Router) {
+		const usuarioSession = sessionStorage.getItem('usuario');
 
-    if (usuarioSession != null) {
-      const usuario = JSON.parse(usuarioSession);
-      const id = usuario.ID_USUARIO;
-      const rol = usuario.ROL.ID_ROL;
+		if (usuarioSession != null) {
+			const usuario = JSON.parse(usuarioSession);
+			const id = usuario.ID_USUARIO;
+			const rol = usuario.ROL.ID_ROL;
 
-  
-      if (id == 1 || id == 2) {
+			if (id == 1 || id == 2) {
+				this.menuOption.push({
+					name: 'Inicio',
+					icon: 'home',
+					rute: 'home'
+				});
 
-        this.menuOption.push({
-          name: 'Inicio',
-          icon: 'home',
-          rute: 'home',
-        });
-  
-        this.menuOption.push({
-          name: 'Formulario de solicitud',
-          icon: 'assignment',
-          rute: 'form-solicitud',
-        });
+				this.menuOption.push({
+					name: 'Formulario de solicitud',
+					icon: 'assignment',
+					rute: 'form-solicitud'
+				});
 
-        this.menuOption.push({
-          name: 'Solicitudes',
-          icon: 'list',
-          rute: 'solicitudes',
-        });
-  
-        this.menuOption.push({
-          name: 'Vehiculos',
-          icon: 'directions_car',
-          rute: 'vehiculos',
-        });
-  
-        this.menuOption.push({
-          name: 'Cerrar Sesion',
-          icon: 'logout',
-          rute: null,
-        });   
-      }
+				this.menuOption.push({
+					name: 'Solicitudes',
+					icon: 'list',
+					rute: 'solicitudes'
+				});
 
-     if(id==3){
-      
-      this.menuOption.push({
-        name: 'Entregas',
-        icon: 'list',
-        rute: 'solicitudes',
-      });
+				this.menuOption.push({
+					name: 'Vehiculos',
+					icon: 'directions_car',
+					rute: 'vehiculos'
+				});
 
-      this.menuOption.push({
-        name: 'Vehiculos',
-        icon: 'directions_car',
-        rute: 'vehiculos',
-      });
+				this.menuOption.push({
+					name: 'Cerrar Sesion',
+					icon: 'logout',
+					rute: null
+				});
+			}
 
-      this.menuOption.push({
-        name: 'Cerrar Sesion',
-        icon: 'logout',
-        rute: null,
-      });   
-   
-     }
+			if (id == 3) {
+				this.menuOption.push({
+					name: 'Entregas',
+					icon: 'list',
+					rute: 'solicitudes'
+				});
 
-     
-    }
-  }
-  whenClick(item: any) {
-    if (item == 'Cerrar Sesion') {
-      this.authService.logOut();
-	  
-    }
-  }
-  isHandset$: Observable<boolean> = this.breakpointObserver
-    .observe(Breakpoints.Handset)
-    .pipe(
-      map((result) => result.matches),
-      shareReplay()
-    );
+				this.menuOption.push({
+					name: 'Vehiculos',
+					icon: 'directions_car',
+					rute: 'vehiculos'
+				});
+
+				this.menuOption.push({
+					name: 'Cerrar Sesion',
+					icon: 'logout',
+					rute: null
+				});
+			}
+		}
+	}
+	whenClick(item: any) {
+		if (item == 'Cerrar Sesion') {
+			this.authService.logOut();
+		}
+	}
+	isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset).pipe(
+		map((result) => result.matches),
+		shareReplay()
+	);
 }

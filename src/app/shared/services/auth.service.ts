@@ -3,31 +3,24 @@ import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 
 @Injectable({
-  providedIn: 'root'
+	providedIn: 'root'
 })
 export class AuthService {
-  authenticated!:boolean;
-  validacion:string | null = null;
+	authenticated!: boolean;
+	validacion: string | null = null;
 
+	constructor(private cookies: CookieService, private router: Router) {}
 
-  constructor(private cookies:CookieService, private router:Router) {
+	isLoggedIn(): boolean {
+		const token = sessionStorage.getItem('token');
+		return !!token; // Convertimos el valor a booleano
+	}
 
-
-   }
-  
-
-   
-   isLoggedIn(): boolean {
-  
-    const token = sessionStorage.getItem('token');
-    return !!token; // Convertimos el valor a booleano
-    
-  }
-
-  
-  logOut(){
-    return sessionStorage.clear();
-  }
-
-
-  }
+	logOut() {
+		sessionStorage.removeItem('token');
+		sessionStorage.clear();
+		this.router.navigate(['/login']).then(() => {
+			window.location.reload(); // Forzar recarga completa de la página
+		});
+	}
+}

@@ -4,20 +4,14 @@ import { HttpClient } from '@angular/common/http';
 import { LoginInterface } from '../interfaces';
 import { Observable } from 'rxjs';
 
-
 @Injectable({
-  providedIn: 'root'
+	providedIn: 'root'
 })
 export class LoginService {
-  readonly API_URL = environment.api;
-  constructor(private http:HttpClient) { }
+	readonly API_URL = environment.api;
+	constructor(private http: HttpClient) {}
 
-
-
-  access(login:LoginInterface):Observable<any>{
-    return this.http.post<LoginInterface>(`${this.API_URL}/login`, login)
-  }
-  
- 
-
+	access(login: LoginInterface): Observable<any> {
+		return this.http.post<LoginInterface>(`${this.API_URL}/login`, login);
+	}
 }
