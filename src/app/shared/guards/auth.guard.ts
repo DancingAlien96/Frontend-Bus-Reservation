@@ -3,10 +3,14 @@ import { CanActivateFn, Router } from '@angular/router';
 
 export const authGuard: CanActivateFn = (route, state) => {
 	const token = sessionStorage.getItem('token');
+	const router = inject(Router);
+
 	if (!token) {
-		const router = inject(Router);
-		router.navigateByUrl('login');
+		router.navigate(['/login']).then(() => {
+			window.location.reload(); // Forzar recarga completa de la página
+		});
 		return false;
 	}
+
 	return true;
 };

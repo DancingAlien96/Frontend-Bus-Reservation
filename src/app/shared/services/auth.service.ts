@@ -17,6 +17,10 @@ export class AuthService {
 	}
 
 	logOut() {
-		return sessionStorage.clear();
+		sessionStorage.removeItem('token');
+		sessionStorage.clear();
+		this.router.navigate(['/login']).then(() => {
+			window.location.reload(); // Forzar recarga completa de la página
+		});
 	}
 }

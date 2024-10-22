@@ -8,6 +8,7 @@ import { MatCardModule } from '@angular/material/card';
 import { UsuarioInterface } from '../../shared/interfaces/usuario.interface';
 import { catchError, of } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 
 @Component({
 	selector: 'app-login',
@@ -20,7 +21,12 @@ export class LoginComponent {
 	public formSubmit: FormGroup;
 	public user!: UsuarioInterface;
 
-	constructor(private fb: FormBuilder, private loginService: LoginService, private _snakBar: MatSnackBar) {
+	constructor(
+		private fb: FormBuilder,
+		private loginService: LoginService,
+		private _snakBar: MatSnackBar,
+		private router: Router
+	) {
 		this.formSubmit = this.fb.group({
 			USERNAME: [null, Validators.required],
 			PASSWORD: [null, [Validators.required]]
@@ -45,6 +51,10 @@ export class LoginComponent {
 					if (res) {
 						sessionStorage.setItem('token', res.token);
 						sessionStorage.setItem('usuario', JSON.stringify(res.usuario));
+						// Redirigir a 'home'
+						this.router.navigate(['/home']).then(() => {
+							window.location.reload(); // Forzar recarga completa de la página
+						});
 					}
 				});
 		} else {

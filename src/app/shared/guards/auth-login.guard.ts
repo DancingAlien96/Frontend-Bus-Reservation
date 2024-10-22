@@ -2,12 +2,14 @@ import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
 
 export const authLoginGuard: CanActivateFn = (route, state) => {
+	const router = inject(Router);
 	const token = sessionStorage.getItem('token');
-
 	if (token) {
-		const router = inject(Router);
-		router.navigateByUrl('');
-		return true;
+		// Si el token existe, redirigir a 'home'
+		router.navigate(['/home']).then(() => {
+			window.location.reload(); // Forzar recarga completa de la página
+		});
+		return false; // Impedir acceso a la ruta de login
 	}
-	return false;
+	return true; // Permitir acceso si no hay token
 };
