@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, ViewChild } from '@angular/core';
 import {
   MatPaginator,
   MatPaginatorIntl,
@@ -36,146 +36,175 @@ import { CookieService } from 'ngx-cookie-service';
   ],
 })
 export class SolicitudesTableComponent implements AfterViewInit {
-	savedstate: string | null = null;
+  savedstate: string | null = null;
+  idUsuario!: number;
+  displayedColumns: string[] = [
+    'ID_SOLICITUD',
+    'FECHA_CREACION',
+    'FECHA_HORA_ENTREGA',
+    'FECHA_HORA_DEVOLUCION',
+    'NOMBRE_SOLICITANTE',
+    'ESTADO',
+  ];
+  dataSource!: MatTableDataSource<SolicitudesInterfaces>;
 
-	displayedColumns: string[] = [
-		'ID_SOLICITUD',
-		'FECHA_CREACION',
-		'FECHA_HORA_ENTREGA',
-		'FECHA_HORA_DEVOLUCION',
-		'NOMBRE_SOLICITANTE',
-		'ESTADO'
-	];
-	dataSource!: MatTableDataSource<SolicitudesInterfaces>;
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
 
-	@ViewChild(MatPaginator) paginator!: MatPaginator;
-	@ViewChild(MatSort) sort!: MatSort;
+  constructor(
+    private solicitudesService: SolicitudesService,
+    private dialog: MatDialog,
+    private cdr: ChangeDetectorRef
+  ) {
+      
+    
+  }
 
-	constructor(
-		private solicitudesService: SolicitudesService,
-		private dialog: MatDialog,
-		private cookies: CookieService
-	) {}
+  ngAfterViewInit() {
+    this.getAllRequest();
+	this.cdr.detectChanges();
+  }
 
-	ngAfterViewInit() {
-		this.getAllRequest();
-	}
+  filterByTab(index: number) {
+    switch (index) {
+      case 0: // todas
+        this.dataSource.filter = '';
+        break;
+      case 1: // aprobadas
+        this.dataSource.filter = 'aprobada';
+        break;
+      case 2: // finalizadas
+        this.dataSource.filter = 'finalizada';
+        break;
+      case 3: // pendientes
+        this.dataSource.filter = 'pendiente';
+        break;
+      case 4: // rechazadas
+        this.dataSource.filter = 'rechazada';
+        break;
+      case 5: //eliminadas
+        this.dataSource.filter = 'eliminada';
+        break;
+      default:
+        this.dataSource.filter = '';
+        break;
+    }
+  }
 
-	filterByTab(index: number) {
-		switch (index) {
-			case 0: // todas
-				this.dataSource.filter = '';
-				break;
-			case 1: // aprobadas
-				this.dataSource.filter = 'aprobada';
-				break;
-			case 2: // finalizadas
-				this.dataSource.filter = 'finalizada';
-				break;
-			case 3: // pendientes
-				this.dataSource.filter = 'pendiente';
-				break;
-			case 4: // rechazadas
-				this.dataSource.filter = 'rechazada';
-				break;
-			case 5: //eliminadas
-				this.dataSource.filter = 'eliminada';
-				break;
-			default:
-				this.dataSource.filter = '';
-				break;
-		}
-	}
+  getEstadoLabel(estado: number): string {
+    let estadoLabel = '';
+    switch (estado) {
+      case 0:
+        estadoLabel = 'Pendiente';
+        break;
+      case 1:
+        estadoLabel = 'Aprobada';
+        break;
+      case 2:
+        estadoLabel = 'Rechazada';
+        break;
+      case 3:
+        estadoLabel = 'Finalizada';
+        break;
+      case 4:
+        estadoLabel = 'Eliminada';
+        break;
+      default:
+        estadoLabel = 'Desconocido';
+    }
 
-	getEstadoLabel(estado: number): string {
-		let estadoLabel = '';
-		switch (estado) {
-			case 0:
-				estadoLabel = 'Pendiente';
-				break;
-			case 1:
-				estadoLabel = 'Aprobada';
-				break;
-			case 2:
-				estadoLabel = 'Rechazada';
-				break;
-			case 3:
-				estadoLabel = 'Finalizada';
-				break;
-			case 4:
-				estadoLabel = 'Eliminada';
-				break;
-			default:
-				estadoLabel = 'Desconocido';
-		}
+    // Aquí guardamos el estado en la variable
+    this.savedstate = estadoLabel;
+    return estadoLabel;
+  }
 
-		// Aquí guardamos el estado en la variable
-		this.savedstate = estadoLabel;
-		return estadoLabel;
-	}
+  getAllRequest() {
+    const usuarioSession = sessionStorage.getItem('usuario');
 
-	getAllRequest() {
-		const usuarioSession = sessionStorage.getItem('usuario');
+    if (usuarioSession != null) {
+      const usuario = JSON.parse(usuarioSession);
+      const id = usuario.ID_USUARIO;
+      const rol = usuario.ROL.ID_ROL;
+	   this.idUsuario= usuario.ID_USUARIO;
+      if (rol == 1) {
+        this.solicitudesService.getSolicitudes().subscribe((data) => {
+          this.dataSource = new MatTableDataSource(data); // Asigna los datos al dataSource
+          this.dataSource.paginator = this.paginator;
+          this.dataSource.sort = this.sort;
+          //console.log(data);
 
-        if(usuarioSession!= null){
-			const usuario = JSON.parse(usuarioSession);
-			const id = usuario.ID_USUARIO;
-			const rol = usuario.ROL.ID_ROL;
-			
-			if (rol == 1) {
-				this.solicitudesService.getSolicitudes().subscribe((data) => {
-					this.dataSource = new MatTableDataSource(data); // Asigna los datos al dataSource
-					this.dataSource.paginator = this.paginator;
-					this.dataSource.sort = this.sort;
-					//console.log(data);
-	
-					this.dataSource.filterPredicate = (data: SolicitudesInterfaces, filter: string) => {
-						let estadoLabel = this.getEstadoLabel(data.ESTADO);
-	
-						const dataStr =
-							`${data.ID_SOLICITUD} ${data.FECHA_CREACION} ${data.FECHA_HORA_ENTREGA} ${data.FECHA_HORA_DEVOLUCION} ${data.NOMBRE_SOLICITANTE} ${estadoLabel}`.toLowerCase();
-	
-						return dataStr.includes(filter.trim().toLowerCase());
-					};
-				});
-			} else {
-				this.solicitudesService.solicitudFiltrada(id).subscribe((data) => {
-					this.dataSource = new MatTableDataSource(data); // Asigna los datos al dataSource
-					this.dataSource.paginator = this.paginator;
-					this.dataSource.sort = this.sort;
-					//console.log(data);
-	
-					this.dataSource.filterPredicate = (data: SolicitudesInterfaces, filter: string) => {
-						let estadoLabel = this.getEstadoLabel(data.ESTADO);
-	
-						const dataStr =
-							`${data.ID_SOLICITUD} ${data.FECHA_CREACION} ${data.FECHA_HORA_ENTREGA} ${data.FECHA_HORA_DEVOLUCION} ${data.NOMBRE_SOLICITANTE} ${estadoLabel}`.toLowerCase();
-	
-						return dataStr.includes(filter.trim().toLowerCase());
-					};
-				});
-			}	
-		}
+          this.dataSource.filterPredicate = (
+            data: SolicitudesInterfaces,
+            filter: string
+          ) => {
+            let estadoLabel = this.getEstadoLabel(data.ESTADO);
+
+            const dataStr =
+              `${data.ID_SOLICITUD} ${data.FECHA_CREACION} ${data.FECHA_HORA_ENTREGA} ${data.FECHA_HORA_DEVOLUCION} ${data.NOMBRE_SOLICITANTE} ${estadoLabel}`.toLowerCase();
+
+            return dataStr.includes(filter.trim().toLowerCase());
+          };
+        });
+      }
+      if (rol == 3) {
+        this.solicitudesService.getSolicitudes().subscribe((data) => {
+
+			const solicitudesAprobadas = data.filter(solicitud => solicitud.ESTADO === 1);
+
+          this.dataSource = new MatTableDataSource(solicitudesAprobadas); // Asigna los datos al dataSource
+          this.dataSource.paginator = this.paginator;
+          this.dataSource.sort = this.sort;
+          //console.log(data);
+
+          this.dataSource.filterPredicate = (
+            data: SolicitudesInterfaces,
+            filter: string
+          ) => {
+            let estadoLabel = this.getEstadoLabel(data.ESTADO);
+
+            const dataStr =
+              `${data.ID_SOLICITUD} ${data.FECHA_CREACION} ${data.FECHA_HORA_ENTREGA} ${data.FECHA_HORA_DEVOLUCION} ${data.NOMBRE_SOLICITANTE} ${estadoLabel}`.toLowerCase();
+
+            return dataStr.includes(filter.trim().toLowerCase());
+          };
+        });
+      } else {
+        this.solicitudesService.solicitudFiltrada(id).subscribe((data) => {
+          this.dataSource = new MatTableDataSource(data); // Asigna los datos al dataSource
+          this.dataSource.paginator = this.paginator;
+          this.dataSource.sort = this.sort;
+          //console.log(data);
+
+          this.dataSource.filterPredicate = (
+            data: SolicitudesInterfaces,
+            filter: string
+          ) => {
+            let estadoLabel = this.getEstadoLabel(data.ESTADO);
+
+            const dataStr =
+              `${data.ID_SOLICITUD} ${data.FECHA_CREACION} ${data.FECHA_HORA_ENTREGA} ${data.FECHA_HORA_DEVOLUCION} ${data.NOMBRE_SOLICITANTE} ${estadoLabel}`.toLowerCase();
+
+            return dataStr.includes(filter.trim().toLowerCase());
+          };
+        });
+      }
+    }
+  }
 
 
-		
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
 
-	}
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
+  }
 
-	applyFilter(event: Event) {
-		const filterValue = (event.target as HTMLInputElement).value;
-		this.dataSource.filter = filterValue.trim().toLowerCase();
-
-		if (this.dataSource.paginator) {
-			this.dataSource.paginator.firstPage();
-		}
-	}
-
-	openDialog(row: SolicitudesInterfaces) {
-		this.dialog.open(PopupComponent, {
-			width: '80%',
-			data: row
-		});
-	}
-
+  openDialog(row: SolicitudesInterfaces) {
+    this.dialog.open(PopupComponent, {
+      width: '80%',
+      data: row,
+    });
+  }
 }
