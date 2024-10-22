@@ -24,10 +24,10 @@ export class SolicitudesService {
 	getSolicitudesByDateAndVehicle(
 		inicio: string | null,
 		fin: string | null,
-		vehiculo: VehiculoInterface
+		vehiculo: VehiculoInterface | undefined
 	): Observable<SolicitudesInterfaces[]> {
 		return this.http.get<SolicitudesInterfaces[]>(
-			`${this.url}/solicitud/filter/fechas?inicio=${inicio}&fin=${fin}&vehiculo=${vehiculo.ID_VEHICULO}`
+			`${this.url}/solicitud/filter/fechas?inicio=${inicio}&fin=${fin}&vehiculo=${vehiculo?.ID_VEHICULO}`
 		);
 	}
 

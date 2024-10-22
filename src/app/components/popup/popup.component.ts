@@ -56,6 +56,7 @@ export class PopupComponent {
 	vehiculo?: VehiculoInterface;
 	condiciones?: BitacoraCondicionesInterface;
 	selected: number = 1;
+	haySolicitudes: boolean = false;
 	estados: EstadosInterface[] = [
 		{ id: 0, estado: 'Pendiente' },
 		{ id: 1, estado: 'Rechazada' },
@@ -71,7 +72,9 @@ export class PopupComponent {
 		private personalService: PersonalService,
 		private solicitudesService: SolicitudesService,
 		private datePipe: DateFormatPipe
-	) {}
+	) {
+		this.getDisponibilidad();
+	}
 
 	pageAndDetails(pagenumber: number, idVehiculo: number): void {
 		this.currentPage = pagenumber;
@@ -84,6 +87,26 @@ export class PopupComponent {
 
 	page(pagenumber: number): void {
 		this.currentPage = pagenumber;
+	}
+
+	getDisponibilidad() {
+		const inicio = this.data.FECHA_HORA_ENTREGA;
+		const fin = this.data.FECHA_HORA_DEVOLUCION;
+		// Usando DatePipe para formatear las fechas a 'YYYY-MM-DD'
+		const inicioFormatted = inicio.split('T')[0];
+		const finFormatted = fin.split('T')[0];
+
+		this.solicitudesService
+			.getSolicitudesByDateAndVehicle(inicioFormatted, finFormatted, this.data.VEHICULO)
+			.subscribe((data) => {
+				console.log(data);
+
+				if (data.length > 0) {
+					this.haySolicitudes = true;
+				} else {
+					this.haySolicitudes = false;
+				}
+			});
 	}
 
 	save(): void {
