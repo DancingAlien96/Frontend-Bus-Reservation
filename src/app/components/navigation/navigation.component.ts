@@ -45,25 +45,47 @@ export class NavigationComponent {
       const id = usuario.ID_USUARIO;
       const rol = usuario.ROL.ID_ROL;
 
-      this.menuOption.push({
-        name: 'Inicio',
-        icon: 'home',
-        rute: 'home',
-      });
-
-      this.menuOption.push({
-        name: 'Solicitudes',
-        icon: 'list',
-        rute: 'solicitudes',
-      });
-
+  
       if (id == 1 || id == 2) {
+
+        this.menuOption.push({
+          name: 'Inicio',
+          icon: 'home',
+          rute: 'home',
+        });
+  
         this.menuOption.push({
           name: 'Formulario de solicitud',
           icon: 'assignment',
           rute: 'form-solicitud',
         });
+
+        this.menuOption.push({
+          name: 'Solicitudes',
+          icon: 'list',
+          rute: 'solicitudes',
+        });
+  
+        this.menuOption.push({
+          name: 'Vehiculos',
+          icon: 'directions_car',
+          rute: 'vehiculos',
+        });
+  
+        this.menuOption.push({
+          name: 'Cerrar Sesion',
+          icon: 'logout',
+          rute: null,
+        });   
       }
+
+     if(id==3){
+      
+      this.menuOption.push({
+        name: 'Entregas',
+        icon: 'list',
+        rute: 'solicitudes',
+      });
 
       this.menuOption.push({
         name: 'Vehiculos',
@@ -75,7 +97,11 @@ export class NavigationComponent {
         name: 'Cerrar Sesion',
         icon: 'logout',
         rute: null,
-      });
+      });   
+   
+     }
+
+     
     }
   }
   whenClick(item: any) {

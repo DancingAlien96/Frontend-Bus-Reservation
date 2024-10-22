@@ -53,14 +53,24 @@ import { DateFormatPipe } from '../../shared/pipes/date-time-format.pipe';
 	providers: [DateFormatPipe]
 })
 export class PopupComponent {
+	usuarioSession: any;
+	usuario: any | null = null;
+	eSolicitante = false;
+	eBoton = false;
+	estadoTemporal!: number;
+	areaJustificacion = false;
+	idUsuario!: number;
 	vehiculo?: VehiculoInterface;
 	condiciones?: BitacoraCondicionesInterface;
 	selected: number = 1;
 	haySolicitudes: boolean = false;
 	estados: EstadosInterface[] = [
 		{ id: 0, estado: 'Pendiente' },
-		{ id: 1, estado: 'Rechazada' },
-		{ id: 2, estado: 'Aprobada' }
+		{ id: 1, estado: 'Aprobada' },
+		{ id: 2, estado: 'Rechazada' },
+		{ id: 3, estado: 'Finalizada' },
+		{ id: 4, estado: 'Eliminada' },
+		{ id: 5, estado: 'Anulada' }
 	];
 	currentPage: number = 1;
 	constructor(
@@ -73,7 +83,10 @@ export class PopupComponent {
 		private solicitudesService: SolicitudesService,
 		private datePipe: DateFormatPipe
 	) {
-		this.getDisponibilidad();
+		this.usuarioSession = sessionStorage.getItem('usuario');
+		this.usuario = JSON.parse(this.usuarioSession);
+		this.idUsuario = this.usuario.ID_USUARIO;
+		this.estadoTemporal = data.ESTADO;
 	}
 
 	pageAndDetails(pagenumber: number, idVehiculo: number): void {
@@ -120,7 +133,18 @@ export class PopupComponent {
 
 		this.dialogRef.close();
 	}
+
 	onPDF(): void {
 		PdfSolicitudComponent.createPDF(this.data, this.personalService);
+	}
+
+	changes(event: any) {
+		this.estadoTemporal = event.value;
+		this.eBoton = true;
+		if (event.value == 4 || event.value == 5) {
+			this.areaJustificacion = true;
+		} else {
+			this.areaJustificacion = false;
+		}
 	}
 }
