@@ -8,8 +8,13 @@ import { VehiculosComponent } from './pages/vehiculos/vehiculos.component';
 import { SolicitudesComponent } from './pages/solicitudes/solicitudes.component';
 
 export const routes: Routes = [
-	{ path: 'home', loadComponent: () => HomeComponent, title: 'Home', canActivate: [authGuard] },
-	{ path: '', redirectTo: 'login', pathMatch: 'full' },  // Corregido
+	{
+		path: 'home',
+		loadComponent: () => HomeComponent,
+		title: 'Sistemas de gestion de solicitudes de vehiculos universitarios',
+		canActivate: [authGuard]
+	},
+	{ path: '', redirectTo: 'home', pathMatch: 'full' }, // Corregido
 
 	{
 		path: 'form-solicitud',
