@@ -13,16 +13,21 @@
       <section>
         <h3>Detalles de la Solicitud</h3>
 
-        <div class="content-container">
-          <p><strong>Vehículo Solicitado:</strong></p>
-          <p>{{ data.VEHICULO.TIPO }}</p>
-
-          <mat-icon
-            (click)="pageAndDetails(2, data.ID_VEHICULO)"
-            fontIcon="info"
-            class="button-back"
-          ></mat-icon>
-        </div>
+				<div class="content-container">
+					<p>
+						<strong>Vehículo Solicitado:</strong> <br />
+						{{ data.VEHICULO.TIPO + ' ' + data.VEHICULO.MARCA + ' ' + data.VEHICULO.COLOR }}
+					</p>
+					<mat-icon (click)="pageAndDetails(2, data.ID_VEHICULO)" fontIcon="info" class="button-back"></mat-icon>
+				</div>
+				@if (this.haySolicitudes) {
+				<h4 class="red">
+					<strong>ADVERTENCIA:</strong><br />
+					Este vehículo tiene solicitudes aprobadas para las fechas solicitadas
+				</h4>
+				} @else {
+				<h4>Este vehículo esta disponible para las fechas solicitadas</h4>
+				}
 
         <p><strong>Destino del viaje:</strong> {{ data.DESTINO }}</p>
         <p><strong>Diligencia a realizar:</strong> {{ data.DILIGENCIA }}</p>

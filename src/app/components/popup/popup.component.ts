@@ -53,26 +53,24 @@ import { DateFormatPipe } from '../../shared/pipes/date-time-format.pipe';
 	providers: [DateFormatPipe]
 })
 export class PopupComponent {
-    usuarioSession:any;
-	usuario:any | null = null;
+	usuarioSession: any;
+	usuario: any | null = null;
 	eSolicitante = false;
-	eBoton= false;
-	estadoTemporal!:number;
+	eBoton = false;
+	estadoTemporal!: number;
 	areaJustificacion = false;
-	idUsuario!:number;
+	idUsuario!: number;
 	vehiculo?: VehiculoInterface;
 	condiciones?: BitacoraCondicionesInterface;
 	selected: number = 1;
+	haySolicitudes: boolean = false;
 	estados: EstadosInterface[] = [
 		{ id: 0, estado: 'Pendiente' },
 		{ id: 1, estado: 'Aprobada' },
 		{ id: 2, estado: 'Rechazada' },
 		{ id: 3, estado: 'Finalizada' },
 		{ id: 4, estado: 'Eliminada' },
-		{ id: 5, estado: 'Anulada' },
-
-
-
+		{ id: 5, estado: 'Anulada' }
 	];
 	currentPage: number = 1;
 	constructor(
@@ -85,11 +83,10 @@ export class PopupComponent {
 		private solicitudesService: SolicitudesService,
 		private datePipe: DateFormatPipe
 	) {
-
 		this.usuarioSession = sessionStorage.getItem('usuario');
 		this.usuario = JSON.parse(this.usuarioSession);
 		this.idUsuario = this.usuario.ID_USUARIO;
-		this.estadoTemporal = data.ESTADO
+		this.estadoTemporal = data.ESTADO;
 	}
 
 	pageAndDetails(pagenumber: number, idVehiculo: number): void {
@@ -105,6 +102,26 @@ export class PopupComponent {
 		this.currentPage = pagenumber;
 	}
 
+	getDisponibilidad() {
+		const inicio = this.data.FECHA_HORA_ENTREGA;
+		const fin = this.data.FECHA_HORA_DEVOLUCION;
+		// Usando DatePipe para formatear las fechas a 'YYYY-MM-DD'
+		const inicioFormatted = inicio.split('T')[0];
+		const finFormatted = fin.split('T')[0];
+
+		this.solicitudesService
+			.getSolicitudesByDateAndVehicle(inicioFormatted, finFormatted, this.data.VEHICULO)
+			.subscribe((data) => {
+				console.log(data);
+
+				if (data.length > 0) {
+					this.haySolicitudes = true;
+				} else {
+					this.haySolicitudes = false;
+				}
+			});
+	}
+
 	save(): void {
 		const config = new MatSnackBarConfig();
 
@@ -116,22 +133,18 @@ export class PopupComponent {
 
 		this.dialogRef.close();
 	}
-	
+
 	onPDF(): void {
 		PdfSolicitudComponent.createPDF(this.data, this.personalService);
 	}
-   
-	changes(event:any){
+
+	changes(event: any) {
 		this.estadoTemporal = event.value;
 		this.eBoton = true;
-		if(event.value == 4 || event.value == 5){
-           this.areaJustificacion = true;
-		}
-		else{
+		if (event.value == 4 || event.value == 5) {
+			this.areaJustificacion = true;
+		} else {
 			this.areaJustificacion = false;
 		}
-
 	}
-
-
 }
