@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { AsyncPipe } from '@angular/common';
+import { AsyncPipe, UpperCasePipe } from '@angular/common';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSidenavModule } from '@angular/material/sidenav';
@@ -13,6 +13,7 @@ import { OptionInterface } from '../../shared/interfaces/options.interface';
 import { LoginService } from '../../shared/services/login.service';
 import { AuthService } from '../../shared/services/auth.service';
 import { CookieService } from 'ngx-cookie-service';
+import { UsuarioInterface } from '../../shared/interfaces/usuario.interface';
 
 @Component({
 	selector: 'app-navigation',
@@ -27,19 +28,20 @@ import { CookieService } from 'ngx-cookie-service';
 		MatIconModule,
 		AsyncPipe,
 		RouterOutlet,
-		RouterLink
+		RouterLink,
+		UpperCasePipe
 	]
 })
 export class NavigationComponent {
 	private breakpointObserver = inject(BreakpointObserver);
+	usuario!: UsuarioInterface;
 	menuOption: OptionInterface[] = [];
 	constructor(private authService: AuthService, private cookies: CookieService, private router: Router) {
 		const usuarioSession = sessionStorage.getItem('usuario');
 
 		if (usuarioSession != null) {
-			const usuario = JSON.parse(usuarioSession);
-			const id = usuario.ID_USUARIO;
-			const rol = usuario.ROL.ID_ROL;
+			this.usuario = JSON.parse(usuarioSession);
+			const id = this.usuario.ROL.ID_ROL;
 
 			if (id == 1 || id == 2) {
 				this.menuOption.push({
