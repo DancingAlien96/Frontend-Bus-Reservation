@@ -41,59 +41,67 @@ export class NavigationComponent {
 
 		if (usuarioSession != null) {
 			this.usuario = JSON.parse(usuarioSession);
-			const id = this.usuario.ROL.ID_ROL;
+			const idRol = this.usuario.ROL.ID_ROL;
 
-			if (id == 1 || id == 2) {
-				this.menuOption.push({
-					name: 'Inicio',
-					icon: 'home',
-					rute: 'home'
-				});
+			this.menuOption.push({
+				name: 'Inicio',
+				icon: 'home',
+				rute: 'home'
+			});
 
-				this.menuOption.push({
-					name: 'Formulario de solicitud',
-					icon: 'assignment',
-					rute: 'form-solicitud'
-				});
+			switch (idRol) {
+				case 1:
+					this.menuOption.push({
+						name: 'Formulario de solicitud',
+						icon: 'assignment',
+						rute: 'form-solicitud'
+					});
 
-				this.menuOption.push({
-					name: 'Solicitudes',
-					icon: 'list',
-					rute: 'solicitudes'
-				});
+					this.menuOption.push({
+						name: 'Solicitudes',
+						icon: 'list',
+						rute: 'solicitudes'
+					});
 
-				this.menuOption.push({
-					name: 'Vehiculos',
-					icon: 'directions_car',
-					rute: 'vehiculos'
-				});
+					this.menuOption.push({
+						name: 'Vehiculos',
+						icon: 'directions_car',
+						rute: 'vehiculos'
+					});
+					break;
+				case 2:
+					this.menuOption.push({
+						name: 'Solicitudes',
+						icon: 'list',
+						rute: 'solicitudes'
+					});
 
-				this.menuOption.push({
-					name: 'Cerrar Sesion',
-					icon: 'logout',
-					rute: null
-				});
+					this.menuOption.push({
+						name: 'Formulario de solicitud',
+						icon: 'assignment',
+						rute: 'form-solicitud'
+					});
+					break;
+				case 3:
+					this.menuOption.push({
+						name: 'Entregas',
+						icon: 'list',
+						rute: 'solicitudes'
+					});
+
+					this.menuOption.push({
+						name: 'Vehiculos',
+						icon: 'directions_car',
+						rute: 'vehiculos'
+					});
+					break;
 			}
 
-			if (id == 3) {
-				this.menuOption.push({
-					name: 'Entregas',
-					icon: 'list',
-					rute: 'solicitudes'
-				});
-
-				this.menuOption.push({
-					name: 'Vehiculos',
-					icon: 'directions_car',
-					rute: 'vehiculos'
-				});
-
-				this.menuOption.push({
-					name: 'Cerrar Sesion',
-					icon: 'logout',
-					rute: null
-				});
-			}
+			this.menuOption.push({
+				name: 'Cerrar Sesion',
+				icon: 'logout',
+				rute: null
+			});
 		}
 	}
 	whenClick(item: any) {
