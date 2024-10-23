@@ -123,10 +123,17 @@
 <mat-dialog-actions>
 	<div class="pop-container">
 		<div>
+			@if (this.currentPage == 1) {
 			<button mat-button class="pop-container-button" (click)="onPDF()">
 				Generar PDF
 				<mat-icon fontIcon="picture_as_pdf" aria-hidden="false"></mat-icon>
 			</button>
+			} @if (this.currentPage == 2) {
+			<button mat-button class="pop-container-button" (click)="page(1)">
+				<mat-icon>arrow_back</mat-icon>
+				Regresar
+			</button>
+			}
 		</div>
 		<div>
 			@if (this.eBoton == true) {
