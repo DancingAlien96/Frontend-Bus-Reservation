@@ -128,7 +128,7 @@
 <mat-dialog-actions>
 	<div class="pop-container">
 		<div>
-			@if (this.currentPage == 1) {
+			@if (this.currentPage == 1 && this.idRol != 3) {
 			<button mat-button class="pop-container-button" (click)="onPDF()">
 				Generar PDF
 				<mat-icon fontIcon="picture_as_pdf" aria-hidden="false"></mat-icon>
