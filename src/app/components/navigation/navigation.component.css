@@ -23,6 +23,16 @@
 	width: 100%;
 	padding: 1.5rem;
 }
+.userinfo {
+	display: flex;
+	justify-content: end;
+	align-items: center;
+	text-align: right;
+}
+
+/* span {
+	color: white;
+} */
 
 .avatar-container {
 	/*display: flex;*/

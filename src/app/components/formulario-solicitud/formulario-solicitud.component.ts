@@ -76,11 +76,13 @@ export default class FormularioSolicitudComponent {
 	}
 
 	onSubmit() {
-		const usuarioCookie = this.cookies.get('usuario');
-		const usuario = JSON.parse(usuarioCookie);
+		const usuarioStorage = sessionStorage.getItem('usuario');
+		const usuario = usuarioStorage ? JSON.parse(usuarioStorage) : null;
 
-		// quita el atributo rol de usuario
-		delete usuario.ROL;
+		if (usuario) {
+			// Quita el atributo 'ROL' de usuario
+			delete usuario.ROL;
+		}
 
 		if (this.formSubmit.valid) {
 			this.solicitud = this.solicitud || {};

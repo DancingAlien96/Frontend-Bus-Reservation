@@ -52,9 +52,7 @@ export class LoginComponent {
 						sessionStorage.setItem('token', res.token);
 						sessionStorage.setItem('usuario', JSON.stringify(res.usuario));
 						// Redirigir a 'home'
-						this.router.navigate(['/home']).then(() => {
-							window.location.reload(); // Forzar recarga completa de la página
-						});
+						this.router.navigate(['/home']);
 					}
 				});
 		} else {

@@ -59,7 +59,7 @@ export class PopupComponent {
 	eBoton = false;
 	estadoTemporal!: number;
 	areaJustificacion = false;
-	idUsuario!: number;
+	idRol!: number;
 	vehiculo?: VehiculoInterface;
 	condiciones?: BitacoraCondicionesInterface;
 	selected: number = 1;
@@ -85,8 +85,9 @@ export class PopupComponent {
 	) {
 		this.usuarioSession = sessionStorage.getItem('usuario');
 		this.usuario = JSON.parse(this.usuarioSession);
-		this.idUsuario = this.usuario.ID_USUARIO;
+		this.idRol = this.usuario.ID_ROL;
 		this.estadoTemporal = data.ESTADO;
+		this.getDisponibilidad();
 	}
 
 	pageAndDetails(pagenumber: number, idVehiculo: number): void {
@@ -146,5 +147,29 @@ export class PopupComponent {
 		} else {
 			this.areaJustificacion = false;
 		}
+	}
+
+	getEstadoLabel(estado: number): string {
+		let estadoLabel = '';
+		switch (estado) {
+			case 0:
+				estadoLabel = 'Pendiente';
+				break;
+			case 1:
+				estadoLabel = 'Aprobada';
+				break;
+			case 2:
+				estadoLabel = 'Rechazada';
+				break;
+			case 3:
+				estadoLabel = 'Finalizada';
+				break;
+			case 4:
+				estadoLabel = 'Eliminada';
+				break;
+			default:
+				estadoLabel = 'Desconocido';
+		}
+		return estadoLabel;
 	}
 }
