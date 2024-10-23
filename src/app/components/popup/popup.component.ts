@@ -87,6 +87,7 @@ export class PopupComponent {
 		this.usuario = JSON.parse(this.usuarioSession);
 		this.idUsuario = this.usuario.ID_USUARIO;
 		this.estadoTemporal = data.ESTADO;
+		this.getDisponibilidad();
 	}
 
 	pageAndDetails(pagenumber: number, idVehiculo: number): void {
