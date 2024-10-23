@@ -163,7 +163,7 @@
 }
 <mat-dialog-actions>
 	<div class="pop-container">
-		<div>
+		<div *ngIf="usuario.ID_ROL == 1">
 			@if (disponibilidad) {
 
 			<button mat-button class="pop-container-button" (click)="onDisponibilidad()">

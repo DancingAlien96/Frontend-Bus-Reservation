@@ -15,9 +15,13 @@
 						<strong>Vehículo Solicitado:</strong> <br />
 						{{ data.VEHICULO.TIPO + ' ' + data.VEHICULO.MARCA + ' ' + data.VEHICULO.COLOR }}
 					</p>
+					@if (!(idRol == 2)) {
 					<mat-icon (click)="pageAndDetails(2, data.ID_VEHICULO)" fontIcon="info" class="button-back"></mat-icon>
+					}
 				</div>
-				<div *ngIf="data.ESTADO === 0">
+				@if (idRol == 1) {
+
+				<div *ngIf="data.ESTADO == 0">
 					@if (this.haySolicitudes ) {
 					<h4 class="red">
 						<strong>ADVERTENCIA:</strong><br />
@@ -27,6 +31,7 @@
 					<h4>Este vehículo esta disponible para las fechas solicitadas</h4>
 					}
 				</div>
+				}
 
 				<p><strong>Destino del viaje:</strong> {{ data.DESTINO }}</p>
 				<p><strong>Diligencia a realizar:</strong> {{ data.DILIGENCIA }}</p>
@@ -53,7 +58,7 @@
 			<section>
 				<h3>Estado de la Solicitud</h3>
 
-				@if (this.idUsuario == 1) {
+				@if (this.idRol == 1) {
 				<mat-form-field>
 					<mat-label>Estado</mat-label>
 					<mat-select [(value)]="this.estadoTemporal" (selectionChange)="changes($event)">
@@ -71,7 +76,7 @@
 				</p>
 				} } @else {
 
-				<h2>@if (data.ESTADO ==1) { Aprobada }</h2>
+				<h2>{{ getEstadoLabel(data.ESTADO) }}</h2>
 
 				}
 			</section>
