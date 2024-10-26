@@ -1,132 +1,140 @@
-<div class="container">
-	<form [formGroup]="formSubmit">
-		<mat-form-field appearance="outline">
-			<mat-label>Nombre del solicitante</mat-label>
-			<input matInput placeholder="Ej. Juan Pérez" formControlName="nombreSolicitante" />
-			@if (formSubmit.controls['nombreSolicitante'].hasError('required')) {
-			<mat-error>Requerido</mat-error>
-			}
-		</mat-form-field>
+<mat-card appearance="outlined">
+	<mat-card-header>
+		<mat-card-title> Nueva solicitud </mat-card-title>
+	</mat-card-header>
+	<mat-divider></mat-divider>
+	<mat-card-content>
+		<div class="container">
+			<form [formGroup]="formSubmit">
+				<mat-form-field appearance="outline">
+					<mat-label>Nombre del solicitante</mat-label>
+					<input matInput placeholder="Ej. Juan Pérez" formControlName="nombreSolicitante" />
+					@if (formSubmit.controls['nombreSolicitante'].hasError('required')) {
+					<mat-error>Requerido</mat-error>
+					}
+				</mat-form-field>
 
-		<mat-form-field appearance="outline">
-			<mat-label>Destino</mat-label>
-			<textarea
-				matInput
-				#destinoText
-				placeholder="Ej. Universidad de San Carlos de Guatemala"
-				formControlName="destino"
-			>
-			</textarea>
-			@if (destinoText.value) {
-			<button matSuffix mat-icon-button (click)="destinoText.value = ''">
-				<mat-icon matTooltip="Borrar">close</mat-icon>
-			</button>
-			} @if (formSubmit.controls['destino'].hasError('required')) {
-			<mat-error>Requerido</mat-error>
-			} @if ( destinoText.value.length > 150 ) {
-			<mat-hint class="error-hint" align="end">
-				Límite de caracteres permitidos: {{ destinoText.value.length }} / 150
-			</mat-hint>
-			} @else {
-			<mat-hint align="end"> {{ destinoText.value.length }} / 150 </mat-hint>
-			}
-		</mat-form-field>
+				<mat-form-field appearance="outline">
+					<mat-label>Destino</mat-label>
+					<textarea
+						matInput
+						#destinoText
+						placeholder="Ej. Universidad de San Carlos de Guatemala"
+						formControlName="destino"
+					>
+					</textarea>
+					@if (destinoText.value) {
+					<button matSuffix mat-icon-button (click)="destinoText.value = ''">
+						<mat-icon matTooltip="Borrar">close</mat-icon>
+					</button>
+					} @if (formSubmit.controls['destino'].hasError('required')) {
+					<mat-error>Requerido</mat-error>
+					} @if ( destinoText.value.length > 150 ) {
+					<mat-hint class="error-hint" align="end">
+						Límite de caracteres permitidos: {{ destinoText.value.length }} / 150
+					</mat-hint>
+					} @else {
+					<mat-hint align="end"> {{ destinoText.value.length }} / 150 </mat-hint>
+					}
+				</mat-form-field>
 
-		<mat-form-field appearance="outline">
-			<mat-label>Diligencia</mat-label>
-			<textarea
-				matInput
-				#diligenciaText
-				placeholder="Ej. Visita a campus central"
-				formControlName="diligencia"
-			></textarea>
-			@if (formSubmit.controls['diligencia'].value) {
-			<button matSuffix mat-icon-button (click)="formSubmit.controls['diligencia'].setValue('')">
-				<mat-icon matTooltip="Borrar">close</mat-icon>
-			</button>
-			} @if (formSubmit.controls['diligencia'].hasError('required')) {
-			<mat-error>Requerido</mat-error>
-			} @if ( diligenciaText.value.length > 150 ) {
-			<mat-hint class="error-hint" align="end">
-				Límite de caracteres permitidos: {{ diligenciaText.value.length }} / 150
-			</mat-hint>
-			} @else {
-			<mat-hint align="end"> {{ diligenciaText.value.length }} / 150 </mat-hint>
-			}
-		</mat-form-field>
-		<table>
-			<tr>
-				<td class="date-td">
-					<mat-form-field appearance="outline">
-						<mat-label>Fecha de entrega</mat-label>
-						<input matInput [matDatepicker]="pke" formControlName="entrega" />
-						<mat-datepicker-toggle matIconSuffix [for]="pke"></mat-datepicker-toggle>
-						<mat-datepicker #pke></mat-datepicker>
-						@if (formSubmit.controls["entrega"].hasError('')) {
-						<mat-error>Fecha de entrega no válido</mat-error>
-						} @if (formSubmit.controls['entrega'].hasError('required') ) {
-						<mat-error>Requerido</mat-error>
-						}
-					</mat-form-field>
-				</td>
-				<td class="hour-td">
-					<mat-form-field appearance="outline">
-						<mat-label>Hora de entrega</mat-label>
-						<input matInput formControlName="horaEntrega" [ngxMatTimepicker]="etimepk" />
-						<ngx-mat-timepicker #etimepk></ngx-mat-timepicker>
-						<ngx-mat-timepicker-toggle matSuffix [for]="etimepk"></ngx-mat-timepicker-toggle>
-						@if (formSubmit.controls['horaEntrega'].hasError('required')) {
-						<mat-error>Requerido</mat-error>
-						}
-					</mat-form-field>
-				</td>
-			</tr>
-			<tr>
-				<td class="date-td">
-					<mat-form-field appearance="outline">
-						<mat-label>Fecha de devolución</mat-label>
-						<input matInput [matDatepicker]="pkd" formControlName="devolucion" />
-						<mat-datepicker-toggle matIconSuffix [for]="pkd"></mat-datepicker-toggle>
-						<mat-datepicker #pkd></mat-datepicker>
-						@if (formSubmit.controls["devolucion"].hasError('')) {
-						<mat-error>Fecha de devolución no válido</mat-error>
-						} @if (formSubmit.controls['devolucion'].hasError('required') ) {
-						<mat-error>Requerido</mat-error>
-						}
-					</mat-form-field>
-				</td>
-				<td class="hour-td">
-					<mat-form-field appearance="outline">
-						<mat-label>Hora de devolución</mat-label>
-						<input matInput formControlName="horaDevolucion" [ngxMatTimepicker]="dtimepk" />
-						<ngx-mat-timepicker #dtimepk></ngx-mat-timepicker>
-						<ngx-mat-timepicker-toggle matSuffix [for]="dtimepk"></ngx-mat-timepicker-toggle>
-						@if (formSubmit.controls['horaDevolucion'].hasError('required')) {
-						<mat-error>Requerido</mat-error>
-						}
-					</mat-form-field>
-				</td>
-			</tr>
-		</table>
+				<mat-form-field appearance="outline">
+					<mat-label>Diligencia</mat-label>
+					<textarea
+						matInput
+						#diligenciaText
+						placeholder="Ej. Visita a campus central"
+						formControlName="diligencia"
+					></textarea>
+					@if (formSubmit.controls['diligencia'].value) {
+					<button matSuffix mat-icon-button (click)="formSubmit.controls['diligencia'].setValue('')">
+						<mat-icon matTooltip="Borrar">close</mat-icon>
+					</button>
+					} @if (formSubmit.controls['diligencia'].hasError('required')) {
+					<mat-error>Requerido</mat-error>
+					} @if ( diligenciaText.value.length > 150 ) {
+					<mat-hint class="error-hint" align="end">
+						Límite de caracteres permitidos: {{ diligenciaText.value.length }} / 150
+					</mat-hint>
+					} @else {
+					<mat-hint align="end"> {{ diligenciaText.value.length }} / 150 </mat-hint>
+					}
+				</mat-form-field>
+				<table>
+					<tr>
+						<td class="date-td">
+							<mat-form-field appearance="outline">
+								<mat-label>Fecha de entrega</mat-label>
+								<input matInput [matDatepicker]="pke" formControlName="entrega" />
+								<mat-datepicker-toggle matIconSuffix [for]="pke"></mat-datepicker-toggle>
+								<mat-datepicker #pke></mat-datepicker>
+								@if (formSubmit.controls["entrega"].hasError('')) {
+								<mat-error>Fecha de entrega no válido</mat-error>
+								} @if (formSubmit.controls['entrega'].hasError('required') ) {
+								<mat-error>Requerido</mat-error>
+								}
+							</mat-form-field>
+						</td>
+						<td class="hour-td">
+							<mat-form-field appearance="outline">
+								<mat-label>Hora de entrega</mat-label>
+								<input matInput formControlName="horaEntrega" [ngxMatTimepicker]="etimepk" />
+								<ngx-mat-timepicker #etimepk></ngx-mat-timepicker>
+								<ngx-mat-timepicker-toggle matSuffix [for]="etimepk"></ngx-mat-timepicker-toggle>
+								@if (formSubmit.controls['horaEntrega'].hasError('required')) {
+								<mat-error>Requerido</mat-error>
+								}
+							</mat-form-field>
+						</td>
+					</tr>
+					<tr>
+						<td class="date-td">
+							<mat-form-field appearance="outline">
+								<mat-label>Fecha de devolución</mat-label>
+								<input matInput [matDatepicker]="pkd" formControlName="devolucion" />
+								<mat-datepicker-toggle matIconSuffix [for]="pkd"></mat-datepicker-toggle>
+								<mat-datepicker #pkd></mat-datepicker>
+								@if (formSubmit.controls["devolucion"].hasError('')) {
+								<mat-error>Fecha de devolución no válido</mat-error>
+								} @if (formSubmit.controls['devolucion'].hasError('required') ) {
+								<mat-error>Requerido</mat-error>
+								}
+							</mat-form-field>
+						</td>
+						<td class="hour-td">
+							<mat-form-field appearance="outline">
+								<mat-label>Hora de devolución</mat-label>
+								<input matInput formControlName="horaDevolucion" [ngxMatTimepicker]="dtimepk" />
+								<ngx-mat-timepicker #dtimepk></ngx-mat-timepicker>
+								<ngx-mat-timepicker-toggle matSuffix [for]="dtimepk"></ngx-mat-timepicker-toggle>
+								@if (formSubmit.controls['horaDevolucion'].hasError('required')) {
+								<mat-error>Requerido</mat-error>
+								}
+							</mat-form-field>
+						</td>
+					</tr>
+				</table>
 
-		<mat-form-field appearance="outline">
-			<mat-label>Vehículo</mat-label>
-			<mat-select formControlName="vehiculo">
-				@for (item of vehiculos; track $index) {
-				<mat-option [value]="item"> {{ item.TIPO }} {{ item.MARCA }} Placa {{ item.PLACA }} </mat-option>
-				}
-			</mat-select>
-			@if (formSubmit.controls['vehiculo'].hasError('required')) {
-			<mat-error>Requerido</mat-error>
-			}
-		</mat-form-field>
+				<mat-form-field appearance="outline">
+					<mat-label>Vehículo</mat-label>
+					<mat-select formControlName="vehiculo">
+						@for (item of vehiculos; track $index) {
+						<mat-option [value]="item"> {{ item.TIPO }} {{ item.MARCA }} Placa {{ item.PLACA }} </mat-option>
+						}
+					</mat-select>
+					@if (formSubmit.controls['vehiculo'].hasError('required')) {
+					<mat-error>Requerido</mat-error>
+					}
+				</mat-form-field>
 
-		<mat-radio-group formControlName="conPiloto" class="radio-group">
-			<mat-radio-button value="0">Sin piloto</mat-radio-button>
-			<mat-radio-button value="1">Con piloto</mat-radio-button>
-		</mat-radio-group>
-		<br />
-		<br />
-		<button mat-flat-button color="primary" (click)="onSubmit()">Enviar</button>
-	</form>
-</div>
+				<mat-radio-group formControlName="conPiloto" class="radio-group">
+					<mat-radio-button value="0">Sin piloto</mat-radio-button>
+					<mat-radio-button value="1">Con piloto</mat-radio-button>
+				</mat-radio-group>
+				<br />
+				<br />
+				<button mat-flat-button color="primary" (click)="onSubmit()">Enviar</button>
+			</form>
+		</div>
+	</mat-card-content>
+</mat-card>

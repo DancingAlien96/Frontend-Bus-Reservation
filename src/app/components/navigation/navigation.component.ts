@@ -36,6 +36,11 @@ export class NavigationComponent {
 	private breakpointObserver = inject(BreakpointObserver);
 	usuario!: UsuarioInterface;
 	menuOption: OptionInterface[] = [];
+	logoutOption: OptionInterface = {
+		name: 'Cerrar Sesion',
+		icon: 'logout',
+		rute: null
+	};
 	constructor(private authService: AuthService, private cookies: CookieService, private router: Router) {
 		const usuarioSession = sessionStorage.getItem('usuario');
 
@@ -52,7 +57,7 @@ export class NavigationComponent {
 			switch (idRol) {
 				case 1:
 					this.menuOption.push({
-						name: 'Formulario de solicitud',
+						name: 'Nueva solicitud',
 						icon: 'assignment',
 						rute: 'form-solicitud'
 					});
@@ -96,12 +101,6 @@ export class NavigationComponent {
 					});
 					break;
 			}
-
-			this.menuOption.push({
-				name: 'Cerrar Sesion',
-				icon: 'logout',
-				rute: null
-			});
 		}
 	}
 	whenClick(item: any) {

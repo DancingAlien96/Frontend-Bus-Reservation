@@ -1,7 +1,7 @@
 import { VehiculoService } from './../../shared/services/vehiculo.service';
 import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { MatFormField, MatFormFieldModule, MatLabel } from '@angular/material/form-field';
-import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatPaginator, MatPaginatorIntl, MatPaginatorModule } from '@angular/material/paginator';
 import { MatTabGroup, MatTabsModule } from '@angular/material/tabs';
 import { VehiculoInterface } from '../../shared/interfaces';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
@@ -9,18 +9,34 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatDialog } from '@angular/material/dialog';
 import { PopupVehiculosComponent } from '../../components/popup-vehiculos/popup-vehiculos.component';
+import { MatCardModule } from '@angular/material/card';
+import { MatDividerModule } from '@angular/material/divider';
+import { PaginatorService } from '../../shared/services/paginator.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
 	selector: 'app-vehiculos',
 	standalone: true,
-	imports: [MatFormFieldModule, MatInputModule, MatTableModule, MatSortModule, MatPaginatorModule, MatTabsModule],
+	imports: [
+		MatFormFieldModule,
+		MatInputModule,
+		MatTableModule,
+		MatSortModule,
+		MatPaginatorModule,
+		MatTabsModule,
+		MatCardModule,
+		MatDividerModule,
+		CommonModule
+	],
 	templateUrl: './vehiculos.component.html',
-	styleUrl: './vehiculos.component.css'
+	styleUrl: './vehiculos.component.css',
+	providers: [{ provide: MatPaginatorIntl, useClass: PaginatorService }]
 })
 export class VehiculosComponent implements AfterViewInit {
 	savedstate: string | null = null;
 	dataSource!: MatTableDataSource<VehiculoInterface>;
 	displayedColumns: string[] = ['ID_VEHICULO', 'PLACA', 'TIPO', 'MARCA', 'COLOR', 'ESTADO'];
+	tabIndex = 0;
 
 	@ViewChild(MatPaginator) paginator!: MatPaginator;
 	@ViewChild(MatSort) sort!: MatSort;
@@ -42,6 +58,7 @@ export class VehiculosComponent implements AfterViewInit {
 				this.dataSource.filter = '';
 				break;
 		}
+		this.tabIndex = index;
 	}
 
 	applyFilter(event: Event) {

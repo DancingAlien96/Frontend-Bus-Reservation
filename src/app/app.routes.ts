@@ -11,7 +11,7 @@ export const routes: Routes = [
 	{
 		path: 'home',
 		loadComponent: () => HomeComponent,
-		title: 'Sistemas de gestion de solicitudes de vehiculos universitarios',
+		title: 'SISVEC',
 		canActivate: [authGuard]
 	},
 	{ path: '', redirectTo: 'home', pathMatch: 'full' }, // Corregido
