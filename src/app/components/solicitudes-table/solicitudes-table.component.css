@@ -14,3 +14,35 @@ th {
 .stylerow:hover {
 	cursor: pointer;
 }
+
+.dot {
+	height: 15px;
+	width: 15px;
+	background-color: #3bda0b;
+	border-radius: 50%;
+	display: inline-block;
+}
+
+.Aprobada {
+	background-color: #3bda0b;
+}
+
+.Pendiente {
+	background-color: #f7b731;
+}
+
+.Rechazada {
+	background-color: #eb3b5a;
+}
+
+.Anulada {
+	background-color: #7f8fa6;
+}
+
+.Eliminada {
+	background-color: #7f8fa6;
+}
+
+.Finalizada {
+	background-color: #2685de;
+}

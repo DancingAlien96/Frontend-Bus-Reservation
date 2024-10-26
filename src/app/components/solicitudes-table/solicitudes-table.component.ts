@@ -13,6 +13,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { DateFormatPipe } from '../../shared/pipes/date-time-format.pipe';
 import { CookieService } from 'ngx-cookie-service';
 import { MatCardModule } from '@angular/material/card';
+import { CommonModule } from '@angular/common';
 
 @Component({
 	providers: [
@@ -30,7 +31,8 @@ import { MatCardModule } from '@angular/material/card';
 		MatPaginatorModule,
 		MatTabsModule,
 		DateFormatPipe,
-		MatCardModule
+		MatCardModule,
+		CommonModule
 	]
 })
 export class SolicitudesTableComponent implements AfterViewInit {
@@ -63,7 +65,6 @@ export class SolicitudesTableComponent implements AfterViewInit {
 	}
 
 	filterByTab(index: number) {
-		this.tabIndex = index;
 		switch (index) {
 			case 0: // todas
 				this.dataSource.filter = '';
@@ -87,6 +88,7 @@ export class SolicitudesTableComponent implements AfterViewInit {
 				this.dataSource.filter = '';
 				break;
 		}
+		this.tabIndex = index;
 	}
 
 	getEstadoLabel(estado: number): string {

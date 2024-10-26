@@ -2,7 +2,10 @@
 	@if (currentPage == 1) {
 	<mat-card class="popup-card">
 		<mat-card-header>
-			<mat-card-title>Solicitud #{{ data.ID_SOLICITUD }}</mat-card-title>
+			<mat-card-title
+				>Solicitud #{{ data.ID_SOLICITUD }} <span [ngClass]="'dot ' + getEstadoLabel(data.ESTADO)"></span
+			></mat-card-title>
+
 			<mat-card-subtitle>Creada el {{ data.FECHA_CREACION | date : 'medium' }}</mat-card-subtitle>
 		</mat-card-header>
 
@@ -143,15 +146,17 @@
 		<div>
 			@if (this.eBoton == true) {
 			<button class="pop-container-button" mat-button (click)="save()">
-				guardar
+				Guardar
 				<mat-icon fontIcon="save" aria-hidden="false"></mat-icon>
 			</button>
-			}
-
 			<button class="pop-container-button" mat-button [mat-dialog-close]="" cdkFocusInitial>
-				cancelar
+				Cancelar
 				<mat-icon fontIcon="close" aria-hidden="false"></mat-icon>
 			</button>
+			} @else {
+
+			<button class="pop-container-button" mat-button [mat-dialog-close]="" cdkFocusInitial>Cerrar</button>
+			}
 		</div>
 	</div>
 </mat-dialog-actions>
