@@ -57,7 +57,7 @@ export class NavigationComponent {
 			switch (idRol) {
 				case 1:
 					this.menuOption.push({
-						name: 'Formulario de solicitud',
+						name: 'Nueva solicitud',
 						icon: 'assignment',
 						rute: 'form-solicitud'
 					});

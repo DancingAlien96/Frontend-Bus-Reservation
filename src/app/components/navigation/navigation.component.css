@@ -84,3 +84,7 @@
 .account_icon {
 	transform: scale(1.5);
 }
+
+mat-icon {
+	vertical-align: middle;
+}

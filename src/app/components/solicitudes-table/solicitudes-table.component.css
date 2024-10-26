@@ -46,3 +46,7 @@ th {
 .Finalizada {
 	background-color: #2685de;
 }
+
+td {
+	vertical-align: middle;
+}
