@@ -8,14 +8,21 @@
 		[opened]="(isHandset$ | async) === false"
 	>
 		<mat-toolbar>Menu</mat-toolbar>
-		<mat-nav-list>
-			@for (item of this.menuOption; track $index) {
+		<mat-nav-list class="options">
+			<div class="menu-options">
+				@for (item of this.menuOption; track $index) {
 
-			<a mat-list-item routerLink="{{ item.rute }}" (click)="whenClick(item.name)">
-				<mat-icon>{{ item.icon }}</mat-icon> {{ item.name }}
-			</a>
-			}
+				<a mat-list-item routerLink="{{ item.rute }}" (click)="whenClick(item.name)">
+					<mat-icon>{{ item.icon }}</mat-icon> {{ item.name }}
+				</a>
+				}
+			</div>
 		</mat-nav-list>
+		<div class="logout-option">
+			<a mat-list-item routerLink="{{ logoutOption.rute }}" (click)="whenClick(logoutOption.name)">
+				<mat-icon>{{ logoutOption.icon }}</mat-icon> {{ logoutOption.name }}
+			</a>
+		</div>
 	</mat-sidenav>
 	<mat-sidenav-content>
 		<mat-toolbar color="primary">
@@ -29,15 +36,13 @@
 
 				<div class="userinfo">
 					<mat-list>
-						<mat-list-item>
-							<span matListItemTitle>{{ usuario.USERNAME }}</span>
-							<span matListItemLine>{{ usuario.ROL.NOMBRE | uppercase }}</span>
+						<mat-list-item class="userinfo-item">
+							<span class="username" matListItemTitle>{{ usuario.USERNAME }}</span>
+							<span class="role" matListItemLine>{{ usuario.ROL.NOMBRE | uppercase }}</span>
 						</mat-list-item>
 					</mat-list>
 
-					<div class="avatar-container">
-						<img class="avatar-image" src="https://material.angular.io/assets/img/examples/shiba1.jpg" alt="Avatar" />
-					</div>
+					<mat-icon class="account_icon">account_circle</mat-icon>
 				</div>
 			</div>
 		</mat-toolbar>
