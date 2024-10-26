@@ -37,6 +37,7 @@ export class SolicitudesTableComponent implements AfterViewInit {
 	savedstate: string | null = null;
 	idUsuario!: number;
 	rol!: number;
+	tabIndex = 0;
 	displayedColumns: string[] = [
 		'ID_SOLICITUD',
 		'FECHA_CREACION',
@@ -62,6 +63,7 @@ export class SolicitudesTableComponent implements AfterViewInit {
 	}
 
 	filterByTab(index: number) {
+		this.tabIndex = index;
 		switch (index) {
 			case 0: // todas
 				this.dataSource.filter = '';
