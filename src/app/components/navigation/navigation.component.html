@@ -20,7 +20,7 @@
 		</mat-nav-list>
 		<div class="logout-option">
 			<a mat-list-item routerLink="{{ logoutOption.rute }}" (click)="whenClick(logoutOption.name)">
-				<mat-icon>{{ logoutOption.icon }}</mat-icon> {{ logoutOption.name }}
+				<mat-icon class="logout-icon">{{ logoutOption.icon }}</mat-icon> <strong> {{ logoutOption.name }}</strong>
 			</a>
 		</div>
 	</mat-sidenav>

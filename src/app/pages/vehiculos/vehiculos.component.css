@@ -14,3 +14,19 @@ th {
 .stylerow:hover {
 	cursor: pointer;
 }
+
+.dot {
+	height: 15px;
+	width: 15px;
+	background-color: #3bda0b;
+	border-radius: 50%;
+	display: inline-block;
+}
+
+.Activo {
+	background-color: #3bda0b;
+}
+
+.Fuera {
+	background-color: #f7b731;
+}

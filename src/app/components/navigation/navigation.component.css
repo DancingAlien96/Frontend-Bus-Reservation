@@ -80,3 +80,24 @@
 mat-icon {
 	vertical-align: middle;
 }
+
+.userinfo-item .username {
+	color: white; /* Color del texto en blanco */
+}
+
+.userinfo-item .role {
+	color: rgb(191, 189, 189); /* Color del texto en blanco */
+}
+
+.userinfo-item:hover .username {
+	color: white; /* Color del texto en blanco al pasar el ratón */
+}
+
+.userinfo-item:hover .role {
+	color: rgb(191, 189, 189); /* Color del texto en blanco al pasar el ratón */
+}
+
+.logout-icon {
+	color: #eb3b5a;
+	transform: scale(1.2);
+}

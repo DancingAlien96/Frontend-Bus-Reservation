@@ -12,6 +12,7 @@ import { PopupVehiculosComponent } from '../../components/popup-vehiculos/popup-
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
 import { PaginatorService } from '../../shared/services/paginator.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
 	selector: 'app-vehiculos',
@@ -24,7 +25,8 @@ import { PaginatorService } from '../../shared/services/paginator.service';
 		MatPaginatorModule,
 		MatTabsModule,
 		MatCardModule,
-		MatDividerModule
+		MatDividerModule,
+		CommonModule
 	],
 	templateUrl: './vehiculos.component.html',
 	styleUrl: './vehiculos.component.css',
@@ -34,6 +36,7 @@ export class VehiculosComponent implements AfterViewInit {
 	savedstate: string | null = null;
 	dataSource!: MatTableDataSource<VehiculoInterface>;
 	displayedColumns: string[] = ['ID_VEHICULO', 'PLACA', 'TIPO', 'MARCA', 'COLOR', 'ESTADO'];
+	tabIndex = 0;
 
 	@ViewChild(MatPaginator) paginator!: MatPaginator;
 	@ViewChild(MatSort) sort!: MatSort;
@@ -55,6 +58,7 @@ export class VehiculosComponent implements AfterViewInit {
 				this.dataSource.filter = '';
 				break;
 		}
+		this.tabIndex = index;
 	}
 
 	applyFilter(event: Event) {
