@@ -12,6 +12,7 @@ import { PaginatorService } from '../../shared/services/paginator.service';
 import { MatTabsModule } from '@angular/material/tabs';
 import { DateFormatPipe } from '../../shared/pipes/date-time-format.pipe';
 import { CookieService } from 'ngx-cookie-service';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
 	providers: [
@@ -28,12 +29,14 @@ import { CookieService } from 'ngx-cookie-service';
 		MatSortModule,
 		MatPaginatorModule,
 		MatTabsModule,
-		DateFormatPipe
+		DateFormatPipe,
+		MatCardModule
 	]
 })
 export class SolicitudesTableComponent implements AfterViewInit {
 	savedstate: string | null = null;
 	idUsuario!: number;
+	rol!: number;
 	displayedColumns: string[] = [
 		'ID_SOLICITUD',
 		'FECHA_CREACION',
@@ -117,9 +120,9 @@ export class SolicitudesTableComponent implements AfterViewInit {
 		if (usuarioSession != null) {
 			const usuario = JSON.parse(usuarioSession);
 			const id = usuario.ID_USUARIO;
-			const rol = usuario.ROL.ID_ROL;
+			this.rol = usuario.ROL.ID_ROL;
 			this.idUsuario = usuario.ID_USUARIO;
-			if (rol == 1) {
+			if (this.rol == 1) {
 				this.solicitudesService.getSolicitudes().subscribe((data) => {
 					this.dataSource = new MatTableDataSource(data); // Asigna los datos al dataSource
 					this.dataSource.paginator = this.paginator;
@@ -136,7 +139,7 @@ export class SolicitudesTableComponent implements AfterViewInit {
 					};
 				});
 			}
-			if (rol == 3) {
+			if (this.rol == 3) {
 				this.solicitudesService.getSolicitudes().subscribe((data) => {
 					const solicitudesAprobadas = data.filter((solicitud) => solicitud.ESTADO === 1);
 

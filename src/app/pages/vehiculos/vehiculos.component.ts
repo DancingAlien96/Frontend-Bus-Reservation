@@ -9,11 +9,20 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatDialog } from '@angular/material/dialog';
 import { PopupVehiculosComponent } from '../../components/popup-vehiculos/popup-vehiculos.component';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
 	selector: 'app-vehiculos',
 	standalone: true,
-	imports: [MatFormFieldModule, MatInputModule, MatTableModule, MatSortModule, MatPaginatorModule, MatTabsModule],
+	imports: [
+		MatFormFieldModule,
+		MatInputModule,
+		MatTableModule,
+		MatSortModule,
+		MatPaginatorModule,
+		MatTabsModule,
+		MatCardModule
+	],
 	templateUrl: './vehiculos.component.html',
 	styleUrl: './vehiculos.component.css'
 })

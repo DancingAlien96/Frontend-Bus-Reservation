@@ -1,64 +1,71 @@
-<div class="container">
-	<mat-tab-group (selectedIndexChange)="filterByTab($event)">
-		<mat-tab label="Todos"></mat-tab>
-		<mat-tab label="Activos"></mat-tab>
-		<mat-tab label="Fuera de servicio"></mat-tab>
-	</mat-tab-group>
+<mat-card appearance="outlined">
+	<mat-card-header>
+		<mat-card-title> Vehiculos </mat-card-title>
+	</mat-card-header>
+	<mat-card-content>
+		<div class="container">
+			<mat-tab-group (selectedIndexChange)="filterByTab($event)">
+				<mat-tab label="Todos"></mat-tab>
+				<mat-tab label="Activos"></mat-tab>
+				<mat-tab label="Fuera de servicio"></mat-tab>
+			</mat-tab-group>
 
-	<mat-form-field>
-		<mat-label>Buscar</mat-label>
-		<input matInput (keyup)="applyFilter($event)" placeholder="Ex. Sedan" #input />
-	</mat-form-field>
+			<mat-form-field>
+				<mat-label>Buscar</mat-label>
+				<input matInput (keyup)="applyFilter($event)" placeholder="Ex. Sedan" #input />
+			</mat-form-field>
 
-	<div class="mat-elevation-z8">
-		<table mat-table [dataSource]="dataSource" matSort>
-			<!-- ID_VEHICULO Column -->
-			<ng-container matColumnDef="ID_VEHICULO">
-				<th mat-header-cell *matHeaderCellDef mat-sort-header>No.</th>
-				<td mat-cell *matCellDef="let row">{{ row.ID_VEHICULO }}</td>
-			</ng-container>
+			<div class="mat-elevation-z8">
+				<table mat-table [dataSource]="dataSource" matSort>
+					<!-- ID_VEHICULO Column -->
+					<ng-container matColumnDef="ID_VEHICULO">
+						<th mat-header-cell *matHeaderCellDef mat-sort-header>No.</th>
+						<td mat-cell *matCellDef="let row">{{ row.ID_VEHICULO }}</td>
+					</ng-container>
 
-			<!-- PLACA Column -->
-			<ng-container matColumnDef="PLACA">
-				<th mat-header-cell *matHeaderCellDef mat-sort-header>Placa</th>
-				<td mat-cell *matCellDef="let row">{{ row.PLACA }}</td>
-			</ng-container>
+					<!-- PLACA Column -->
+					<ng-container matColumnDef="PLACA">
+						<th mat-header-cell *matHeaderCellDef mat-sort-header>Placa</th>
+						<td mat-cell *matCellDef="let row">{{ row.PLACA }}</td>
+					</ng-container>
 
-			<!-- TIPO Column -->
-			<ng-container matColumnDef="TIPO">
-				<th mat-header-cell *matHeaderCellDef mat-sort-header>Tipo</th>
-				<td mat-cell *matCellDef="let row">{{ row.TIPO }}</td>
-			</ng-container>
+					<!-- TIPO Column -->
+					<ng-container matColumnDef="TIPO">
+						<th mat-header-cell *matHeaderCellDef mat-sort-header>Tipo</th>
+						<td mat-cell *matCellDef="let row">{{ row.TIPO }}</td>
+					</ng-container>
 
-			<!-- MARCA Column -->
-			<ng-container matColumnDef="MARCA">
-				<th mat-header-cell *matHeaderCellDef mat-sort-header>Marca</th>
-				<td mat-cell *matCellDef="let row">{{ row.MARCA }}</td>
-			</ng-container>
+					<!-- MARCA Column -->
+					<ng-container matColumnDef="MARCA">
+						<th mat-header-cell *matHeaderCellDef mat-sort-header>Marca</th>
+						<td mat-cell *matCellDef="let row">{{ row.MARCA }}</td>
+					</ng-container>
 
-			<!-- COLOR Column -->
-			<ng-container matColumnDef="COLOR">
-				<th mat-header-cell *matHeaderCellDef mat-sort-header>Color</th>
-				<td mat-cell *matCellDef="let row">{{ row.COLOR }}</td>
-			</ng-container>
+					<!-- COLOR Column -->
+					<ng-container matColumnDef="COLOR">
+						<th mat-header-cell *matHeaderCellDef mat-sort-header>Color</th>
+						<td mat-cell *matCellDef="let row">{{ row.COLOR }}</td>
+					</ng-container>
 
-			<!-- ESTADO Column -->
-			<ng-container matColumnDef="ESTADO">
-				<th mat-header-cell *matHeaderCellDef mat-sort-header>Estado</th>
-				<td mat-cell *matCellDef="let row">
-					{{ getEstadoLabel(row.ESTADO) }}
-				</td>
-			</ng-container>
+					<!-- ESTADO Column -->
+					<ng-container matColumnDef="ESTADO">
+						<th mat-header-cell *matHeaderCellDef mat-sort-header>Estado</th>
+						<td mat-cell *matCellDef="let row">
+							{{ getEstadoLabel(row.ESTADO) }}
+						</td>
+					</ng-container>
 
-			<tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-			<tr (click)="openDialog(row)" class="stylerow" mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+					<tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+					<tr (click)="openDialog(row)" class="stylerow" mat-row *matRowDef="let row; columns: displayedColumns"></tr>
 
-			<!-- Row shown when there is no matching data. -->
-			<tr class="mat-row" *matNoDataRow>
-				<td class="mat-cell" colspan="6">No hay datos relacionados al filtro.</td>
-			</tr>
-		</table>
+					<!-- Row shown when there is no matching data. -->
+					<tr class="mat-row" *matNoDataRow>
+						<td class="mat-cell" colspan="6">No hay datos relacionados al filtro.</td>
+					</tr>
+				</table>
 
-		<mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users"></mat-paginator>
-	</div>
-</div>
+				<mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users"></mat-paginator>
+			</div>
+		</div>
+	</mat-card-content>
+</mat-card>

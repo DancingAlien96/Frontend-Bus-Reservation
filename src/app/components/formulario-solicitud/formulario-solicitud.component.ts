@@ -17,6 +17,7 @@ import { provideMomentDateAdapter } from '@angular/material-moment-adapter';
 import { NgxMatTimepickerModule } from 'ngx-mat-timepicker';
 import 'moment/locale/es';
 import { CookieService } from 'ngx-cookie-service';
+import { MatCardModule } from '@angular/material/card';
 
 export const MY_FORMATS = {
 	parse: {
@@ -44,7 +45,8 @@ export const MY_FORMATS = {
 		MatSelectModule,
 		MatButtonModule,
 		MatIconModule,
-		NgxMatTimepickerModule
+		NgxMatTimepickerModule,
+		MatCardModule
 	],
 	templateUrl: './formulario-solicitud.component.html',
 	styleUrls: ['./formulario-solicitud.component.css'],
