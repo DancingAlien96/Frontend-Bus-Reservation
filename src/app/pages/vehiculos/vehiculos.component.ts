@@ -1,7 +1,7 @@
 import { VehiculoService } from './../../shared/services/vehiculo.service';
 import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { MatFormField, MatFormFieldModule, MatLabel } from '@angular/material/form-field';
-import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatPaginator, MatPaginatorIntl, MatPaginatorModule } from '@angular/material/paginator';
 import { MatTabGroup, MatTabsModule } from '@angular/material/tabs';
 import { VehiculoInterface } from '../../shared/interfaces';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
@@ -10,6 +10,8 @@ import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatDialog } from '@angular/material/dialog';
 import { PopupVehiculosComponent } from '../../components/popup-vehiculos/popup-vehiculos.component';
 import { MatCardModule } from '@angular/material/card';
+import { MatDividerModule } from '@angular/material/divider';
+import { PaginatorService } from '../../shared/services/paginator.service';
 
 @Component({
 	selector: 'app-vehiculos',
@@ -21,10 +23,12 @@ import { MatCardModule } from '@angular/material/card';
 		MatSortModule,
 		MatPaginatorModule,
 		MatTabsModule,
-		MatCardModule
+		MatCardModule,
+		MatDividerModule
 	],
 	templateUrl: './vehiculos.component.html',
-	styleUrl: './vehiculos.component.css'
+	styleUrl: './vehiculos.component.css',
+	providers: [{ provide: MatPaginatorIntl, useClass: PaginatorService }]
 })
 export class VehiculosComponent implements AfterViewInit {
 	savedstate: string | null = null;

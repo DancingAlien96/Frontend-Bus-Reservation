@@ -14,6 +14,7 @@ import { DateFormatPipe } from '../../shared/pipes/date-time-format.pipe';
 import { CookieService } from 'ngx-cookie-service';
 import { MatCardModule } from '@angular/material/card';
 import { CommonModule } from '@angular/common';
+import { MatDividerModule } from '@angular/material/divider';
 
 @Component({
 	providers: [
@@ -32,7 +33,8 @@ import { CommonModule } from '@angular/common';
 		MatTabsModule,
 		DateFormatPipe,
 		MatCardModule,
-		CommonModule
+		CommonModule,
+		MatDividerModule
 	]
 })
 export class SolicitudesTableComponent implements AfterViewInit {
