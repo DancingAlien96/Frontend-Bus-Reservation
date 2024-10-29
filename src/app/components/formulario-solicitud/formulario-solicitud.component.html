@@ -8,9 +8,15 @@
 			<form [formGroup]="formSubmit">
 				<mat-form-field appearance="outline">
 					<mat-label>Nombre del solicitante</mat-label>
-					<input matInput placeholder="Ej. Juan Pérez" formControlName="nombreSolicitante" />
+					<input matInput #nombreSolicitante placeholder="Ej. Juan Pérez" formControlName="nombreSolicitante" />
 					@if (formSubmit.controls['nombreSolicitante'].hasError('required')) {
 					<mat-error>Requerido</mat-error>
+					} @if ( nombreSolicitante.value.length > 150 ) {
+					<mat-hint class="error-hint" align="end">
+						Límite de caracteres permitidos: {{ nombreSolicitante.value.length }} / 150
+					</mat-hint>
+					} @else {
+					<mat-hint align="end"> {{ nombreSolicitante.value.length }} / 150 </mat-hint>
 					}
 				</mat-form-field>
 
@@ -31,10 +37,10 @@
 					<mat-error>Requerido</mat-error>
 					} @if ( destinoText.value.length > 150 ) {
 					<mat-hint class="error-hint" align="end">
-						Límite de caracteres permitidos: {{ destinoText.value.length }} / 150
+						Límite de caracteres permitidos: {{ destinoText.value.length }} / 200
 					</mat-hint>
 					} @else {
-					<mat-hint align="end"> {{ destinoText.value.length }} / 150 </mat-hint>
+					<mat-hint align="end"> {{ destinoText.value.length }} / 200 </mat-hint>
 					}
 				</mat-form-field>
 
@@ -54,10 +60,10 @@
 					<mat-error>Requerido</mat-error>
 					} @if ( diligenciaText.value.length > 150 ) {
 					<mat-hint class="error-hint" align="end">
-						Límite de caracteres permitidos: {{ diligenciaText.value.length }} / 150
+						Límite de caracteres permitidos: {{ diligenciaText.value.length }} / 200
 					</mat-hint>
 					} @else {
-					<mat-hint align="end"> {{ diligenciaText.value.length }} / 150 </mat-hint>
+					<mat-hint align="end"> {{ diligenciaText.value.length }} / 200 </mat-hint>
 					}
 				</mat-form-field>
 				<table>
@@ -127,10 +133,24 @@
 					}
 				</mat-form-field>
 
-				<mat-radio-group formControlName="conPiloto" class="radio-group">
+				<mat-radio-group formControlName="conPiloto" class="radio-group" (change)="onRadioButtonChange($event)">
 					<mat-radio-button value="0">Sin piloto</mat-radio-button>
 					<mat-radio-button value="1">Con piloto</mat-radio-button>
 				</mat-radio-group>
+				<mat-form-field appearance="outline">
+					<mat-label>Nombre del piloto</mat-label>
+					<input matInput #nombrePiloto placeholder="Ej. Juan Pérez" formControlName="nombrePiloto" />
+					@if (formSubmit.controls['nombrePiloto'].hasError('required')) {
+					<mat-error>Requerido</mat-error>
+					} @if ( nombrePiloto.value.length > 150 ) {
+					<mat-hint class="error-hint" align="end">
+						Límite de caracteres permitidos: {{ nombrePiloto.value.length }} / 150
+					</mat-hint>
+					} @else {
+					<mat-hint align="end"> {{ nombrePiloto.value.length }} / 150 </mat-hint>
+					}
+				</mat-form-field>
+
 				<br />
 				<br />
 				<button mat-flat-button color="primary" (click)="onSubmit()">Enviar</button>

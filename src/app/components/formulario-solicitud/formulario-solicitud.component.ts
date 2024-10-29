@@ -19,6 +19,7 @@ import 'moment/locale/es';
 import { CookieService } from 'ngx-cookie-service';
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
+import { noop } from 'rxjs';
 
 export const MY_FORMATS = {
 	parse: {
@@ -66,15 +67,16 @@ export default class FormularioSolicitudComponent {
 		private _snackBar: MatSnackBar
 	) {
 		this.formSubmit = this.fb.group({
-			nombreSolicitante: [null, Validators.required],
-			destino: [null, [Validators.required, Validators.maxLength(150)]],
-			diligencia: [null, Validators.required],
+			nombreSolicitante: [null, [Validators.required, Validators.maxLength(150)]],
+			destino: [null, [Validators.required, Validators.maxLength(200)]],
+			diligencia: [null, [Validators.required, Validators.maxLength(200)]],
 			entrega: new FormControl<Date | null>(null, Validators.required),
 			devolucion: new FormControl<Date | null>(null, Validators.required),
 			horaEntrega: [null, Validators.required],
 			horaDevolucion: [null, Validators.required],
 			vehiculo: [null, Validators.required],
-			conPiloto: ['0', Validators.required]
+			conPiloto: ['1', Validators.required],
+			nombrePiloto: [null, Validators.maxLength(150)]
 		});
 	}
 
@@ -112,7 +114,7 @@ export default class FormularioSolicitudComponent {
 				FECHA_HORA_ENTREGA: new Date(timestampEntrega).toJSON(),
 				FECHA_HORA_DEVOLUCION: new Date(timestampDevolucion).toJSON(),
 				CON_PILOTO: this.formSubmit.get('conPiloto')?.value,
-				NOMBRE_PILOTO: null,
+				NOMBRE_PILOTO: this.formSubmit.get('nombrePiloto')?.value,
 				ESTADO: 0,
 				MODIFICABLE: true,
 				MOTIVO_RECHAZO: null,
@@ -159,6 +161,17 @@ export default class FormularioSolicitudComponent {
 		config.duration = 3000;
 
 		this._snackBar.open(message, 'cerrar', config);
+	}
+
+	onRadioButtonChange(event: any) {
+		if (event.value === '0') {
+			this.formSubmit.get('nombrePiloto')?.setValue(null);
+			this.formSubmit.get('nombrePiloto')?.disable();
+			this.formSubmit.get('nombrePiloto')?.clearValidators();
+		} else {
+			this.formSubmit.get('nombrePiloto')?.enable();
+			this.formSubmit.get('nombrePiloto')?.setValidators([Validators.required]);
+		}
 	}
 
 	combinarFechaHora(fecha: Date, hora: string): Date {
