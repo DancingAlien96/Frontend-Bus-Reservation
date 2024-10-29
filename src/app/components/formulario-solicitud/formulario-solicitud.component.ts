@@ -20,18 +20,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
 import { noop } from 'rxjs';
-
-export const MY_FORMATS = {
-	parse: {
-		dateInput: 'LL'
-	},
-	display: {
-		dateInput: 'LL',
-		monthYearLabel: 'MMM YYYY',
-		dateA11yLabel: 'LL',
-		monthYearA11yLabel: 'MMMM YYYY'
-	}
-};
+import { MY_FORMATS } from '../../shared/utils/date-format.utils';
 
 @Component({
 	selector: 'app-formulario-solicitud',

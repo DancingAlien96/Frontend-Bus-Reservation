@@ -57,12 +57,6 @@ export class NavigationComponent {
 			switch (idRol) {
 				case 1:
 					this.menuOption.push({
-						name: 'Nueva solicitud',
-						icon: 'assignment',
-						rute: 'form-solicitud'
-					});
-
-					this.menuOption.push({
 						name: 'Solicitudes',
 						icon: 'list',
 						rute: 'solicitudes'
@@ -81,11 +75,6 @@ export class NavigationComponent {
 						rute: 'solicitudes'
 					});
 
-					this.menuOption.push({
-						name: 'Formulario de solicitud',
-						icon: 'assignment',
-						rute: 'form-solicitud'
-					});
 					break;
 				case 3:
 					this.menuOption.push({

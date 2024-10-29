@@ -23,18 +23,7 @@ import { NgxMatTimepickerModule } from 'ngx-mat-timepicker';
 import { ActivatedRoute } from '@angular/router';
 import { FecvService } from '../../shared/services/fecv.service';
 import { FunctionsService } from '../../shared/services/functions.service';
-
-export const MY_FORMATS = {
-	parse: {
-		dateInput: 'LL'
-	},
-	display: {
-		dateInput: 'LL',
-		monthYearLabel: 'MMM YYYY',
-		dateA11yLabel: 'LL',
-		monthYearA11yLabel: 'MMMM YYYY'
-	}
-};
+import { MY_FORMATS } from '../../shared/utils/date-format.utils';
 
 @Component({
 	selector: 'app-formulario-entrega',

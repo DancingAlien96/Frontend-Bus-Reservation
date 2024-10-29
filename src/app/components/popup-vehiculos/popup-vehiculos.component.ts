@@ -38,18 +38,7 @@ import { SolicitudesService } from '../../shared/services/solicitudes.service';
 import { DateFormatPipe } from '../../shared/pipes/date-time-format.pipe';
 import { PopupComponent } from '../popup/popup.component';
 import { UsuarioInterface } from '../../shared/interfaces/usuario.interface';
-
-export const MY_FORMATS = {
-	parse: {
-		dateInput: 'LL'
-	},
-	display: {
-		dateInput: 'LL',
-		monthYearLabel: 'MMM YYYY',
-		dateA11yLabel: 'LL',
-		monthYearA11yLabel: 'MMMM YYYY'
-	}
-};
+import { MY_FORMATS } from '../../shared/utils/date-format.utils';
 
 @Component({
 	selector: 'app-popup-vehiculos',

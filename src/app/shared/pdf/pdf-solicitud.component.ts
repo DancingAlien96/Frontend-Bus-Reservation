@@ -5,7 +5,7 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
 import { PersonalInterface, SolicitudesInterfaces } from '../interfaces';
 import { PersonalService } from '../services/personal.service';
 import { DateFormatPipe, TimeFormatPipe } from '../pipes/date-time-format.pipe';
-import { ImageUtils } from './image-utils';
+import { ImageUtils } from '../utils/image2url.utils';
 
 @Component({
 	selector: 'app-pdf-solicitud',

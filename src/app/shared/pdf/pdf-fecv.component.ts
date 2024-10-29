@@ -5,7 +5,7 @@ import pdfFonts from 'pdfmake/build/vfs_fonts';
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 import { FecvInterface, VehiculoInterface } from '../interfaces';
 import { DateFormatPipe, TimeFormatPipe } from '../pipes/date-time-format.pipe';
-import { ImageUtils } from './image-utils';
+import { ImageUtils } from '../utils/image2url.utils';
 import { DatePipe } from '@angular/common';
 
 @Component({
