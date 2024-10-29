@@ -35,7 +35,7 @@
 					</button>
 					} @if (formSubmit.controls['destino'].hasError('required')) {
 					<mat-error>Requerido</mat-error>
-					} @if ( destinoText.value.length > 150 ) {
+					} @if ( destinoText.value.length > 200 ) {
 					<mat-hint class="error-hint" align="end">
 						Límite de caracteres permitidos: {{ destinoText.value.length }} / 200
 					</mat-hint>
@@ -58,7 +58,7 @@
 					</button>
 					} @if (formSubmit.controls['diligencia'].hasError('required')) {
 					<mat-error>Requerido</mat-error>
-					} @if ( diligenciaText.value.length > 150 ) {
+					} @if ( diligenciaText.value.length > 200 ) {
 					<mat-hint class="error-hint" align="end">
 						Límite de caracteres permitidos: {{ diligenciaText.value.length }} / 200
 					</mat-hint>

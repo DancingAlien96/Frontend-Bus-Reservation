@@ -4,6 +4,39 @@
 	</mat-card-header>
 	<mat-divider></mat-divider>
 	<mat-card-content>
+		<div class="vehicle-data container">
+			<h2>DATOS DEL VEHICULO</h2>
+			<table [formGroup]="formVehiculo">
+				<tr>
+					<td>
+						<mat-form-field appearance="outline">
+							<mat-label>Tipo</mat-label>
+							<input readonly formControlName="tipo" matInput type="text" />
+						</mat-form-field>
+					</td>
+					<td>
+						<mat-form-field appearance="outline">
+							<mat-label>Color</mat-label>
+							<input readonly formControlName="color" matInput type="text" />
+						</mat-form-field>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<mat-form-field appearance="outline">
+							<mat-label>Placa</mat-label>
+							<input readonly formControlName="placa" matInput type="text" />
+						</mat-form-field>
+					</td>
+					<td>
+						<mat-form-field appearance="outline">
+							<mat-label>Marca</mat-label>
+							<input readonly formControlName="marca" matInput type="text" />
+						</mat-form-field>
+					</td>
+				</tr>
+			</table>
+		</div>
 		<div class="container">
 			<form [formGroup]="formSubmit">
 				<!-- Sección I: Datos Generales -->
@@ -47,18 +80,30 @@
 						<td>
 							<mat-form-field appearance="outline">
 								<mat-label>Nombre del Conductor</mat-label>
-								<input formControlName="nombrePiloto" matInput type="text" />
+								<input #nombrePiloto formControlName="nombrePiloto" matInput type="text" />
 								@if (formSubmit.controls['nombrePiloto'].hasError('required') ) {
 								<mat-error>Requerido</mat-error>
+								} @if ( nombrePiloto.value.length > 150 ) {
+								<mat-hint class="error-hint" align="end">
+									Límite de caracteres permitidos: {{ nombrePiloto.value.length }} / 150
+								</mat-hint>
+								} @else {
+								<mat-hint align="end"> {{ nombrePiloto.value.length }} / 150 </mat-hint>
 								}
 							</mat-form-field>
 						</td>
 						<td>
 							<mat-form-field appearance="outline">
 								<mat-label>Cargo que Ocupa</mat-label>
-								<input formControlName="cargoPiloto" matInput type="text" />
+								<input #cargoPiloto formControlName="cargoPiloto" matInput type="text" />
 								@if (formSubmit.controls['cargoPiloto'].hasError('required') ) {
 								<mat-error>Requerido</mat-error>
+								} @if ( cargoPiloto.value.length > 100 ) {
+								<mat-hint class="error-hint" align="end">
+									Límite de caracteres permitidos: {{ cargoPiloto.value.length }} / 100
+								</mat-hint>
+								} @else {
+								<mat-hint align="end"> {{ cargoPiloto.value.length }} / 100 </mat-hint>
 								}
 							</mat-form-field>
 						</td>
@@ -67,9 +112,15 @@
 
 				<mat-form-field appearance="outline">
 					<mat-label>Comisión</mat-label>
-					<textarea formControlName="comision" matInput></textarea>
+					<textarea #comision formControlName="comision" matInput></textarea>
 					@if (formSubmit.controls['comision'].hasError('required') ) {
 					<mat-error>Requerido</mat-error>
+					} @if ( comision.value.length > 300 ) {
+					<mat-hint class="error-hint" align="end">
+						Límite de caracteres permitidos: {{ comision.value.length }} / 300
+					</mat-hint>
+					} @else {
+					<mat-hint align="end"> {{ comision.value.length }} / 300 </mat-hint>
 					}
 				</mat-form-field>
 
@@ -212,7 +263,14 @@
 						<td>
 							<mat-form-field appearance="outline">
 								<mat-label> Otros </mat-label>
-								<input formControlName="otros" matInput type="text" />
+								<input #otros formControlName="otros" matInput type="text" />
+								@if ( otros.value.length > 300 ) {
+								<mat-hint class="error-hint" align="end">
+									Límite de caracteres permitidos: {{ otros.value.length }} / 300
+								</mat-hint>
+								} @else {
+								<mat-hint align="end"> {{ otros.value.length }} / 300 </mat-hint>
+								}
 							</mat-form-field>
 						</td>
 					</tr>
@@ -330,7 +388,14 @@
 					<mat-label>
 						Indique daños a la estructura del vehículo o cualquier otra situacion que merezca su atención
 					</mat-label>
-					<textarea formControlName="observaciones" matInput></textarea>
+					<textarea #observaciones formControlName="observaciones" matInput></textarea>
+					@if ( observaciones.value.length > 300 ) {
+					<mat-hint class="error-hint" align="end">
+						Límite de caracteres permitidos: {{ observaciones.value.length }} / 300
+					</mat-hint>
+					} @else {
+					<mat-hint align="end"> {{ observaciones.value.length }} / 300 </mat-hint>
+					}
 				</mat-form-field>
 
 				<button mat-flat-button color="primary" (click)="onSubmit()">Enviar</button>
