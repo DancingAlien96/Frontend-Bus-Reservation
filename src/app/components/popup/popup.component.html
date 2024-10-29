@@ -144,6 +144,12 @@
 			}
 		</div>
 		<div>
+			@if (!(this.idRol == 2) && this.currentPage == 1) { @if (this.data.FECV == null) {
+			<button class="pop-container-button" mat-button (click)="onFECV()">Generar FECV</button>
+			} @else if (!(this.data.FECV == null) ) {
+			<button class="pop-container-button" mat-button (click)="onFECV()">Ver FECV</button>
+			} }
+			<!--  -->
 			@if (this.eBoton == true) {
 			<button class="pop-container-button" mat-button (click)="save()">
 				Guardar
