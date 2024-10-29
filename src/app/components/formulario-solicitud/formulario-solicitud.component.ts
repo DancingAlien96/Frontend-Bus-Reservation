@@ -63,8 +63,7 @@ export default class FormularioSolicitudComponent {
 		private fb: FormBuilder,
 		private vs: VehiculoService,
 		private sps: SolicitudesService,
-		private _snackBar: MatSnackBar,
-		private cookies: CookieService
+		private _snackBar: MatSnackBar
 	) {
 		this.formSubmit = this.fb.group({
 			nombreSolicitante: [null, Validators.required],

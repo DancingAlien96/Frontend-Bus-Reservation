@@ -6,6 +6,7 @@ import { authGuard } from './shared/guards/auth.guard';
 import { authLoginGuard } from './shared/guards/auth-login.guard';
 import { VehiculosComponent } from './pages/vehiculos/vehiculos.component';
 import { SolicitudesComponent } from './pages/solicitudes/solicitudes.component';
+import FormularioEntregaComponent from './pages/formulario-entrega/formulario-entrega.component';
 
 export const routes: Routes = [
 	{
@@ -25,5 +26,11 @@ export const routes: Routes = [
 	{ path: 'login', loadComponent: () => LoginComponent, title: 'Login', canActivate: [authLoginGuard] },
 	{ path: 'vehiculos', loadComponent: () => VehiculosComponent, title: 'Vehículos', canActivate: [authGuard] },
 	{ path: 'solicitudes', loadComponent: () => SolicitudesComponent, title: 'Solicitudes', canActivate: [authGuard] },
+	{
+		path: 'form-entrega',
+		loadComponent: () => FormularioEntregaComponent,
+		title: 'Formulario de Entrega y Control de Vehículo',
+		canActivate: [authGuard]
+	},
 	{ path: '**', redirectTo: '' }
 ];
