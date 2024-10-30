@@ -6,7 +6,9 @@
 		} @else {
 		<mat-card-title> Entregas </mat-card-title>
 		}
-		<button *ngIf="rol != 3" mat-raised-button color="primary"><mat-icon>note_add</mat-icon> Nueva solicitud</button>
+		<button *ngIf="rol != 3" mat-raised-button color="primary" routerLink="/form-solicitud">
+			<mat-icon>note_add</mat-icon> Nueva solicitud
+		</button>
 	</mat-card-header>
 	<mat-divider></mat-divider>
 	<mat-card-content>

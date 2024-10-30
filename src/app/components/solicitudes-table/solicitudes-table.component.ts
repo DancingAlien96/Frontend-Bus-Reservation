@@ -22,6 +22,7 @@ import { provideMomentDateAdapter } from '@angular/material-moment-adapter';
 import { MY_FORMATS } from '../../shared/utils/date-format.utils';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { RouterLink } from '@angular/router';
 
 @Component({
 	providers: [
@@ -47,7 +48,8 @@ import { MatIconModule } from '@angular/material/icon';
 		ReactiveFormsModule,
 		MatDatepickerModule,
 		MatButtonModule,
-		MatIconModule
+		MatIconModule,
+		RouterLink
 	]
 })
 export class SolicitudesTableComponent implements AfterViewInit {

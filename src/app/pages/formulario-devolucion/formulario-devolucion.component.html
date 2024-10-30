@@ -1,0 +1,593 @@
+<mat-card appearance="outlined">
+	<mat-card-header>
+		<mat-card-title> Formulario de entrega y control de vehiculos </mat-card-title>
+	</mat-card-header>
+	<mat-divider></mat-divider>
+	<mat-card-content>
+		<div class="vehicle-data container">
+			<h2>DATOS DEL VEHICULO</h2>
+			<table [formGroup]="formVehiculo">
+				<tr>
+					<td>
+						<mat-form-field appearance="outline">
+							<mat-label>Tipo</mat-label>
+							<input readonly formControlName="tipo" matInput type="text" />
+						</mat-form-field>
+					</td>
+					<td>
+						<mat-form-field appearance="outline">
+							<mat-label>Color</mat-label>
+							<input readonly formControlName="color" matInput type="text" />
+						</mat-form-field>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<mat-form-field appearance="outline">
+							<mat-label>Placa</mat-label>
+							<input readonly formControlName="placa" matInput type="text" />
+						</mat-form-field>
+					</td>
+					<td>
+						<mat-form-field appearance="outline">
+							<mat-label>Marca</mat-label>
+							<input readonly formControlName="marca" matInput type="text" />
+						</mat-form-field>
+					</td>
+				</tr>
+			</table>
+		</div>
+		<div class="container">
+			<form [formGroup]="formSubmit">
+				<!-- Sección I: Datos Generales -->
+				<h2>I. DATOS GENERALES</h2>
+				<table>
+					<tr>
+						<td>
+							<mat-form-field appearance="outline">
+								<mat-label>Número de Emisión</mat-label>
+								<input formControlName="id" matInput type="text" readonly />
+							</mat-form-field>
+						</td>
+						<td>
+							<mat-form-field appearance="outline">
+								<mat-label>Fecha</mat-label>
+								<input matInput [matDatepicker]="dpEntrega" formControlName="fechaEntrega" />
+								<mat-datepicker-toggle matIconSuffix [for]="dpEntrega"></mat-datepicker-toggle>
+								<mat-datepicker #dpEntrega></mat-datepicker>
+								@if (formSubmit.controls["fechaEntrega"].hasError('')) {
+								<mat-error>Fecha de entrega no válido</mat-error>
+								} @if (formSubmit.controls['fechaEntrega'].hasError('required') ) {
+								<mat-error>Requerido</mat-error>
+								}
+							</mat-form-field>
+						</td>
+						<td>
+							<mat-form-field appearance="outline">
+								<mat-label>Hora de entrega</mat-label>
+								<input matInput formControlName="horaEntrega" [ngxMatTimepicker]="tpEntrega" />
+								<ngx-mat-timepicker #tpEntrega></ngx-mat-timepicker>
+								<ngx-mat-timepicker-toggle matSuffix [for]="tpEntrega"></ngx-mat-timepicker-toggle>
+								@if (formSubmit.controls['horaEntrega'].hasError('required')) {
+								<mat-error>Requerido</mat-error>
+								}
+							</mat-form-field>
+						</td>
+					</tr>
+				</table>
+				<table>
+					<tr>
+						<td>
+							<mat-form-field appearance="outline">
+								<mat-label>Nombre del Conductor</mat-label>
+								<input #nombrePiloto formControlName="nombrePiloto" matInput type="text" />
+								@if (formSubmit.controls['nombrePiloto'].hasError('required') ) {
+								<mat-error>Requerido</mat-error>
+								} @if ( nombrePiloto.value.length > 150 ) {
+								<mat-hint class="error-hint" align="end">
+									Límite de caracteres permitidos: {{ nombrePiloto.value.length }} / 150
+								</mat-hint>
+								} @else {
+								<mat-hint align="end"> {{ nombrePiloto.value.length }} / 150 </mat-hint>
+								}
+							</mat-form-field>
+						</td>
+						<td>
+							<mat-form-field appearance="outline">
+								<mat-label>Cargo que Ocupa</mat-label>
+								<input #cargoPiloto formControlName="cargoPiloto" matInput type="text" />
+								@if (formSubmit.controls['cargoPiloto'].hasError('required') ) {
+								<mat-error>Requerido</mat-error>
+								} @if ( cargoPiloto.value.length > 100 ) {
+								<mat-hint class="error-hint" align="end">
+									Límite de caracteres permitidos: {{ cargoPiloto.value.length }} / 100
+								</mat-hint>
+								} @else {
+								<mat-hint align="end"> {{ cargoPiloto.value.length }} / 100 </mat-hint>
+								}
+							</mat-form-field>
+						</td>
+					</tr>
+				</table>
+
+				<mat-form-field appearance="outline">
+					<mat-label>Comisión</mat-label>
+					<textarea #comision formControlName="comision" matInput></textarea>
+					@if (formSubmit.controls['comision'].hasError('required') ) {
+					<mat-error>Requerido</mat-error>
+					} @if ( comision.value.length > 300 ) {
+					<mat-hint class="error-hint" align="end">
+						Límite de caracteres permitidos: {{ comision.value.length }} / 300
+					</mat-hint>
+					} @else {
+					<mat-hint align="end"> {{ comision.value.length }} / 300 </mat-hint>
+					}
+				</mat-form-field>
+
+				<!-- Sección II: Documentos del Vehículo -->
+				<h2>II. DOCUMENTOS DEL VEHICULO</h2>
+				<table>
+					<tr>
+						<td class="label-td">
+							<mat-label> Tarjeta de Circulación </mat-label>
+						</td>
+						<td class="input-td">
+							<mat-radio-group formControlName="tarjetaCirculacion" class="radio-group">
+								<mat-radio-button value="1">Si</mat-radio-button>
+								<mat-radio-button value="0">No</mat-radio-button>
+							</mat-radio-group>
+						</td>
+					</tr>
+					<tr>
+						<td><h3>Llaves</h3></td>
+					</tr>
+					<tr>
+						<td class="label-td">
+							<mat-label> Llave de Encendido de Motor </mat-label>
+						</td>
+						<td class="input-td">
+							<mat-radio-group formControlName="llavesEncendido" class="radio-group">
+								<mat-radio-button value="1">Si</mat-radio-button>
+								<mat-radio-button value="0">No</mat-radio-button>
+							</mat-radio-group>
+						</td>
+					</tr>
+
+					<tr>
+						<td class="label-td">
+							<mat-label> Llave de Tanque de Gasolina </mat-label>
+						</td>
+						<td class="input-td">
+							<mat-radio-group formControlName="llavesGasolina" class="radio-group">
+								<mat-radio-button value="1">Si</mat-radio-button>
+								<mat-radio-button value="0">No</mat-radio-button>
+							</mat-radio-group>
+						</td>
+					</tr>
+
+					<tr>
+						<td class="label-td">
+							<mat-label> Llave de Llanta de Repuesto </mat-label>
+						</td>
+						<td class="input-td">
+							<mat-radio-group formControlName="llavesLlanta" class="radio-group">
+								<mat-radio-button value="1">Si</mat-radio-button>
+								<mat-radio-button value="0">No</mat-radio-button>
+							</mat-radio-group>
+						</td>
+					</tr>
+				</table>
+
+				<!-- Sección III: Condiciones del Vehículo -->
+				<h2>III CONDICIONES DEL VEHICULO</h2>
+				<h3>Motor</h3>
+				<table>
+					<tr>
+						<td class="label-td">
+							<mat-label> Encendido </mat-label>
+						</td>
+						<td class="input-td">
+							<mat-radio-group formControlName="encendidoMotor" class="radio-group">
+								<mat-radio-button value="1">Bueno</mat-radio-button>
+								<mat-radio-button value="0">Lento</mat-radio-button>
+							</mat-radio-group>
+						</td>
+					</tr>
+				</table>
+
+				<h3>Retrovisores</h3>
+				<table>
+					<tr>
+						<td class="label-td">
+							<mat-label> Exteriores </mat-label>
+						</td>
+						<td class="input-td">
+							<mat-radio-group formControlName="retrovisoresExterior" class="radio-group">
+								<mat-radio-button value="1">Si</mat-radio-button>
+								<mat-radio-button value="0">No</mat-radio-button>
+							</mat-radio-group>
+						</td>
+					</tr>
+					<tr>
+						<td class="label-td">
+							<mat-label> Interiores </mat-label>
+						</td>
+						<td class="input-td">
+							<mat-radio-group formControlName="retrovisoresInterior" class="radio-group">
+								<mat-radio-button value="1">Si</mat-radio-button>
+								<mat-radio-button value="0">No</mat-radio-button>
+							</mat-radio-group>
+						</td>
+					</tr>
+				</table>
+
+				<div></div>
+
+				<h3>Accesorios</h3>
+				<table>
+					<tr>
+						<td class="label-td">
+							<mat-label> Llanta de Repuesto </mat-label>
+						</td>
+						<td class="input-td">
+							<mat-radio-group formControlName="llantaRepuesto" class="radio-group">
+								<mat-radio-button value="1">Si</mat-radio-button>
+								<mat-radio-button value="0">No</mat-radio-button>
+							</mat-radio-group>
+						</td>
+					</tr>
+					<tr>
+						<td class="label-td">
+							<mat-label> Llave de Chuchos </mat-label>
+						</td>
+						<td class="input-td">
+							<mat-radio-group formControlName="llaveChuchos" class="radio-group">
+								<mat-radio-button value="1">Si</mat-radio-button>
+								<mat-radio-button value="0">No</mat-radio-button>
+							</mat-radio-group>
+						</td>
+					</tr>
+					<tr>
+						<td class="label-td">
+							<mat-label> Tricket </mat-label>
+						</td>
+						<td class="input-td">
+							<mat-radio-group formControlName="tricket" class="radio-group">
+								<mat-radio-button value="1">Si</mat-radio-button>
+								<mat-radio-button value="0">No</mat-radio-button>
+							</mat-radio-group>
+						</td>
+					</tr>
+					<tr>
+						<td><mat-label> Otros </mat-label></td>
+						<td>
+							<mat-form-field appearance="outline">
+								<mat-label> Otros </mat-label>
+								<input #otros formControlName="otros" matInput type="text" />
+								@if ( otros.value.length > 300 ) {
+								<mat-hint class="error-hint" align="end">
+									Límite de caracteres permitidos: {{ otros.value.length }} / 300
+								</mat-hint>
+								} @else {
+								<mat-hint align="end"> {{ otros.value.length }} / 300 </mat-hint>
+								}
+							</mat-form-field>
+						</td>
+					</tr>
+				</table>
+
+				<!-- Sección Luces -->
+				<h3>Luces</h3>
+				<table>
+					<tr>
+						<td class="label-td">
+							<mat-label> Condiciones silvines </mat-label>
+						</td>
+						<td class="input-td">
+							<mat-radio-group formControlName="silvines" class="radio-group">
+								<mat-radio-button value="1">Buen estado</mat-radio-button>
+								<mat-radio-button value="0">Mal estado</mat-radio-button>
+								<mat-radio-button value="2">Con daños</mat-radio-button>
+							</mat-radio-group>
+						</td>
+					</tr>
+					<tr>
+						<td class="label-td">
+							<mat-label> Condiciones stops </mat-label>
+						</td>
+						<td class="input-td">
+							<mat-radio-group formControlName="stops" class="radio-group">
+								<mat-radio-button value="1">Buen estado</mat-radio-button>
+								<mat-radio-button value="0">Mal estado</mat-radio-button>
+								<mat-radio-button value="2">Con daños</mat-radio-button>
+							</mat-radio-group>
+						</td>
+					</tr>
+					<tr>
+						<td class="label-td">
+							<mat-label> Condiciones de luz de retroceso</mat-label>
+						</td>
+						<td class="input-td">
+							<mat-radio-group formControlName="luzRetroceso" class="radio-group">
+								<mat-radio-button value="1">Buen estado</mat-radio-button>
+								<mat-radio-button value="0">Mal estado</mat-radio-button>
+								<mat-radio-button value="2">Con daños</mat-radio-button>
+							</mat-radio-group>
+						</td>
+					</tr>
+					<tr>
+						<td class="label-td">
+							<mat-label> Condiciones de luz de emergencia </mat-label>
+						</td>
+						<td class="input-td">
+							<mat-radio-group formControlName="luzEmergencia" class="radio-group">
+								<mat-radio-button value="1">Buen estado</mat-radio-button>
+								<mat-radio-button value="0">Mal estado</mat-radio-button>
+								<mat-radio-button value="2">Con daños</mat-radio-button>
+							</mat-radio-group>
+						</td>
+					</tr>
+				</table>
+
+				<h3>Otros</h3>
+				<table>
+					<tr>
+						<td class="label-td">
+							<mat-label> Condiciones de llantas </mat-label>
+						</td>
+						<td class="input-td">
+							<mat-radio-group formControlName="condicionesLlanta" class="radio-group">
+								<mat-radio-button value="1">Buen estado</mat-radio-button>
+								<mat-radio-button value="0">Mal estado</mat-radio-button>
+								<mat-radio-button value="2">Con daños</mat-radio-button>
+							</mat-radio-group>
+						</td>
+					</tr>
+					<tr>
+						<td class="label-td">
+							<mat-label> Condiciones de Limpia Parabrisas </mat-label>
+						</td>
+						<td class="input-td">
+							<mat-radio-group formControlName="limpiaparabrisas" class="radio-group">
+								<mat-radio-button value="1">Buen estado</mat-radio-button>
+								<mat-radio-button value="0">Mal estado</mat-radio-button>
+								<mat-radio-button value="2">Con daños</mat-radio-button>
+							</mat-radio-group>
+						</td>
+					</tr>
+					<tr>
+						<td><mat-label>Kilometraje al momento de recibir</mat-label></td>
+						<td>
+							<mat-form-field appearance="outline">
+								<mat-label>Kilometraje al momento de recibir</mat-label>
+								<input #kmEntrega formControlName="kilometrajeEntrega" matInput type="number" min="0" />
+							</mat-form-field>
+							@if (formSubmit.controls['kilometrajeEntrega'].hasError('required') ) {
+							<mat-error>Requerido</mat-error>
+							}
+						</td>
+					</tr>
+				</table>
+
+				<h3>Combustible</h3>
+				<div class="center-content">
+					<div class="example-label-container">
+						<label>Nivel del tanque al recibir el vehículos </label>
+						<strong>
+							<label class="example-value-label">{{ slider1.value | combustiblePipe }}</label>
+						</strong>
+					</div>
+
+					<mat-slider [max]="1" [min]="0" [step]="0.25" [showTickMarks]="true">
+						<input matSliderThumb formControlName="nivelCombustibleEntrega" #slider1 />
+					</mat-slider>
+				</div>
+
+				<!-- Observaciones -->
+				<h3>Observaciones</h3>
+				<mat-form-field appearance="outline">
+					<mat-label>
+						Indique daños a la estructura del vehículo o cualquier otra situacion que merezca su atención
+					</mat-label>
+					<textarea #observaciones formControlName="observaciones" matInput></textarea>
+					@if ( observaciones.value.length > 300 ) {
+					<mat-hint class="error-hint" align="end">
+						Límite de caracteres permitidos: {{ observaciones.value.length }} / 300
+					</mat-hint>
+					} @else {
+					<mat-hint align="end"> {{ observaciones.value.length }} / 300 </mat-hint>
+					}
+				</mat-form-field>
+
+				<h2>ABASTECIMIENTO DE COMBUSTIBLE</h2>
+				<table>
+					<tr>
+						<td>
+							<mat-form-field appearance="outline">
+								<mat-label>Serie</mat-label>
+								<input #facturaSerie formControlName="facturaSerie" matInput type="text" />
+								@if (formSubmit.controls['facturaSerie'].hasError('required') ) {
+								<mat-error>Requerido</mat-error>
+								} @if ( facturaSerie.value.length > 25 ) {
+								<mat-hint class="error-hint" align="end">
+									Límite de caracteres permitidos: {{ facturaSerie.value.length }} / 25
+								</mat-hint>
+								} @else {
+								<mat-hint align="end"> {{ facturaSerie.value.length }} / 25 </mat-hint>
+								}
+							</mat-form-field>
+						</td>
+						<td>
+							<mat-form-field appearance="outline">
+								<mat-label>Número</mat-label>
+								<input formControlName="noFactura" matInput type="number" min="0" />
+							</mat-form-field>
+							@if (formSubmit.controls['noFactura'].hasError('required') ) {
+							<mat-error>Requerido</mat-error>
+							}
+						</td>
+						<td>
+							<mat-form-field appearance="outline">
+								<mat-label>Fecha de abastecimiento</mat-label>
+								<input matInput [matDatepicker]="dpAbastecimiento" formControlName="fechaLlenado" />
+								<mat-datepicker-toggle matIconSuffix [for]="dpAbastecimiento"></mat-datepicker-toggle>
+								<mat-datepicker #dpAbastecimiento></mat-datepicker>
+								@if (formSubmit.controls["fechaLlenado"].hasError('')) {
+								<mat-error>Fecha de abastecimiento no válido</mat-error>
+								} @if (formSubmit.controls['fechaLlenado'].hasError('required') ) {
+								<mat-error>Requerido</mat-error>
+								}
+							</mat-form-field>
+						</td>
+					</tr>
+
+					<tr>
+						<td>
+							<mat-form-field appearance="outline">
+								<mat-label>Galones</mat-label>
+								<input formControlName="galones" matInput type="number" min="0" />
+							</mat-form-field>
+							@if (formSubmit.controls['galones'].hasError('required') ) {
+							<mat-error>Requerido</mat-error>
+							}
+						</td>
+						<td>
+							<mat-form-field appearance="outline">
+								<mat-label>Precio por galón</mat-label>
+								<input formControlName="precio" matInput type="number" min="0" />
+							</mat-form-field>
+							@if (formSubmit.controls['precio'].hasError('required') ) {
+							<mat-error>Requerido</mat-error>
+							}
+						</td>
+						<td>
+							<mat-form-field appearance="outline">
+								<mat-label>Total</mat-label>
+								<input formControlName="total" matInput type="number" min="0" />
+							</mat-form-field>
+							@if (formSubmit.controls['total'].hasError('required') ) {
+							<mat-error>Requerido</mat-error>
+							}
+						</td>
+					</tr>
+				</table>
+				<div>
+					<h2>DEVOLUCIÓN DEL VEHÍCULO</h2>
+					<table>
+						<tr>
+							<td>
+								<mat-form-field appearance="outline">
+									<mat-label>Fecha de devolución</mat-label>
+									<input matInput [matDatepicker]="dpDevolucion" formControlName="fechaDevolucion" />
+									<mat-datepicker-toggle matIconSuffix [for]="dpDevolucion"></mat-datepicker-toggle>
+									<mat-datepicker #dpDevolucion></mat-datepicker>
+									@if (formSubmit.controls["fechaDevolucion"].hasError('')) {
+									<mat-error>Fecha de devolución no válido</mat-error>
+									} @if (formSubmit.controls['fechaDevolucion'].hasError('required') ) {
+									<mat-error>Requerido</mat-error>
+									}
+								</mat-form-field>
+							</td>
+							<td>
+								<mat-form-field appearance="outline">
+									<mat-label>Hora de devolución</mat-label>
+									<input matInput formControlName="horaDevolucion" [ngxMatTimepicker]="tpDevolucion" />
+									<ngx-mat-timepicker #tpDevolucion></ngx-mat-timepicker>
+									<ngx-mat-timepicker-toggle matSuffix [for]="tpDevolucion"></ngx-mat-timepicker-toggle>
+									@if (formSubmit.controls['horaDevolucion'].hasError('required')) {
+									<mat-error>Requerido</mat-error>
+									}
+								</mat-form-field>
+							</td>
+						</tr>
+					</table>
+					<h3>Kilometraje final</h3>
+					<table>
+						<tr>
+							<td class="label-td"><mat-label>Kilometraje Final</mat-label></td>
+							<td class="input-td">
+								<mat-form-field appearance="outline">
+									<mat-label>Kilometraje final</mat-label>
+									<input #kmFinal formControlName="kilometrajeFinal" matInput type="number" min="0" />
+								</mat-form-field>
+								@if (formSubmit.controls['kilometrajeFinal'].hasError('required') ) {
+								<mat-error>Requerido</mat-error>
+								}
+							</td>
+						</tr>
+						<tr>
+							<td class="label-td">
+								<mat-label>Kilometros recorridos</mat-label>
+							</td>
+							<td class="input-td">
+								<mat-form-field appearance="outline">
+									<mat-label>Kilometros recorridos</mat-label>
+									<input
+										[value]="(kmFinal.value | number) - (kmEntrega.value | number)"
+										formControlName="kilometrosRecorridos"
+										matInput
+										type="number"
+										readonly
+										min="0"
+									/>
+								</mat-form-field>
+								@if (formSubmit.controls['kilometrosRecorridos'].hasError('required') ) {
+								<mat-error>Requerido</mat-error>
+								}
+							</td>
+						</tr>
+					</table>
+
+					<h3>Combustible</h3>
+					<div class="center-content">
+						<div class="example-label-container">
+							<label>Nivel del tanque al recibir el vehículos </label>
+							<strong>
+								<label class="example-value-label">{{ slider2.value | combustiblePipe }}</label>
+							</strong>
+						</div>
+						<mat-slider [max]="1" [min]="0" [step]="0.25" [showTickMarks]="true">
+							<input matSliderThumb formControlName="combustibleFinal" #slider2 />
+						</mat-slider>
+					</div>
+
+					<mat-form-field appearance="outline">
+						<mat-label>Falla o situación que requiera mantenimientos</mat-label>
+						<textarea #fallaOIncidencia formControlName="fallaOIncidencia" matInput></textarea>
+						@if (formSubmit.controls['fallaOIncidencia'].hasError('required') ) {
+						<mat-error>Requerido</mat-error>
+						} @if ( fallaOIncidencia.value.length > 400 ) {
+						<mat-hint class="error-hint" align="end">
+							Límite de caracteres permitidos: {{ fallaOIncidencia.value.length }} / 400
+						</mat-hint>
+						} @else {
+						<mat-hint align="end"> {{ fallaOIncidencia.value.length }} / 400 </mat-hint>
+						}
+					</mat-form-field>
+
+					<table>
+						<tr>
+							<td>
+								<mat-form-field appearance="outline">
+									<mat-label>Nombre del encargado de recibir el vehiculo</mat-label>
+									<input #nombreReceptor formControlName="nombreReceptor" matInput type="text" />
+									@if (formSubmit.controls['nombreReceptor'].hasError('required') ) {
+									<mat-error>Requerido</mat-error>
+									} @if ( nombreReceptor.value.length > 150 ) {
+									<mat-hint class="error-hint" align="end">
+										Límite de caracteres permitidos: {{ nombreReceptor.value.length }} / 150
+									</mat-hint>
+									} @else {
+									<mat-hint align="end"> {{ nombreReceptor.value.length }} / 150 </mat-hint>
+									}
+								</mat-form-field>
+							</td>
+						</tr>
+					</table>
+				</div>
+
+				<button mat-flat-button color="primary" (click)="onSubmit()">Enviar</button>
+			</form>
+		</div>
+	</mat-card-content>
+</mat-card>
