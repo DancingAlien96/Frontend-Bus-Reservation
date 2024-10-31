@@ -87,7 +87,7 @@
 			<mat-card-content class="grid-container">
 				<mat-form-field appearance="outline">
 					<mat-label>Fecha de inicio</mat-label>
-					<input matInput [matDatepicker]="pke" formControlName="inicio" />
+					<input matInput [matDatepicker]="pke" formControlName="inicio" (dateChange)="onDateHourChange()" />
 					<mat-datepicker-toggle matIconSuffix [for]="pke"></mat-datepicker-toggle>
 					<mat-datepicker #pke></mat-datepicker>
 					@if (formSearch.controls["inicio"].hasError('')) {
@@ -99,7 +99,7 @@
 
 				<mat-form-field appearance="outline">
 					<mat-label>Fecha de fin</mat-label>
-					<input matInput [matDatepicker]="pkd" formControlName="fin" />
+					<input matInput [matDatepicker]="pkd" formControlName="fin" [matDatepickerFilter]="myDateFilter" />
 					<mat-datepicker-toggle matIconSuffix [for]="pkd"></mat-datepicker-toggle>
 					<mat-datepicker #pkd></mat-datepicker>
 					@if (formSearch.controls["fin"].hasError('')) {

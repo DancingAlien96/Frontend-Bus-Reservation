@@ -103,6 +103,8 @@ export class PopupVehiculosComponent {
 			inicio: new FormControl<Date | null>(null, Validators.required),
 			fin: new FormControl<Date | null>(null, Validators.required)
 		});
+
+		this.formSearch.controls['fin'].disable();
 	}
 
 	onDisponibilidad() {
@@ -138,4 +140,26 @@ export class PopupVehiculosComponent {
 			data: row
 		});
 	}
+
+	onDateHourChange() {
+		const inicio = this.formSearch.controls['inicio'].value;
+		const inicioValid = this.formSearch.controls['inicio'].valid;
+
+		if (inicio && inicioValid) {
+			this.formSearch.controls['fin'].enable();
+			this.formSearch.controls['fin'].reset();
+			this.formSearch.controls['fin'].setValidators([
+				Validators.required,
+				Validators.min(this.formSearch.controls['inicio'].value)
+			]);
+		} else {
+			this.formSearch.controls['fin'].disable();
+		}
+	}
+
+	myDateFilter = (d: Date | null): boolean => {
+		const minDate = this.formSearch.controls['inicio'].value;
+		// Prevent dates before minDate from being selected.
+		return d ? d >= minDate : false;
+	};
 }
