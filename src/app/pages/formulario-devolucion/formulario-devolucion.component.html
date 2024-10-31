@@ -51,8 +51,13 @@
 						</td>
 						<td>
 							<mat-form-field appearance="outline">
-								<mat-label>Fecha</mat-label>
-								<input matInput [matDatepicker]="dpEntrega" formControlName="fechaEntrega" />
+								<mat-label>Fecha de entrega</mat-label>
+								<input
+									matInput
+									[matDatepicker]="dpEntrega"
+									formControlName="fechaEntrega"
+									(dateChange)="onDateHourChange()"
+								/>
 								<mat-datepicker-toggle matIconSuffix [for]="dpEntrega"></mat-datepicker-toggle>
 								<mat-datepicker #dpEntrega></mat-datepicker>
 								@if (formSubmit.controls["fechaEntrega"].hasError('')) {
@@ -65,7 +70,12 @@
 						<td>
 							<mat-form-field appearance="outline">
 								<mat-label>Hora de entrega</mat-label>
-								<input matInput formControlName="horaEntrega" [ngxMatTimepicker]="tpEntrega" />
+								<input
+									matInput
+									formControlName="horaEntrega"
+									[ngxMatTimepicker]="tpEntrega"
+									(ngModelChange)="onDateHourChange()"
+								/>
 								<ngx-mat-timepicker #tpEntrega></ngx-mat-timepicker>
 								<ngx-mat-timepicker-toggle matSuffix [for]="tpEntrega"></ngx-mat-timepicker-toggle>
 								@if (formSubmit.controls['horaEntrega'].hasError('required')) {
@@ -478,7 +488,13 @@
 							<td>
 								<mat-form-field appearance="outline">
 									<mat-label>Fecha de devolución</mat-label>
-									<input matInput [matDatepicker]="dpDevolucion" formControlName="fechaDevolucion" />
+									<input
+										matInput
+										[matDatepicker]="dpDevolucion"
+										formControlName="fechaDevolucion"
+										[matDatepickerFilter]="myDateFilter"
+										(dateChange)="onDevDateHourChange()"
+									/>
 									<mat-datepicker-toggle matIconSuffix [for]="dpDevolucion"></mat-datepicker-toggle>
 									<mat-datepicker #dpDevolucion></mat-datepicker>
 									@if (formSubmit.controls["fechaDevolucion"].hasError('')) {
@@ -491,7 +507,12 @@
 							<td>
 								<mat-form-field appearance="outline">
 									<mat-label>Hora de devolución</mat-label>
-									<input matInput formControlName="horaDevolucion" [ngxMatTimepicker]="tpDevolucion" />
+									<input
+										matInput
+										formControlName="horaDevolucion"
+										[ngxMatTimepicker]="tpDevolucion"
+										[min]="minHoraDevolucion"
+									/>
 									<ngx-mat-timepicker #tpDevolucion></ngx-mat-timepicker>
 									<ngx-mat-timepicker-toggle matSuffix [for]="tpDevolucion"></ngx-mat-timepicker-toggle>
 									@if (formSubmit.controls['horaDevolucion'].hasError('required')) {

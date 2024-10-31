@@ -1,3 +1,4 @@
+import { min } from 'rxjs';
 import { Component } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -66,6 +67,7 @@ export class FormularioDevolucionComponent {
 	fecv!: FecvInterface;
 	fdcv!: FdcvInterface;
 	fdcvPost!: FdcvPostInterface;
+	minHoraDevolucion = '0:00';
 
 	constructor(
 		private fb: FormBuilder,
@@ -86,6 +88,7 @@ export class FormularioDevolucionComponent {
 					this.vehiculo = vehiculo;
 					this.loadFormVehiculo();
 				});
+				this.onDevDateHourChange();
 			}
 		});
 	}
@@ -240,5 +243,58 @@ export class FormularioDevolucionComponent {
 			FALLA_O_INCIDENCIA: this.formSubmit.controls['fallaOIncidencia'].value,
 			NOMBRE_RECEPTOR: this.formSubmit.controls['nombreReceptor'].value
 		};
+	}
+
+	onDateHourChange() {
+		const fechaEntrega = this.formSubmit.controls['fechaEntrega'].value;
+		const horaEntrega = this.formSubmit.controls['horaEntrega'].value;
+		const fechaEntregaValid = this.formSubmit.controls['fechaEntrega'].valid;
+		const horaEntregaValid = this.formSubmit.controls['horaEntrega'].valid;
+
+		if (fechaEntrega && horaEntrega && fechaEntregaValid && horaEntregaValid) {
+			this.formSubmit.controls['fechaDevolucion'].enable();
+			this.formSubmit.controls['fechaDevolucion'].reset();
+			this.formSubmit.controls['fechaDevolucion'].setValidators([
+				Validators.required,
+				Validators.min(this.formSubmit.controls['fechaEntrega'].value)
+			]);
+
+			this.formSubmit.controls['horaDevolucion'].enable();
+			this.formSubmit.controls['horaDevolucion'].reset();
+		} else {
+			this.formSubmit.controls['fechaDevolucion'].disable();
+			this.formSubmit.controls['horaDevolucion'].disable();
+		}
+	}
+
+	myDateFilter = (d: Date | null): boolean => {
+		const minDate = this.formSubmit.controls['fechaEntrega'].value;
+		minDate.setHours(0, 0, 0, 0);
+
+		// Prevent dates before minDate from being selected.
+		return d ? d >= minDate : false;
+	};
+
+	onDevDateHourChange() {
+		const devolucionMoment = this.formSubmit.controls['fechaDevolucion'].value;
+		const devolucion = new Date(devolucionMoment);
+
+		const entregaMoment = this.formSubmit.controls['fechaEntrega'].value;
+		const entrega = new Date(entregaMoment);
+
+		devolucion.setHours(0, 0, 0, 0);
+		entrega.setHours(0, 0, 0, 0);
+
+		if (devolucion.getTime() == entrega.getTime()) {
+			this.formSubmit.controls['horaDevolucion'].setValidators([
+				Validators.required,
+				Validators.min(this.formSubmit.controls['horaEntrega'].value)
+			]);
+			this.minHoraDevolucion = this.formSubmit.controls['horaEntrega'].value;
+			console.log(this.minHoraDevolucion);
+		} else {
+			this.formSubmit.controls['horaDevolucion'].setValidators([Validators.required]);
+			this.minHoraDevolucion = '0:00';
+		}
 	}
 }
