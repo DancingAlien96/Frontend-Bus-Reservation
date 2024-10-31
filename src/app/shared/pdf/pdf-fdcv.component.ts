@@ -1,4 +1,4 @@
-import { EstadoPipe, CombustiblePipe } from '../pipes/condiciones.pipe';
+import { EstadoPipe, CombustiblePipe, BoolBuenoMaloPipe } from '../pipes/condiciones.pipe';
 import { Component } from '@angular/core';
 import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
@@ -26,9 +26,9 @@ export class PdfFDCVComponent {
 
 		const pdfDefinition: any = {
 			info: {
-				title: `FECV-${(fecv.ID_SOLICITUD || 0).toString().padStart(2, '0')}`
+				title: `FECV-${fecv.ID_SOLICITUD.toString().padStart(2, '0')}`
 			},
-			pageSize: 'LETTER',
+			pageSize: 'A4',
 			content: [
 				{
 					columns: [
@@ -44,7 +44,7 @@ export class PdfFDCVComponent {
 							alignment: 'center'
 						},
 						{
-							text: `FECV-${(fecv.ID_SOLICITUD || 0).toString().padStart(2, '0')}`,
+							text: `FECV-${fecv.ID_SOLICITUD.toString().padStart(2, '0')}`,
 							width: 50,
 							height: 50,
 							alignment: 'right',
@@ -58,7 +58,7 @@ export class PdfFDCVComponent {
 					alignment: 'justify'
 				},
 				{
-					text: '\nDATOS DEL VEHÍCULO:\n\n',
+					text: 'DATOS DEL VEHÍCULO:\n',
 					style: 'sectionHeader',
 					alignment: 'center'
 				},
@@ -71,8 +71,9 @@ export class PdfFDCVComponent {
 					]
 				},
 				{
-					text: '\nREGISTRO DE INVENTARIO NO. ' + vehiculo.REGISTRO_DE_INVENTARIO + '\n\n',
-					style: 'field'
+					text: 'REGISTRO DE INVENTARIO NO. ' + vehiculo.REGISTRO_DE_INVENTARIO,
+					style: 'field',
+					margin: [0, 3, 0, 5]
 				},
 				{
 					style: 'tableExample',
@@ -86,7 +87,7 @@ export class PdfFDCVComponent {
 										style: 'sectionHeader'
 									},
 
-									{ text: 'NO. EMISIÓN: ' + fecv.ID_SOLICITUD, style: 'field' },
+									{ text: 'NO. EMISIÓN: ' + (fecv.ID_SOLICITUD || 0).toString().padStart(2, '0'), style: 'field' },
 									{ text: 'NOMBRE DEL CONDUCTOR: ' + fecv.NOMBRE_PILOTO, style: 'field' },
 
 									{ text: 'CARGO QUE OCUPA: ' + fecv.CARGO_PILOTO, style: 'field' },
@@ -96,7 +97,7 @@ export class PdfFDCVComponent {
 									},
 
 									{
-										text: 'FECHA: ' + this.datePipe.transform(fecv.FECHA_HORA_ENTREGA, 'dd/MM/yyyy'),
+										text: 'FECHA: ' + PdfFDCVComponent.datePipe.transform(fecv.FECHA_HORA_ENTREGA, 'dd/MM/yyyy'),
 										style: 'field',
 										margin: [0, 5, 0, 10]
 									},
@@ -607,7 +608,7 @@ export class PdfFDCVComponent {
 										]
 									},
 									{
-										text: 'KILOMETRAJE:',
+										text: 'KILOMETRAJE: ',
 										style: 'subSectionHeader',
 										margin: [0, 10, 0, 0]
 									},
@@ -638,16 +639,16 @@ export class PdfFDCVComponent {
 										margin: [0, 10, 0, 0]
 									},
 
-									{ text: 'FACTURA SERIE: ', style: 'field' },
-									{ text: 'NO.', style: 'value' },
-									{ text: 'GALONES', style: 'value' },
-									{ text: 'PRECIO', style: 'value' },
+									{ text: 'FACTURA SERIE: ' + fecv.FACTURA_SERIE, style: 'field' },
+									{ text: 'NO.' + fecv.NO_FACTURA, style: 'value' },
+									{ text: 'GALONES' + fecv.GALONES, style: 'value' },
+									{ text: 'PRECIO' + fecv.PRECIO, style: 'value' },
 
 									{
 										columns: [
-											{ text: 'TOTAL:', style: 'field' },
+											{ text: 'TOTAL: ' + fecv.TOTAL, style: 'field' },
 											{
-												text: 'FECHA:',
+												text: 'FECHA: ' + PdfFDCVComponent.datePipe.transform(fecv.FECHA_LLENADO, 'dd/MM/yyyy'),
 												style: 'field'
 											}
 										],
@@ -658,7 +659,7 @@ export class PdfFDCVComponent {
 										style: 'subSectionHeader'
 									},
 									{
-										text: 'INDIQUE DAÑOS A LA ESTRUCTURA DEL VEHÍCULO U OTRA SITUACIÓN QUE MEREZCA SU ATENCIÓN:',
+										text: 'INDIQUE DAÑOS A LA ESTRUCTURA DEL VEHÍCULO U OTRA SITUACIÓN QUE MEREZCA SU ATENCIÓN: ',
 										style: 'field'
 									},
 									{
@@ -687,6 +688,60 @@ export class PdfFDCVComponent {
 							]
 						]
 					}
+				},
+
+				{ text: 'DEVOLUCION DEL VEHICULO', style: 'subSectionHeader', alignment: 'center' },
+				{
+					columns: [
+						{
+							text: 'FECHA DE ENTRADA: ' + this.datePipe.transform(fecv.FECHA_HORA_DEVOLUCION, 'dd/MM/yyyy'),
+							style: 'field'
+						},
+						{ text: 'HORA DE ENTRADA ' + this.datePipe.transform(fecv.FECHA_HORA_DEVOLUCION, 'HH:mm'), style: 'field' }
+					],
+					margin: [0, 5, 0, 5]
+				},
+				{
+					columns: [
+						{ text: 'KILOMETRAJE FINAL: ' + fecv.KILOMETRAJE_FINAL, style: 'field' },
+						{ text: 'KILOMETROS RECORRIDOS ' + fecv.KILOMETROS_RECORRIDOS, style: 'field' },
+						{
+							text: 'NIVEL DEL TANQUE DE COMBUSTIBLE  ' + this.combustiblePipe.transform(fecv.NIVEL_COMBUSTIBLE_FINAL),
+							style: 'field'
+						}
+					],
+					margin: [0, 5, 0, 5]
+				},
+				{
+					text: 'DECLARO QUE PRACTIQUE REVISION DEL VEHICULO CONFORME LA INFORMACION CONSIGNADA EN EL FORMULARIO CONSTA QUE A ESTA FECHA FUE DEVUELTO EL VEHICULO EN LAS CONDICIONES EN QUE FUE RECIBIDO POR EL TRABAJADOR EN COMISION.',
+					style: 'field',
+					margin: [0, 5, 0, 5]
+				},
+				{
+					text: 'ALGUNA FALLA O SITUACIÓN QUE REQUIERA MANTENIMIENTO: ' + fecv.FALLA_O_INCIDENCIA,
+					style: 'field',
+					margin: [0, 5, 0, 5]
+				},
+				{
+					text: 'NOMBRE DEL ENCARGADO DE RECIBIR EL VEHÍCULO: ' + fecv.NOMBRE_RECEPTOR,
+					style: 'field',
+					margin: [0, 5, 0, 5]
+				},
+				{
+					columns: [
+						{
+							text: '_____________________________________________________________ \nFIRMA DE QUIEN RECIBE EL VEHICULO ',
+							style: 'field',
+							margin: [0, 35, 0, 5],
+							alignment: 'center'
+						},
+						{
+							text: '_____________________________________________________________ \nFIRMA DE QUIEN ENTREGA EL VEHICULO ',
+							style: 'field',
+							margin: [0, 35, 0, 5],
+							alignment: 'center'
+						}
+					]
 				}
 			],
 			styles: {
