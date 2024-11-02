@@ -17,7 +17,7 @@ export interface SolicitudesInterfaces {
 	NOMBRE_PILOTO: string;
 	ESTADO: number;
 	MODIFICABLE: boolean;
-	MOTIVO_RECHAZO: string | null;
+	MOTIVO_RECHAZO: string;
 	ENTREGADO: boolean;
 	DEVUELTO: boolean;
 	VEHICULO: VehiculoInterface;
