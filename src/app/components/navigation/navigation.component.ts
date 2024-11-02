@@ -67,7 +67,18 @@ export class NavigationComponent {
 						icon: 'directions_car',
 						rute: 'vehiculos'
 					});
+
+					
+					this.menuOption.push({
+						name: 'Gestionar Usuarios',
+						icon: 'person',
+						rute: 'usuarios'
+					});
+					
 					break;
+
+					
+					
 				case 2:
 					this.menuOption.push({
 						name: 'Solicitudes',

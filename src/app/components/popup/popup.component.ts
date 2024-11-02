@@ -1,7 +1,7 @@
 import { PersonalService } from './../../shared/services/personal.service';
 import { CommonModule } from '@angular/common';
 import { Component, Inject } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormControl, FormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import {
 	MAT_DIALOG_DATA,
@@ -55,6 +55,10 @@ import { PdfFDCVComponent } from '../../shared/pdf/pdf-fdcv.component';
 	providers: [DateFormatPipe]
 })
 export class PopupComponent {
+	areaTexto = new FormControl('', [Validators.required, Validators.minLength(10)]);
+	idUsuario!:number;
+	actualEstado!:number;
+	motivo:string | null = null ;
 	usuarioSession: any;
 	usuario: any | null = null;
 	eSolicitante = false;
@@ -127,16 +131,33 @@ export class PopupComponent {
 	}
 
 	save(): void {
-		const config = new MatSnackBarConfig();
 
+
+		const config = new MatSnackBarConfig();
 		config.horizontalPosition = 'center';
 		config.verticalPosition = 'bottom';
 		config.panelClass = 'OkSnackBar'; //tipo de snackbar
 		config.duration = 3000;
-		this.toast.open('guardado', 'cerrar', config);
+		if(this.areaTexto.valid){
+			this.motivo = this.areaTexto.value;
+		
+		}
+	    console.log(this.data.ID_SOLICITUD);
+		console.log(`el estado temporal es ${this.estadoTemporal}`);
+		console.log(`el motivo es: ${this.motivo}`)
+		
+		/*
+		this.solicitudesService.actualizarEstado(this.data.ID_SOLICITUD, this.estadoTemporal, this.motivo ).subscribe((res)=>{
+			console.log(res);
+			this.toast.open('guardado', 'cerrar', config);
 
 		this.dialogRef.close();
-	}
+
+		})
+
+*/
+
+			}
 
 	onPDF(): void {
 		PdfSolicitudComponent.createPDF(this.data, this.personalService);
@@ -151,6 +172,7 @@ export class PopupComponent {
 			this.areaJustificacion = false;
 		}
 	}
+
 
 	getEstadoLabel(estado: number): string {
 		let estadoLabel = '';
