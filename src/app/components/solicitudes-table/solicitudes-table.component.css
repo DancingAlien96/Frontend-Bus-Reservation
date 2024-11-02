@@ -50,3 +50,40 @@ th {
 td {
 	vertical-align: middle;
 }
+
+.grid-container {
+	display: grid;
+	grid-template-columns: 1fr 1fr; /* Dos columnas de igual tamaño */
+	gap: 20px; /* Espacio entre columnas */
+	margin-top: 0;
+	margin: 0;
+	vertical-align: middle;
+}
+
+.grid-container button {
+	margin: 20px;
+	margin-right: 0;
+	margin-left: 0;
+	height: auto;
+	width: 200px;
+	color: gray;
+}
+
+form {
+	padding: 0;
+}
+
+.search {
+	width: 100%;
+	grid-template-columns: 1fr auto;
+}
+
+.submit {
+	width: 100%;
+}
+
+mat-card-header {
+	display: flex;
+	justify-content: space-between;
+	padding: 20px;
+}

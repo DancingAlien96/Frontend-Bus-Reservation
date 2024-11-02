@@ -19,18 +19,8 @@ import 'moment/locale/es';
 import { CookieService } from 'ngx-cookie-service';
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
-
-export const MY_FORMATS = {
-	parse: {
-		dateInput: 'LL'
-	},
-	display: {
-		dateInput: 'LL',
-		monthYearLabel: 'MMM YYYY',
-		dateA11yLabel: 'LL',
-		monthYearA11yLabel: 'MMMM YYYY'
-	}
-};
+import { min, noop } from 'rxjs';
+import { MY_FORMATS } from '../../shared/utils/date-format.utils';
 
 @Component({
 	selector: 'app-formulario-solicitud',
@@ -58,6 +48,7 @@ export default class FormularioSolicitudComponent {
 	solicitud!: SolicitudPostInterface;
 	vehiculos: VehiculoInterface[] = [];
 	formSubmit: FormGroup;
+	minHoraDevolucion = '0:00';
 
 	constructor(
 		private fb: FormBuilder,
@@ -66,16 +57,19 @@ export default class FormularioSolicitudComponent {
 		private _snackBar: MatSnackBar
 	) {
 		this.formSubmit = this.fb.group({
-			nombreSolicitante: [null, Validators.required],
-			destino: [null, [Validators.required, Validators.maxLength(150)]],
-			diligencia: [null, Validators.required],
+			nombreSolicitante: [null, [Validators.required, Validators.maxLength(150)]],
+			destino: [null, [Validators.required, Validators.maxLength(200)]],
+			diligencia: [null, [Validators.required, Validators.maxLength(200)]],
 			entrega: new FormControl<Date | null>(null, Validators.required),
 			devolucion: new FormControl<Date | null>(null, Validators.required),
 			horaEntrega: [null, Validators.required],
 			horaDevolucion: [null, Validators.required],
 			vehiculo: [null, Validators.required],
-			conPiloto: ['0', Validators.required]
+			conPiloto: ['0', Validators.required],
+			nombrePiloto: [null, [Validators.maxLength(150), Validators.required]]
 		});
+		this.formSubmit.controls['devolucion'].disable();
+		this.formSubmit.controls['horaDevolucion'].disable();
 	}
 
 	onSubmit() {
@@ -112,7 +106,7 @@ export default class FormularioSolicitudComponent {
 				FECHA_HORA_ENTREGA: new Date(timestampEntrega).toJSON(),
 				FECHA_HORA_DEVOLUCION: new Date(timestampDevolucion).toJSON(),
 				CON_PILOTO: this.formSubmit.get('conPiloto')?.value,
-				NOMBRE_PILOTO: null,
+				NOMBRE_PILOTO: this.formSubmit.get('nombrePiloto')?.value,
 				ESTADO: 0,
 				MODIFICABLE: true,
 				MOTIVO_RECHAZO: null,
@@ -161,6 +155,58 @@ export default class FormularioSolicitudComponent {
 		this._snackBar.open(message, 'cerrar', config);
 	}
 
+	onRadioButtonChange(event: any) {
+		if (event.value === '0') {
+			this.formSubmit.get('nombrePiloto')?.setValue(null);
+			this.formSubmit.get('nombrePiloto')?.disable();
+			this.formSubmit.get('nombrePiloto')?.clearValidators();
+		} else {
+			this.formSubmit.get('nombrePiloto')?.enable();
+			this.formSubmit.get('nombrePiloto')?.setValidators([Validators.required]);
+		}
+	}
+
+	onDateHourChange() {
+		const entrega = this.formSubmit.controls['entrega'].value;
+		const horaEntrega = this.formSubmit.controls['horaEntrega'].value;
+		const entregaValid = this.formSubmit.controls['entrega'].valid;
+		const horaEntregaValid = this.formSubmit.controls['horaEntrega'].valid;
+
+		if (entrega && horaEntrega && entregaValid && horaEntregaValid) {
+			this.formSubmit.controls['devolucion'].enable();
+			this.formSubmit.controls['devolucion'].reset();
+			this.formSubmit.controls['devolucion'].setValidators([
+				Validators.required,
+				Validators.min(this.formSubmit.controls['entrega'].value)
+			]);
+
+			this.formSubmit.controls['horaDevolucion'].enable();
+			this.formSubmit.controls['horaDevolucion'].reset();
+		} else {
+			this.formSubmit.controls['devolucion'].disable();
+			this.formSubmit.controls['horaDevolucion'].disable();
+		}
+	}
+
+	onDevDateHourChange() {
+		const devolucionMoment = this.formSubmit.controls['devolucion'].value;
+		const devolucion = new Date(devolucionMoment);
+
+		const entregaMoment = this.formSubmit.controls['entrega'].value;
+		const entrega = new Date(entregaMoment);
+
+		if (devolucion.getTime() == entrega.getTime()) {
+			this.formSubmit.controls['horaDevolucion'].setValidators([
+				Validators.required,
+				Validators.min(this.formSubmit.controls['horaEntrega'].value)
+			]);
+			this.minHoraDevolucion = this.formSubmit.controls['horaEntrega'].value;
+		} else {
+			this.formSubmit.controls['horaDevolucion'].setValidators([Validators.required]);
+			this.minHoraDevolucion = '0:00';
+		}
+	}
+
 	combinarFechaHora(fecha: Date, hora: string): Date {
 		const fechaConHora = new Date(fecha);
 		fechaConHora.setHours(parseInt(hora.split(':')[0]));
@@ -170,4 +216,10 @@ export default class FormularioSolicitudComponent {
 
 		return fechaConHora;
 	}
+
+	myDateFilter = (d: Date | null): boolean => {
+		const minDate = this.formSubmit.controls['entrega'].value;
+		// Prevent dates before minDate from being selected.
+		return d ? d >= minDate : false;
+	};
 }

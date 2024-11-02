@@ -23,18 +23,7 @@ import { NgxMatTimepickerModule } from 'ngx-mat-timepicker';
 import { ActivatedRoute } from '@angular/router';
 import { FecvService } from '../../shared/services/fecv.service';
 import { FunctionsService } from '../../shared/services/functions.service';
-
-export const MY_FORMATS = {
-	parse: {
-		dateInput: 'LL'
-	},
-	display: {
-		dateInput: 'LL',
-		monthYearLabel: 'MMM YYYY',
-		dateA11yLabel: 'LL',
-		monthYearA11yLabel: 'MMMM YYYY'
-	}
-};
+import { MY_FORMATS } from '../../shared/utils/date-format.utils';
 
 @Component({
 	selector: 'app-formulario-entrega',
@@ -66,6 +55,7 @@ export default class FormularioEntregaComponent {
 	vehiculo!: VehiculoInterface;
 	solicitud!: SolicitudesInterfaces;
 	formSubmit!: FormGroup;
+	formVehiculo!: FormGroup;
 	fecv!: FecvInterface;
 	fecvPost!: FecvPostInterface;
 
@@ -80,10 +70,11 @@ export default class FormularioEntregaComponent {
 		this.route.queryParams.subscribe((params) => {
 			if (params['solicitud']) {
 				this.solicitud = JSON.parse(params['solicitud']);
-				this.loadForm();
+				this.loadFormSubmit();
+				this.initializeVehicleForm();
 				this.vs.getVehiculo(this.solicitud.ID_VEHICULO).subscribe((vehiculo) => {
 					this.vehiculo = vehiculo;
-					this.formSubmit.controls['kilometraje'].setValue(vehiculo.BITACORA_CONDICIONES.KILOMETRAJE);
+					this.loadFormVehiculo();
 				});
 			}
 		});
@@ -124,15 +115,15 @@ export default class FormularioEntregaComponent {
 		}
 	}
 
-	loadForm() {
+	loadFormSubmit() {
 		const fechaHoraEntrega = new Date(this.solicitud.FECHA_HORA_ENTREGA);
 		const horaEntrega = fechaHoraEntrega.toTimeString().split(' ')[0].slice(0, 5);
 
 		this.formSubmit = this.fb.group({
 			id: [this.solicitud.ID_SOLICITUD, Validators.required],
-			nombrePiloto: [this.solicitud.NOMBRE_PILOTO, Validators.required],
-			cargoPiloto: ['Piloto', Validators.required],
-			comision: [this.solicitud.DILIGENCIA, Validators.required],
+			nombrePiloto: [this.solicitud.NOMBRE_PILOTO, [Validators.required, Validators.maxLength(150)]],
+			cargoPiloto: ['Piloto', [Validators.required, Validators.maxLength(150)]],
+			comision: [this.solicitud.DILIGENCIA, [Validators.required, Validators.maxLength(150)]],
 			tarjetaCirculacion: ['1', Validators.required],
 			llavesEncendido: ['1', Validators.required],
 			llavesGasolina: ['1', Validators.required],
@@ -143,7 +134,7 @@ export default class FormularioEntregaComponent {
 			llantaRepuesto: ['1', Validators.required],
 			llaveChuchos: ['1', Validators.required],
 			tricket: ['1', Validators.required],
-			otros: ['N/A'],
+			otros: ['N/A', Validators.maxLength(150)],
 			silvines: ['1', Validators.required],
 			stops: ['1', Validators.required],
 			luzRetroceso: ['1', Validators.required],
@@ -152,10 +143,27 @@ export default class FormularioEntregaComponent {
 			limpiaparabrisas: ['1', Validators.required],
 			kilometraje: [null, Validators.required],
 			nivelCombustible: ['1', Validators.required],
-			observaciones: ['N/A'],
+			observaciones: ['N/A', Validators.maxLength(150)],
 			fecha: new FormControl<Date | null>(fechaHoraEntrega, Validators.required),
 			horaEntrega: [horaEntrega, Validators.required]
 		});
+	}
+
+	initializeVehicleForm() {
+		this.formVehiculo = this.fb.group({
+			placa: [null],
+			tipo: [null],
+			color: [null],
+			marca: [null]
+		});
+	}
+
+	loadFormVehiculo() {
+		this.formVehiculo.controls['placa'].setValue(this.vehiculo.PLACA);
+		this.formVehiculo.controls['tipo'].setValue(this.vehiculo.TIPO);
+		this.formVehiculo.controls['color'].setValue(this.vehiculo.COLOR);
+		this.formVehiculo.controls['marca'].setValue(this.vehiculo.MARCA);
+		this.formSubmit.controls['kilometraje'].setValue(this.vehiculo.BITACORA_CONDICIONES.KILOMETRAJE);
 	}
 
 	buildFecv(): FecvInterface {

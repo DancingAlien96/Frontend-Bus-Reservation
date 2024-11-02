@@ -28,6 +28,7 @@ import { SolicitudesService } from '../../shared/services/solicitudes.service';
 import { DateFormatPipe } from '../../shared/pipes/date-time-format.pipe';
 import { PdfSolicitudComponent } from '../../shared/pdf/pdf-solicitud.component';
 import { PdfFECVComponent } from '../../shared/pdf/pdf-fecv.component';
+import { PdfFDCVComponent } from '../../shared/pdf/pdf-fdcv.component';
 @Component({
 	selector: 'app-popup',
 	standalone: true,
@@ -181,6 +182,15 @@ export class PopupComponent {
 			this.dialogRef.close();
 		} else {
 			PdfFECVComponent.createPDF(this.data.FECV, this.data.VEHICULO);
+		}
+	}
+
+	onFDCV() {
+		if (this.data.FDCV == null) {
+			this.router.navigate(['/form-devolucion'], { queryParams: { solicitud: JSON.stringify(this.data) } });
+			this.dialogRef.close();
+		} else {
+			PdfFDCVComponent.createPDF(this.data.FDCV, this.data.VEHICULO);
 		}
 	}
 }

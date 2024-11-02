@@ -96,3 +96,23 @@ export class EstadoPipe implements PipeTransform {
 		}
 	}
 }
+
+@Pipe({
+	name: 'number',
+	standalone: true
+})
+export class ToNumberPipe implements PipeTransform {
+	transform(value: string) {
+		return parseFloat(parseFloat(value).toFixed(1));
+	}
+}
+
+@Pipe({
+	name: 'boolToNumber',
+	standalone: true
+})
+export class BoolToNumber implements PipeTransform {
+	transform(value: boolean) {
+		return value ? '1' : '0';
+	}
+}

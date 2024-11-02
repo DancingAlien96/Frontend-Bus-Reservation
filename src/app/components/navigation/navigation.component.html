@@ -7,21 +7,23 @@
 		[mode]="(isHandset$ | async) ? 'over' : 'side'"
 		[opened]="(isHandset$ | async) === false"
 	>
-		<mat-toolbar>Menu</mat-toolbar>
-		<mat-nav-list class="options">
-			<div class="menu-options">
-				@for (item of this.menuOption; track $index) {
+		<div class="menu-content">
+			<mat-toolbar>Menu</mat-toolbar>
+			<mat-nav-list>
+				<div class="menu-options">
+					@for (item of this.menuOption; track $index) {
 
-				<a mat-list-item routerLink="{{ item.rute }}" (click)="whenClick(item.name)">
-					<mat-icon>{{ item.icon }}</mat-icon> {{ item.name }}
+					<a mat-list-item routerLink="{{ item.rute }}" (click)="whenClick(item.name)">
+						<mat-icon>{{ item.icon }}</mat-icon> {{ item.name }}
+					</a>
+					}
+				</div>
+			</mat-nav-list>
+			<div logoutOption>
+				<a mat-list-item routerLink="{{ logoutOption.rute }}" (click)="whenClick(logoutOption.name)">
+					<mat-icon class="logout-icon">{{ logoutOption.icon }}</mat-icon> <strong> {{ logoutOption.name }}</strong>
 				</a>
-				}
 			</div>
-		</mat-nav-list>
-		<div class="logout-option">
-			<a mat-list-item routerLink="{{ logoutOption.rute }}" (click)="whenClick(logoutOption.name)">
-				<mat-icon class="logout-icon">{{ logoutOption.icon }}</mat-icon> <strong> {{ logoutOption.name }}</strong>
-			</a>
 		</div>
 	</mat-sidenav>
 	<mat-sidenav-content>

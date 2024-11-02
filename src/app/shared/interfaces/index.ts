@@ -4,3 +4,4 @@ export * from './personal.interface';
 export * from './login.interface';
 export * from './usuario.interface';
 export * from './fecv.interface';
+export * from './fdcv.interface';

@@ -27,8 +27,22 @@ export class SolicitudesService {
 		vehiculo: VehiculoInterface | undefined
 	): Observable<SolicitudesInterfaces[]> {
 		return this.http.get<SolicitudesInterfaces[]>(
-			`${this.url}/solicitud/filter/fechas?inicio=${inicio}&fin=${fin}&vehiculo=${vehiculo?.ID_VEHICULO}`
+			`${this.url}/solicitud/filter/vehiculo-fechas?inicio=${inicio}&fin=${fin}&vehiculo=${vehiculo?.ID_VEHICULO}`
 		);
+	}
+
+	getSolicitudesByDateAndUser(
+		inicio: string | null,
+		fin: string | null,
+		user_id: number
+	): Observable<SolicitudesInterfaces[]> {
+		return this.http.get<SolicitudesInterfaces[]>(
+			`${this.url}/solicitud/filter/usuario-fechas?inicio=${inicio}&fin=${fin}&user=${user_id}`
+		);
+	}
+
+	getSolicitudesByDate(inicio: string | null, fin: string | null): Observable<SolicitudesInterfaces[]> {
+		return this.http.get<SolicitudesInterfaces[]>(`${this.url}/solicitud/filter/fechas?inicio=${inicio}&fin=${fin}`);
 	}
 
 	solicitudFiltrada(id: number): Observable<any> {

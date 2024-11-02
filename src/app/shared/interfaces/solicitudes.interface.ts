@@ -1,3 +1,4 @@
+import { FdcvInterface } from './fdcv.interface';
 import { FecvInterface } from './fecv.interface';
 import { UsuarioNoRolInterface, UsuarioInterface } from './usuario.interface';
 import { VehiculoInterface } from './vehiculo.interface';
@@ -64,34 +65,4 @@ export interface SolicitudBaseInterface {
 	MOTIVO_RECHAZO: string;
 	ENTREGADO: boolean;
 	DEVUELTO: boolean;
-}
-
-export interface FdcvInterface {
-	ID_SOLICITUD: number;
-	TARJETA_CIRCULACION: boolean;
-	LLAVES_ENCENDIDO: boolean;
-	LLAVES_GASOLINA: boolean;
-	LLAVES_LLANTA: boolean;
-	ENCENDIDO_MOTOR: boolean;
-	RETROVISORES_EXTERIOR: boolean;
-	RETROVISORES_INTERIOR: boolean;
-	LLANTA_REPUESTO: boolean;
-	LLAVE_CHUCHOS: boolean;
-	TRICKET: boolean;
-	OTROS: string;
-	SILVINES_STOP: number;
-	LUZ_RETROCESO: number;
-	LUZ_EMERGENCIA: number;
-	CONDICIONES_LLANTA: number;
-	LIMPIAPARABRISAS: number;
-	KILOMETRAJE: number;
-	NIVEL_COMBUSTIBLE: number;
-	FACTURA_SERIE: string;
-	NO_FACTURA: string;
-	GALONES: number;
-	PRECIO: number;
-	TOTAL: number;
-	FECHA_LLENADO: string;
-	OBSERVACIONES: string;
-	FECHA_HORA_ENTREGA: string;
 }

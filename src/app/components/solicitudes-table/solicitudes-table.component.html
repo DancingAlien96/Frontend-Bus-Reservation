@@ -1,10 +1,14 @@
 <mat-card appearance="outlined">
 	<mat-card-header>
-		@if (rol == 3) {
-		<mat-card-title> Entregas </mat-card-title>
-		} @else {
+		@if (rol != 3) {
 		<mat-card-title> Solicitudes </mat-card-title>
+
+		} @else {
+		<mat-card-title> Entregas </mat-card-title>
 		}
+		<button *ngIf="rol != 3" mat-raised-button color="primary" routerLink="/form-solicitud">
+			<mat-icon>note_add</mat-icon> Nueva solicitud
+		</button>
 	</mat-card-header>
 	<mat-divider></mat-divider>
 	<mat-card-content>
@@ -20,12 +24,52 @@
 			</mat-tab-group>
 
 			}
+			<form [formGroup]="formSearch">
+				<div class="grid-container search">
+					<mat-form-field>
+						<mat-label>Buscar</mat-label>
+						<input matInput (keyup)="applyFilter($event)" placeholder="Ex. Solicitud" #input />
+					</mat-form-field>
+					@if (filtradoFechas) {
 
-			<mat-form-field>
-				<mat-label>Buscar</mat-label>
-				<input matInput (keyup)="applyFilter($event)" placeholder="Ex. Solicitud" #input />
-			</mat-form-field>
+					<button mat-stroked-button class="submit" (click)="onDateFilter()">
+						<mat-icon>filter_list_off</mat-icon> Quitar filtro
+					</button>
+					} @else {
+					<button mat-stroked-button class="submit" (click)="onDateFilter()">
+						<mat-icon>filter_list</mat-icon> Filtrar por fecha
+					</button>
+					}
+				</div>
+				<mat-card class="container" *ngIf="filtradoFechas">
+					<mat-card-content class="grid-container">
+						<mat-form-field appearance="outline">
+							<mat-label>Fecha de inicio</mat-label>
+							<input matInput [matDatepicker]="pke" formControlName="inicio" (dateChange)="onDateHourChange()" />
+							<mat-datepicker-toggle matIconSuffix [for]="pke"></mat-datepicker-toggle>
+							<mat-datepicker #pke></mat-datepicker>
+							@if (formSearch.controls["inicio"].hasError('')) {
+							<mat-error>Fecha de inicio no válida</mat-error>
+							} @if (formSearch.controls['inicio'].hasError('required') ) {
+							<mat-error>Requerido</mat-error>
+							}
+						</mat-form-field>
 
+						<mat-form-field appearance="outline">
+							<mat-label>Fecha de fin</mat-label>
+							<input matInput [matDatepicker]="pkd" formControlName="fin" [matDatepickerFilter]="myDateFilter" />
+							<mat-datepicker-toggle matIconSuffix [for]="pkd"></mat-datepicker-toggle>
+							<mat-datepicker #pkd></mat-datepicker>
+							@if (formSearch.controls["fin"].hasError('')) {
+							<mat-error>Fecha de fin no válida</mat-error>
+							} @if (formSearch.controls['fin'].hasError('required') ) {
+							<mat-error>Requerido</mat-error>
+							}
+						</mat-form-field>
+					</mat-card-content>
+					<button mat-raised-button class="submit" color="primary" (click)="onBuscarPorFechas()">Buscar</button>
+				</mat-card>
+			</form>
 			<div class="mat-elevation-z8">
 				<table mat-table [dataSource]="dataSource" matSort>
 					<!-- ID_SOLICITUD Column -->
