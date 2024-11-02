@@ -3,8 +3,11 @@
 	position: relative;
 }
 
-.sidenav {
+.menu-content {
 	width: 200px;
+	display: grid;
+	min-height: 100dvh;
+	grid-template-rows: auto 1fr auto;
 }
 
 .sidenav .mat-toolbar {
@@ -14,6 +17,13 @@
 .mat-toolbar.mat-primary {
 	position: sticky;
 	top: 0;
+}
+
+.logout-option {
+	bottom: 0;
+	padding: 10px 0;
+	text-align: center;
+	box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.1); /* Opcional: sombra para destacar */
 }
 
 .toolbar {
@@ -43,34 +53,10 @@
 	overflow: hidden;
 }
 
-.options {
-	display: flex;
-	flex-direction: column;
-	height: 75%;
-	overflow-y: auto;
-}
-
-.menu-options {
-	flex: 1;
-}
-
-.logout-option {
-	position: sticky;
-	bottom: 0;
-	padding: 10px 0;
-	text-align: center;
-	box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.1); /* Opcional: sombra para destacar */
-}
-
 .mat-toolbar {
 	position: sticky;
 	top: 0;
 	z-index: 2; /* Asegura que la toolbar esté encima del contenido */
-}
-
-.mat-sidenav-content {
-	z-index: 1;
-	position: relative;
 }
 
 .account_icon {

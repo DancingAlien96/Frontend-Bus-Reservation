@@ -50,9 +50,12 @@ export class NumberBeMeCdPipe implements PipeTransform {
 	standalone: true
 })
 export class CombustiblePipe implements PipeTransform {
-	transform(value: number | undefined) {
+	transform(value: number | string | undefined) {
 		if (value === undefined) {
 			return 'Sin definir';
+		}
+		if (typeof value === 'string') {
+			value = parseFloat(value);
 		}
 		switch (value) {
 			case 0.25:
@@ -64,7 +67,52 @@ export class CombustiblePipe implements PipeTransform {
 			case 1:
 				return 'Lleno';
 			default:
-				return 'Sin definir';
+				return '0';
 		}
+	}
+}
+
+@Pipe({
+	name: 'estadoPipe',
+	standalone: true
+})
+export class EstadoPipe implements PipeTransform {
+	transform(value: number | string | undefined) {
+		if (value === undefined) {
+			return 'BE';
+		}
+		if (typeof value === 'string') {
+			value = parseFloat(value);
+		}
+		switch (value) {
+			case 1:
+				return 'BE';
+			case 0:
+				return 'ME';
+			case 2:
+				return 'CD';
+			default:
+				return 'N/D';
+		}
+	}
+}
+
+@Pipe({
+	name: 'number',
+	standalone: true
+})
+export class ToNumberPipe implements PipeTransform {
+	transform(value: string) {
+		return parseFloat(parseFloat(value).toFixed(1));
+	}
+}
+
+@Pipe({
+	name: 'boolToNumber',
+	standalone: true
+})
+export class BoolToNumber implements PipeTransform {
+	transform(value: boolean) {
+		return value ? '1' : '0';
 	}
 }

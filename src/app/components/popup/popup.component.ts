@@ -1,5 +1,4 @@
 import { PersonalService } from './../../shared/services/personal.service';
-import { PdfSolicitudComponent } from './../../shared/pdf/pdf-solicitud/pdf-solicitud.component';
 import { CommonModule } from '@angular/common';
 import { Component, Inject } from '@angular/core';
 import { FormControl, FormsModule, Validators } from '@angular/forms';
@@ -15,7 +14,7 @@ import {
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatCardModule } from '@angular/material/card';
 import { VehiculoService } from '../../shared/services/vehiculo.service';
@@ -27,6 +26,9 @@ import { CombustiblePipe } from '../../shared/pipes/condiciones.pipe';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { SolicitudesService } from '../../shared/services/solicitudes.service';
 import { DateFormatPipe } from '../../shared/pipes/date-time-format.pipe';
+import { PdfSolicitudComponent } from '../../shared/pdf/pdf-solicitud.component';
+import { PdfFECVComponent } from '../../shared/pdf/pdf-fecv.component';
+import { PdfFDCVComponent } from '../../shared/pdf/pdf-fdcv.component';
 @Component({
 	selector: 'app-popup',
 	standalone: true,
@@ -85,7 +87,8 @@ export class PopupComponent {
 		private vehiculoService: VehiculoService,
 		private personalService: PersonalService,
 		private solicitudesService: SolicitudesService,
-		private datePipe: DateFormatPipe
+		private datePipe: DateFormatPipe,
+		private router: Router
 	) {
 		this.usuarioSession = sessionStorage.getItem('usuario');
 		this.usuario = JSON.parse(this.usuarioSession);
@@ -193,5 +196,23 @@ export class PopupComponent {
 				estadoLabel = 'Desconocido';
 		}
 		return estadoLabel;
+	}
+
+	onFECV() {
+		if (this.data.FECV == null) {
+			this.router.navigate(['/form-entrega'], { queryParams: { solicitud: JSON.stringify(this.data) } });
+			this.dialogRef.close();
+		} else {
+			PdfFECVComponent.createPDF(this.data.FECV, this.data.VEHICULO);
+		}
+	}
+
+	onFDCV() {
+		if (this.data.FDCV == null) {
+			this.router.navigate(['/form-devolucion'], { queryParams: { solicitud: JSON.stringify(this.data) } });
+			this.dialogRef.close();
+		} else {
+			PdfFDCVComponent.createPDF(this.data.FDCV, this.data.VEHICULO);
+		}
 	}
 }

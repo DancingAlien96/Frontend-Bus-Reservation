@@ -142,6 +142,21 @@
 				Regresar
 			</button>
 			}
+			<!-- Se muestran solo si no es solicitante -->
+			@if (!(this.idRol == 2) && this.currentPage == 1) {
+			<!-- FECV  -->
+			@if (this.data.FECV == null) {
+			<button class="pop-container-button" mat-button (click)="onFECV()">Generar Formulario de entrega</button>
+			} @else {
+			<button class="pop-container-button" mat-button (click)="onFECV()">Ver Formulario de entrega</button>
+			<!-- FDCV -->
+			@if (this.data.FDCV == null) {
+			<button class="pop-container-button" mat-button (click)="onFDCV()">Generar Formulario de devolucion</button>
+			} @else if (!(this.data.FDCV == null) ) {
+			<button class="pop-container-button" mat-button (click)="onFDCV()">Ver Formulario de devolucion</button>
+			} } }
+
+			<!--  -->
 		</div>
 		<div>
 			@if (this.eBoton == true) {

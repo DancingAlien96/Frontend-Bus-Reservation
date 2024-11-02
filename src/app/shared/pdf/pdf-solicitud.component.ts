@@ -1,10 +1,11 @@
-import { DateFormatPipe, TimeFormatPipe } from './../../pipes/date-time-format.pipe';
 import { Component } from '@angular/core';
 import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
-import { PersonalInterface, SolicitudesInterfaces } from '../../interfaces';
-import { PersonalService } from '../../services/personal.service';
+import { PersonalInterface, SolicitudesInterfaces } from '../interfaces';
+import { PersonalService } from '../services/personal.service';
+import { DateFormatPipe, TimeFormatPipe } from '../pipes/date-time-format.pipe';
+import { ImageUtils } from '../utils/image2url.utils';
 
 @Component({
 	selector: 'app-pdf-solicitud',
@@ -19,7 +20,7 @@ export class PdfSolicitudComponent {
 	static async createPDF(solicitud: SolicitudesInterfaces, personalService: PersonalService) {
 		let textoDirector = '';
 		let textoAsistente = '';
-		const logoDataURL = await this.getBase64ImageFromURL('../../../assets/logo-usac.jpg');
+		const logoDataURL = await ImageUtils.getBase64ImageFromURL('../../../assets/logo-usac.jpg');
 
 		personalService.getPersonal().subscribe({
 			next: (personalData: PersonalInterface[]) => {
@@ -260,32 +261,6 @@ export class PdfSolicitudComponent {
 					});
 				}
 			}
-		});
-	}
-
-	static getBase64ImageFromURL(url: string) {
-		return new Promise((resolve, reject) => {
-			var img = new Image();
-			img.setAttribute('crossOrigin', 'anonymous');
-
-			img.onload = () => {
-				var canvas = document.createElement('canvas');
-				canvas.width = img.width;
-				canvas.height = img.height;
-
-				var ctx = canvas.getContext('2d');
-				ctx!.drawImage(img, 0, 0);
-
-				var dataURL = canvas.toDataURL('image/png');
-
-				resolve(dataURL);
-			};
-
-			img.onerror = (error) => {
-				reject(error);
-			};
-
-			img.src = url;
 		});
 	}
 }

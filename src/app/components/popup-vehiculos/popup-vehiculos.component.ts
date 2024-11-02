@@ -38,18 +38,7 @@ import { SolicitudesService } from '../../shared/services/solicitudes.service';
 import { DateFormatPipe } from '../../shared/pipes/date-time-format.pipe';
 import { PopupComponent } from '../popup/popup.component';
 import { UsuarioInterface } from '../../shared/interfaces/usuario.interface';
-
-export const MY_FORMATS = {
-	parse: {
-		dateInput: 'LL'
-	},
-	display: {
-		dateInput: 'LL',
-		monthYearLabel: 'MMM YYYY',
-		dateA11yLabel: 'LL',
-		monthYearA11yLabel: 'MMMM YYYY'
-	}
-};
+import { MY_FORMATS } from '../../shared/utils/date-format.utils';
 
 @Component({
 	selector: 'app-popup-vehiculos',
@@ -114,6 +103,8 @@ export class PopupVehiculosComponent {
 			inicio: new FormControl<Date | null>(null, Validators.required),
 			fin: new FormControl<Date | null>(null, Validators.required)
 		});
+
+		this.formSearch.controls['fin'].disable();
 	}
 
 	onDisponibilidad() {
@@ -149,4 +140,26 @@ export class PopupVehiculosComponent {
 			data: row
 		});
 	}
+
+	onDateHourChange() {
+		const inicio = this.formSearch.controls['inicio'].value;
+		const inicioValid = this.formSearch.controls['inicio'].valid;
+
+		if (inicio && inicioValid) {
+			this.formSearch.controls['fin'].enable();
+			this.formSearch.controls['fin'].reset();
+			this.formSearch.controls['fin'].setValidators([
+				Validators.required,
+				Validators.min(this.formSearch.controls['inicio'].value)
+			]);
+		} else {
+			this.formSearch.controls['fin'].disable();
+		}
+	}
+
+	myDateFilter = (d: Date | null): boolean => {
+		const minDate = this.formSearch.controls['inicio'].value;
+		// Prevent dates before minDate from being selected.
+		return d ? d >= minDate : false;
+	};
 }

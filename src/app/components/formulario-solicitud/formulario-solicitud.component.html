@@ -8,9 +8,15 @@
 			<form [formGroup]="formSubmit">
 				<mat-form-field appearance="outline">
 					<mat-label>Nombre del solicitante</mat-label>
-					<input matInput placeholder="Ej. Juan Pérez" formControlName="nombreSolicitante" />
+					<input matInput #nombreSolicitante placeholder="Ej. Juan Pérez" formControlName="nombreSolicitante" />
 					@if (formSubmit.controls['nombreSolicitante'].hasError('required')) {
 					<mat-error>Requerido</mat-error>
+					} @if ( nombreSolicitante.value.length > 150 ) {
+					<mat-hint class="error-hint" align="end">
+						Límite de caracteres permitidos: {{ nombreSolicitante.value.length }} / 150
+					</mat-hint>
+					} @else {
+					<mat-hint align="end"> {{ nombreSolicitante.value.length }} / 150 </mat-hint>
 					}
 				</mat-form-field>
 
@@ -29,12 +35,12 @@
 					</button>
 					} @if (formSubmit.controls['destino'].hasError('required')) {
 					<mat-error>Requerido</mat-error>
-					} @if ( destinoText.value.length > 150 ) {
+					} @if ( destinoText.value.length > 200 ) {
 					<mat-hint class="error-hint" align="end">
-						Límite de caracteres permitidos: {{ destinoText.value.length }} / 150
+						Límite de caracteres permitidos: {{ destinoText.value.length }} / 200
 					</mat-hint>
 					} @else {
-					<mat-hint align="end"> {{ destinoText.value.length }} / 150 </mat-hint>
+					<mat-hint align="end"> {{ destinoText.value.length }} / 200 </mat-hint>
 					}
 				</mat-form-field>
 
@@ -52,12 +58,12 @@
 					</button>
 					} @if (formSubmit.controls['diligencia'].hasError('required')) {
 					<mat-error>Requerido</mat-error>
-					} @if ( diligenciaText.value.length > 150 ) {
+					} @if ( diligenciaText.value.length > 200 ) {
 					<mat-hint class="error-hint" align="end">
-						Límite de caracteres permitidos: {{ diligenciaText.value.length }} / 150
+						Límite de caracteres permitidos: {{ diligenciaText.value.length }} / 200
 					</mat-hint>
 					} @else {
-					<mat-hint align="end"> {{ diligenciaText.value.length }} / 150 </mat-hint>
+					<mat-hint align="end"> {{ diligenciaText.value.length }} / 200 </mat-hint>
 					}
 				</mat-form-field>
 				<table>
@@ -65,7 +71,7 @@
 						<td class="date-td">
 							<mat-form-field appearance="outline">
 								<mat-label>Fecha de entrega</mat-label>
-								<input matInput [matDatepicker]="pke" formControlName="entrega" />
+								<input matInput [matDatepicker]="pke" formControlName="entrega" (dateChange)="onDateHourChange()" />
 								<mat-datepicker-toggle matIconSuffix [for]="pke"></mat-datepicker-toggle>
 								<mat-datepicker #pke></mat-datepicker>
 								@if (formSubmit.controls["entrega"].hasError('')) {
@@ -78,7 +84,12 @@
 						<td class="hour-td">
 							<mat-form-field appearance="outline">
 								<mat-label>Hora de entrega</mat-label>
-								<input matInput formControlName="horaEntrega" [ngxMatTimepicker]="etimepk" />
+								<input
+									matInput
+									formControlName="horaEntrega"
+									[ngxMatTimepicker]="etimepk"
+									(ngModelChange)="onDateHourChange()"
+								/>
 								<ngx-mat-timepicker #etimepk></ngx-mat-timepicker>
 								<ngx-mat-timepicker-toggle matSuffix [for]="etimepk"></ngx-mat-timepicker-toggle>
 								@if (formSubmit.controls['horaEntrega'].hasError('required')) {
@@ -91,7 +102,13 @@
 						<td class="date-td">
 							<mat-form-field appearance="outline">
 								<mat-label>Fecha de devolución</mat-label>
-								<input matInput [matDatepicker]="pkd" formControlName="devolucion" />
+								<input
+									matInput
+									[matDatepicker]="pkd"
+									formControlName="devolucion"
+									[matDatepickerFilter]="myDateFilter"
+									(dateChange)="onDevDateHourChange()"
+								/>
 								<mat-datepicker-toggle matIconSuffix [for]="pkd"></mat-datepicker-toggle>
 								<mat-datepicker #pkd></mat-datepicker>
 								@if (formSubmit.controls["devolucion"].hasError('')) {
@@ -104,11 +121,18 @@
 						<td class="hour-td">
 							<mat-form-field appearance="outline">
 								<mat-label>Hora de devolución</mat-label>
-								<input matInput formControlName="horaDevolucion" [ngxMatTimepicker]="dtimepk" />
+								<input
+									matInput
+									formControlName="horaDevolucion"
+									[ngxMatTimepicker]="dtimepk"
+									[min]="minHoraDevolucion"
+								/>
 								<ngx-mat-timepicker #dtimepk></ngx-mat-timepicker>
 								<ngx-mat-timepicker-toggle matSuffix [for]="dtimepk"></ngx-mat-timepicker-toggle>
 								@if (formSubmit.controls['horaDevolucion'].hasError('required')) {
 								<mat-error>Requerido</mat-error>
+								} @if (formSubmit.controls['horaDevolucion'].hasError('min')){
+								<mat-error> La hora de devolución debe ser mayor o igual a la hora de entrega. </mat-error>
 								}
 							</mat-form-field>
 						</td>
@@ -127,10 +151,24 @@
 					}
 				</mat-form-field>
 
-				<mat-radio-group formControlName="conPiloto" class="radio-group">
+				<mat-radio-group formControlName="conPiloto" class="radio-group" (change)="onRadioButtonChange($event)">
 					<mat-radio-button value="0">Sin piloto</mat-radio-button>
 					<mat-radio-button value="1">Con piloto</mat-radio-button>
 				</mat-radio-group>
+				<mat-form-field appearance="outline">
+					<mat-label>Nombre del piloto</mat-label>
+					<input matInput #nombrePiloto placeholder="Ej. Juan Pérez" formControlName="nombrePiloto" />
+					@if (formSubmit.controls['nombrePiloto'].hasError('required')) {
+					<mat-error>Requerido</mat-error>
+					} @if ( nombrePiloto.value.length > 150 ) {
+					<mat-hint class="error-hint" align="end">
+						Límite de caracteres permitidos: {{ nombrePiloto.value.length }} / 150
+					</mat-hint>
+					} @else {
+					<mat-hint align="end"> {{ nombrePiloto.value.length }} / 150 </mat-hint>
+					}
+				</mat-form-field>
+
 				<br />
 				<br />
 				<button mat-flat-button color="primary" (click)="onSubmit()">Enviar</button>
