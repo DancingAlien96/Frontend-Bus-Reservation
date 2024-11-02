@@ -1,0 +1,30 @@
+table {
+	width: 100%;
+}
+
+.mat-mdc-form-field {
+	font-size: 14px;
+	width: 100%;
+}
+
+td,
+
+th {
+	width: auto;
+}
+.stylerow:hover {
+	cursor: pointer;
+}
+
+.dot {
+	height: 15px;
+	width: 15px;
+	background-color: #3bda0b;
+	border-radius: 50%;
+	display: inline-block;
+}
+
+
+td {
+	vertical-align: middle;
+}

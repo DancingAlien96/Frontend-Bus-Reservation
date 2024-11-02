@@ -11,7 +11,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { PaginatorService } from '../../shared/services/paginator.service';
 import { MatTabsModule } from '@angular/material/tabs';
 import { DateFormatPipe } from '../../shared/pipes/date-time-format.pipe';
-import { CookieService } from 'ngx-cookie-service';
 import { MatCardModule } from '@angular/material/card';
 import { CommonModule } from '@angular/common';
 import { MatDividerModule } from '@angular/material/divider';

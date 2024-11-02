@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { environment } from '../../../enviroment/environment.prod';
 import { SolicitudesInterfaces, SolicitudPostInterface } from '../interfaces/solicitudes.interface';
 import { VehiculoInterface } from '../interfaces';
+import { UsuarioInterface } from '../interfaces/usuario.interface';
 
 @Injectable({
 	providedIn: 'root'
@@ -34,4 +35,13 @@ export class SolicitudesService {
 	solicitudFiltrada(id: number): Observable<any> {
 		return this.http.get(`${this.url}/solicitud/filter?user=${id}`);
 	}
+
+
+	actualizarEstado(id:number, estado:number, motivo:string):Observable<UsuarioInterface>{
+		const actual = { id, estado, motivo };
+		return this.http.patch<UsuarioInterface>(`${this.url}/solicitud`,actual);
+	}
+
+
+
 }
