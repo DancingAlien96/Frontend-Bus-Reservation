@@ -159,3 +159,7 @@ p {
 	align-items: center;
 	vertical-align: middle;
 }
+
+.activate-button {
+	width: 15dvw;
+}

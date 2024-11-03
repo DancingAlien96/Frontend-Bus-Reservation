@@ -39,3 +39,15 @@ export interface UsuarioNewPasswordInterface {
 	USERNAME: string;
 	NEW_PASSWORD: string;
 }
+
+export interface UsuarioPostInterface {
+	USERNAME: string;
+	CORREO: string;
+	NOMBRE_COMPLETO: string;
+	CUI: number;
+	REGISTRO_PERSONAL: number;
+	FECHA_NACIMIENTO: string;
+	TELEFONO_UNO: string;
+	TELEFONO_DOS: string | null;
+	ID_ROL: number;
+}

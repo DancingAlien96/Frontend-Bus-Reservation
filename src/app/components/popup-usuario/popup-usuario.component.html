@@ -56,16 +56,34 @@
 	<div class="pop-container">
 		<div>
 			@if (usuario.ACTIVO) {
-			<button matTooltip="Desactivar" mat-flat-button color="primary" (click)="onActivate(usuario)">
+			<button
+				matTooltip="Desactivar"
+				mat-flat-button
+				color="primary"
+				(click)="onActivate(usuario)"
+				class="activate-button"
+			>
 				<mat-icon> block </mat-icon>
 				Desactivar
 			</button>
-			} @else {<button matTooltip="Activar" mat-flat-button color="primary" (click)="onActivate(usuario)">
+			} @else {<button
+				matTooltip="Activar"
+				mat-flat-button
+				color="primary"
+				(click)="onActivate(usuario)"
+				class="activate-button"
+			>
 				<mat-icon> check_circle </mat-icon>
 				Activar
 			</button>
 			} @if (usuario.DEFAULT_PASSWORD) {
-			<button matTooltip="Reiniciar contraseña" mat-flat-button color="primary" (click)="onReset(usuario)">
+			<button
+				matTooltip="Reiniciar contraseña"
+				mat-flat-button
+				color="primary"
+				(click)="onReset(usuario)"
+				class="activate-button"
+			>
 				<mat-icon>lock_reset</mat-icon>
 				Reiniciar contraseña
 			</button>

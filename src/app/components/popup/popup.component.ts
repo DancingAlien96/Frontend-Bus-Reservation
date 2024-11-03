@@ -56,9 +56,9 @@ import { PdfFDCVComponent } from '../../shared/pdf/pdf-fdcv.component';
 })
 export class PopupComponent {
 	areaTexto = new FormControl('', [Validators.required, Validators.minLength(10)]);
-	idUsuario!:number;
-	actualEstado!:number;
-	motivo:string | null = null ;
+	idUsuario!: number;
+	actualEstado!: number;
+	motivo: string | null = null;
 	usuarioSession: any;
 	usuario: any | null = null;
 	eSolicitante = false;
@@ -131,21 +131,18 @@ export class PopupComponent {
 	}
 
 	save(): void {
-
-
 		const config = new MatSnackBarConfig();
 		config.horizontalPosition = 'center';
 		config.verticalPosition = 'bottom';
 		config.panelClass = 'OkSnackBar'; //tipo de snackbar
 		config.duration = 3000;
-		if(this.areaTexto.valid){
+		if (this.areaTexto.valid) {
 			this.motivo = this.areaTexto.value;
-		
 		}
-	    console.log(this.data.ID_SOLICITUD);
+		console.log(this.data.ID_SOLICITUD);
 		console.log(`el estado temporal es ${this.estadoTemporal}`);
-		console.log(`el motivo es: ${this.motivo}`)
-		
+		console.log(`el motivo es: ${this.motivo}`);
+
 		/*
 		this.solicitudesService.actualizarEstado(this.data.ID_SOLICITUD, this.estadoTemporal, this.motivo ).subscribe((res)=>{
 			console.log(res);
@@ -156,8 +153,7 @@ export class PopupComponent {
 		})
 
 */
-
-			}
+	}
 
 	onPDF(): void {
 		PdfSolicitudComponent.createPDF(this.data, this.personalService);
@@ -172,7 +168,6 @@ export class PopupComponent {
 			this.areaJustificacion = false;
 		}
 	}
-
 
 	getEstadoLabel(estado: number): string {
 		let estadoLabel = '';
@@ -200,7 +195,7 @@ export class PopupComponent {
 
 	onFECV() {
 		if (this.data.FECV == null) {
-			this.router.navigate(['/form-entrega'], { queryParams: { solicitud: JSON.stringify(this.data) } });
+			this.router.navigate(['/form-entrega'], { state: { solicitud: this.data } });
 			this.dialogRef.close();
 		} else {
 			PdfFECVComponent.createPDF(this.data.FECV, this.data.VEHICULO);
@@ -209,7 +204,7 @@ export class PopupComponent {
 
 	onFDCV() {
 		if (this.data.FDCV == null) {
-			this.router.navigate(['/form-devolucion'], { queryParams: { solicitud: JSON.stringify(this.data) } });
+			this.router.navigate(['/form-devolucion'], { state: { solicitud: this.data } });
 			this.dialogRef.close();
 		} else {
 			PdfFDCVComponent.createPDF(this.data.FDCV, this.data.VEHICULO);

@@ -1,0 +1,149 @@
+<mat-card appearance="outlined">
+	<mat-card-header>
+		<mat-card-title> Nueva solicitud </mat-card-title>
+	</mat-card-header>
+	<mat-divider></mat-divider>
+	<mat-card-content>
+		<div class="container">
+			<form [formGroup]="formSubmit">
+				<mat-form-field appearance="outline">
+					<mat-label>Nombre de usuario</mat-label>
+					<input matInput #username placeholder="Ej. jperez" formControlName="username" />
+					@if (formSubmit.controls['username'].hasError('required')) {
+					<mat-error>Requerido</mat-error>
+					} @if ( username.value.length > 50 ) {
+					<mat-hint class="error-hint" align="end">
+						Límite de caracteres permitidos: {{ username.value.length }} / 50
+					</mat-hint>
+					} @else {
+					<mat-hint align="end"> {{ username.value.length }} / 50 </mat-hint>
+					}
+				</mat-form-field>
+
+				<mat-form-field appearance="outline">
+					<mat-label>Nombre completo</mat-label>
+					<input matInput #nombreCompleto placeholder="Ej. Juan Pérez" formControlName="nombreCompleto" />
+					@if (formSubmit.controls['nombreCompleto'].hasError('required')) {
+					<mat-error>Requerido</mat-error>
+					} @if ( nombreCompleto.value.length > 150 ) {
+					<mat-hint class="error-hint" align="end">
+						Límite de caracteres permitidos: {{ nombreCompleto.value.length }} / 150
+					</mat-hint>
+					} @else {
+					<mat-hint align="end"> {{ nombreCompleto.value.length }} / 150 </mat-hint>
+					}
+				</mat-form-field>
+
+				<mat-form-field appearance="outline">
+					<mat-label>Correo</mat-label>
+					<input matInput #correo placeholder="Ej. juan.perez@gmail.com" formControlName="correo" />
+					@if (formSubmit.controls['correo'].hasError('required')) {
+					<mat-error>Requerido</mat-error>
+					} @if (formSubmit.controls['correo'].hasError('email')) {
+					<mat-error>Correo inválido</mat-error>
+					} @if ( correo.value.length > 100 ) {
+					<mat-hint class="error-hint" align="end">
+						Límite de caracteres permitidos: {{ correo.value.length }} / 100
+					</mat-hint>
+					} @else {
+					<mat-hint align="end"> {{ correo.value.length }} / 100 </mat-hint>
+					}
+				</mat-form-field>
+
+				<mat-form-field appearance="outline">
+					<mat-label>CUI / DPI</mat-label>
+					<input matInput #cui placeholder="Ej. 2400000002001" formControlName="cui" type="number" />
+					@if (formSubmit.controls['cui'].hasError('required')) {
+					<mat-error>Requerido</mat-error>
+					} @if ( cui.value.length > 13 ) {
+					<mat-hint class="error-hint" align="end">
+						Límite de caracteres permitidos: {{ cui.value.length }} / 13
+					</mat-hint>
+					} @else if ( cui.value.length < 13 ) {
+					<mat-hint class="error-hint" align="end">
+						Cantidad de caracteres necesarios: {{ cui.value.length }} / 13
+					</mat-hint>
+					} @else {
+					<mat-hint align="end"> {{ cui.value.length }} / 13 </mat-hint>
+					}
+				</mat-form-field>
+
+				<mat-form-field appearance="outline">
+					<mat-label>Registro personal</mat-label>
+					<input
+						matInput
+						#registroPersonal
+						placeholder="Ej. 242400001"
+						formControlName="registroPersonal"
+						type="number"
+					/>
+					@if (formSubmit.controls['registroPersonal'].hasError('required')) {
+					<mat-error>Requerido</mat-error>
+					} @if ( registroPersonal.value.length > 15 ) {
+					<mat-hint class="error-hint" align="end">
+						Límite de caracteres permitidos: {{ registroPersonal.value.length }} / 15
+					</mat-hint>
+					} @else {
+					<mat-hint align="end"> {{ registroPersonal.value.length }} / 15 </mat-hint>
+					}
+				</mat-form-field>
+
+				<mat-form-field appearance="outline">
+					<mat-label>Fecha de nacimiento</mat-label>
+					<input matInput [matDatepicker]="dpNacimiento" formControlName="fechaNacimiento" />
+					<mat-datepicker-toggle matIconSuffix [for]="dpNacimiento"></mat-datepicker-toggle>
+					<mat-datepicker #dpNacimiento></mat-datepicker>
+					@if (formSubmit.controls["fechaNacimiento"].hasError('')) {
+					<mat-error>Fecha de nacimiento no válido</mat-error>
+					} @if (formSubmit.controls['fechaNacimiento'].hasError('required') ) {
+					<mat-error>Requerido</mat-error>
+					}
+				</mat-form-field>
+
+				<mat-form-field appearance="outline">
+					<mat-label>Telefono</mat-label>
+					<input matInput #telefonoUno placeholder="Ej. +502 50000001" formControlName="telefonoUno" />
+					@if (formSubmit.controls['telefonoUno'].hasError('required')) {
+					<mat-error>Requerido</mat-error>
+					} @if ( telefonoUno.value.length > 25 ) {
+					<mat-hint class="error-hint" align="end">
+						Límite de caracteres permitidos: {{ telefonoUno.value.length }} / 25
+					</mat-hint>
+					} @else {
+					<mat-hint align="end"> {{ telefonoUno.value.length }} / 25 </mat-hint>
+					}
+				</mat-form-field>
+
+				<mat-form-field appearance="outline">
+					<mat-label>Celular</mat-label>
+					<input matInput #telefonoDos placeholder="Ej. +502 50000001" formControlName="telefonoDos" />
+					@if (formSubmit.controls['telefonoDos'].hasError('required')) {
+					<mat-error>Requerido</mat-error>
+					} @if ( telefonoDos.value.length > 25 ) {
+					<mat-hint class="error-hint" align="end">
+						Límite de caracteres permitidos: {{ telefonoDos.value.length }} / 25
+					</mat-hint>
+					} @else {
+					<mat-hint align="end"> {{ telefonoDos.value.length }} / 25 </mat-hint>
+					}
+				</mat-form-field>
+
+				<mat-form-field appearance="outline">
+					<mat-label>Rol</mat-label>
+					<mat-select formControlName="idRol">
+						@for (item of roles; track $index) {
+						<mat-option [value]="item.ID_ROL"> {{ item.NOMBRE }} </mat-option>
+						}
+					</mat-select>
+					@if (formSubmit.controls['idRol'].hasError('required')) {
+					<mat-error>Requerido</mat-error>
+					}
+				</mat-form-field>
+
+				<br />
+				<br />
+				<button mat-flat-button color="primary" (click)="onSubmit()">Enviar</button>
+			</form>
+		</div>
+	</mat-card-content>
+</mat-card>

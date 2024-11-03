@@ -19,6 +19,7 @@ import { UsuarioActivoPipe } from '../../shared/pipes/user.pipe';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { PopupUsuarioComponent } from '../popup-usuario/popup-usuario.component';
 import { Subscription } from 'rxjs';
+import { RouterLink } from '@angular/router';
 
 @Component({
 	providers: [
@@ -42,7 +43,8 @@ import { Subscription } from 'rxjs';
 		MatIconModule,
 		MatButtonModule,
 		UsuarioActivoPipe,
-		MatTooltipModule
+		MatTooltipModule,
+		RouterLink
 	]
 })
 export class UsuariosTableComponent implements AfterViewInit {

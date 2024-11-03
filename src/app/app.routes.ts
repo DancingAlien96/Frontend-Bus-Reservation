@@ -9,6 +9,7 @@ import { SolicitudesComponent } from './pages/solicitudes/solicitudes.component'
 import { UsuariosComponent } from './pages/usuarios/usuarios.component';
 import FormularioEntregaComponent from './pages/formulario-entrega/formulario-entrega.component';
 import { FormularioDevolucionComponent } from './pages/formulario-devolucion/formulario-devolucion.component';
+import NuevoUsuarioComponent from './pages/nuevo-usuario/nuevo-usuario.component';
 
 export const routes: Routes = [
 	{
@@ -28,10 +29,9 @@ export const routes: Routes = [
 	{ path: 'login', loadComponent: () => LoginComponent, title: 'Login', canActivate: [authLoginGuard] },
 	{ path: 'vehiculos', loadComponent: () => VehiculosComponent, title: 'Vehículos', canActivate: [authGuard] },
 	{ path: 'solicitudes', loadComponent: () => SolicitudesComponent, title: 'Solicitudes', canActivate: [authGuard] },
-	
+
 	{ path: 'usuarios', loadComponent: () => UsuariosComponent, title: 'Usuarios', canActivate: [authGuard] },
-	
-	
+
 	{
 		path: 'form-entrega',
 		loadComponent: () => FormularioEntregaComponent,
@@ -42,6 +42,12 @@ export const routes: Routes = [
 		path: 'form-devolucion',
 		loadComponent: () => FormularioDevolucionComponent,
 		title: 'Formulario de Devolucion y Control de Vehículo',
+		canActivate: [authGuard]
+	},
+	{
+		path: 'nuevo-usuario',
+		loadComponent: () => NuevoUsuarioComponent,
+		title: 'Nuevo usuario',
 		canActivate: [authGuard]
 	},
 	{ path: '**', redirectTo: '' }

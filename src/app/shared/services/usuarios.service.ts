@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../../enviroment/environment.prod';
 import { HttpClient } from '@angular/common/http';
 import { Observable, Subject } from 'rxjs';
-import { UsuarioInterface, UsuarioNewPasswordInterface } from '../interfaces/usuario.interface';
+import { UsuarioInterface, UsuarioNewPasswordInterface, UsuarioPostInterface } from '../interfaces/usuario.interface';
 
 @Injectable({
 	providedIn: 'root'
@@ -23,6 +23,10 @@ export class UsuariosService {
 
 	patchResetPassword(idUsuario: number): Observable<UsuarioNewPasswordInterface> {
 		return this.http.patch<UsuarioNewPasswordInterface>(`${this.url}/usuario/reset/${idUsuario}`, {});
+	}
+
+	postUsuario(usuario: UsuarioPostInterface): Observable<UsuarioInterface> {
+		return this.http.post<UsuarioInterface>(`${this.url}/usuario`, usuario);
 	}
 
 	getUpdateObservable(): Observable<void> {
