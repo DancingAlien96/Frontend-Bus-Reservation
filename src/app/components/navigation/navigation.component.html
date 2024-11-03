@@ -35,16 +35,20 @@
 			}
 			<div class="toolbar">
 				<div><span>Sistema de Solicitudes de Vehículos de CUNORI</span></div>
-				<div class="userinfo">
-					<mat-list>
-						<mat-list-item class="userinfo-item">
-							<span class="username" matListItemTitle>{{ usuario.USERNAME }}</span>
-							<span class="role" matListItemLine>{{ usuario.ROL.NOMBRE | uppercase }}</span>
-						</mat-list-item>
-					</mat-list>
-
-					<mat-icon class="account_icon">account_circle</mat-icon>
-				</div>
+				<button mat-button [matMenuTriggerFor]="menu" class="userinfo-button">
+					<div class="userinfo">
+						<mat-list>
+							<mat-list-item class="userinfo-item">
+								<span class="username" matListItemTitle>{{ usuario.USERNAME }}</span>
+								<span class="role" matListItemLine>{{ usuario.ROL.NOMBRE | uppercase }}</span>
+							</mat-list-item>
+						</mat-list>
+						<mat-icon class="account_icon">account_circle</mat-icon>
+					</div>
+				</button>
+				<mat-menu #menu="matMenu">
+					<button mat-menu-item routerLink="profile"><mat-icon>settings</mat-icon>Mi perfil</button>
+				</mat-menu>
 			</div>
 		</mat-toolbar>
 		<router-outlet />

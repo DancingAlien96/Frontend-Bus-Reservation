@@ -35,8 +35,8 @@ export interface RolInterface {
 }
 
 export interface UsuarioNewPasswordInterface {
-	ID_USUARIO: number;
 	USERNAME: string;
+	PASSWORD: string;
 	NEW_PASSWORD: string;
 }
 

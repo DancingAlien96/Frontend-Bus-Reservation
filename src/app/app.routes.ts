@@ -10,6 +10,7 @@ import { UsuariosComponent } from './pages/usuarios/usuarios.component';
 import FormularioEntregaComponent from './pages/formulario-entrega/formulario-entrega.component';
 import { FormularioDevolucionComponent } from './pages/formulario-devolucion/formulario-devolucion.component';
 import NuevoUsuarioComponent from './pages/nuevo-usuario/nuevo-usuario.component';
+import ProfileComponent from './pages/profile/profile.component';
 
 export const routes: Routes = [
 	{
@@ -50,5 +51,6 @@ export const routes: Routes = [
 		title: 'Nuevo usuario',
 		canActivate: [authGuard]
 	},
+	{ path: 'profile', loadComponent: () => ProfileComponent, title: 'Perfil de usuario', canActivate: [authGuard] },
 	{ path: '**', redirectTo: '' }
 ];

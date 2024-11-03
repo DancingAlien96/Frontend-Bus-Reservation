@@ -1,8 +1,9 @@
+import { UsuarioNewPasswordInterface } from './../interfaces/usuario.interface';
 import { Injectable } from '@angular/core';
 import { environment } from '../../../enviroment/environment.prod';
 import { HttpClient } from '@angular/common/http';
 import { Observable, Subject } from 'rxjs';
-import { UsuarioInterface, UsuarioNewPasswordInterface, UsuarioPostInterface } from '../interfaces/usuario.interface';
+import { UsuarioInterface, UsuarioPostInterface } from '../interfaces/usuario.interface';
 
 @Injectable({
 	providedIn: 'root'
@@ -31,6 +32,10 @@ export class UsuariosService {
 
 	getUpdateObservable(): Observable<void> {
 		return this.updateSubject.asObservable();
+	}
+
+	patchChangePassword(newUserInfo: UsuarioNewPasswordInterface): Observable<UsuarioInterface> {
+		return this.http.patch<UsuarioInterface>(`${this.url}/usuario/change-password`, newUserInfo);
 	}
 
 	emitUpdate() {
