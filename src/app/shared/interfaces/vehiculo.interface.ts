@@ -15,8 +15,8 @@ export interface BitacoraCondicionesInterface {
 	ID_BITACORA: number;
 	FECHA_HORA_BITACORA: Date;
 	ID_VEHICULO: number;
-	ID_FECV: number;
-	ID_FDCV: null;
+	ID_FECV: number | null;
+	ID_FDCV: number | null;
 	TARJETA_CIRCULACION: boolean;
 	LLAVES_ENCENDIDO: boolean;
 	LLAVES_GASOLINA: boolean;

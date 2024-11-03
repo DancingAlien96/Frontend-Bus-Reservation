@@ -40,7 +40,7 @@ export interface SolicitudPostInterface {
 		NOMBRE_PILOTO: string | null;
 		ESTADO: number;
 		MODIFICABLE: boolean;
-		MOTIVO_RECHAZO: string | null;
+		MOTIVO_RECHAZO: string;
 		ENTREGADO: boolean;
 		DEVUELTO: boolean;
 	};

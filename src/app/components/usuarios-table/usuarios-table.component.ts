@@ -13,6 +13,12 @@ import { CommonModule } from '@angular/common';
 import { MatDividerModule } from '@angular/material/divider';
 import { UsuarioInterface } from '../../shared/interfaces/usuario.interface';
 import { UsuariosService } from '../../shared/services/usuarios.service';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { UsuarioActivoPipe } from '../../shared/pipes/user.pipe';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { PopupUsuarioComponent } from '../popup-usuario/popup-usuario.component';
+import { Subscription } from 'rxjs';
 
 @Component({
 	providers: [
@@ -32,7 +38,11 @@ import { UsuariosService } from '../../shared/services/usuarios.service';
 		DateFormatPipe,
 		MatCardModule,
 		CommonModule,
-		MatDividerModule
+		MatDividerModule,
+		MatIconModule,
+		MatButtonModule,
+		UsuarioActivoPipe,
+		MatTooltipModule
 	]
 })
 export class UsuariosTableComponent implements AfterViewInit {
@@ -40,55 +50,53 @@ export class UsuariosTableComponent implements AfterViewInit {
 	idUsuario!: number;
 	rol!: number;
 	tabIndex = 0;
-	displayedColumns: string[] = [
-		'ID_USUARIO',
-		'CUI',
-		'NOMBRE_COMPLETO',
-
-	];
+	displayedColumns: string[] = ['ID_USUARIO', 'USERNAME', 'NOMBRE_COMPLETO', 'CORREO', 'ROL', 'ESTADO'];
 	dataSource!: MatTableDataSource<UsuarioInterface>;
+
+	private updateSubscription!: Subscription;
 
 	@ViewChild(MatPaginator) paginator!: MatPaginator;
 	@ViewChild(MatSort) sort!: MatSort;
 
-	constructor(
-		private usuariosService:UsuariosService,
-		private dialog: MatDialog,
-		private cdr: ChangeDetectorRef
-	) {}
+	constructor(private usuariosService: UsuariosService, private dialog: MatDialog, private cdr: ChangeDetectorRef) {}
 
 	ngAfterViewInit() {
-		this.getAllRequest();
+		this.getAllUsers();
 		this.cdr.detectChanges();
+		this.updateSubscription = this.usuariosService.getUpdateObservable().subscribe(() => {
+			this.getAllUsers();
+		});
 	}
 
+	ngOnDestroy() {
+		if (this.updateSubscription) {
+			this.updateSubscription.unsubscribe();
+		}
+	}
 
-	getAllRequest() {
+	getAllUsers() {
 		const usuarioSession = sessionStorage.getItem('usuario');
+		const usuario = JSON.parse(usuarioSession!);
+		this.idUsuario = usuario.ID_USUARIO;
 
 		if (usuarioSession != null) {
-			const usuario = JSON.parse(usuarioSession);
-			const id = usuario.ID_USUARIO;
-			this.rol = usuario.ROL.ID_ROL;
-			this.idUsuario = usuario.ID_USUARIO;
-			if (this.rol == 1) {
-				this.usuariosService.getUsuarios().subscribe((data) => {
-					this.dataSource = new MatTableDataSource(data); // Asigna los datos al dataSource
-					this.dataSource.paginator = this.paginator;
-					this.dataSource.sort = this.sort;
-					//console.log(data);
+			this.usuariosService.getUsuarios().subscribe((data) => {
+				//excluye el usuario actual logueado
+				data = data.filter((usuario) => usuario.ID_USUARIO != this.idUsuario);
 
-					this.dataSource.filterPredicate = (data: UsuarioInterface, filter: string) => {
+				this.dataSource = new MatTableDataSource(data); // Asigna los datos al dataSource
+				this.dataSource.paginator = this.paginator;
+				this.dataSource.sort = this.sort;
+
+				this.dataSource.filterPredicate = (data: UsuarioInterface, filter: string) => {
 					//	let estadoLabel = this.getEstadoLabel(data.ESTADO);
 
-						const dataStr =
-							`${data.ID_USUARIO} ${data.CUI} ${data.NOMBRE_COMPLETO}`.toLowerCase();
+					const dataStr =
+						`${data.ID_USUARIO} ${data.NOMBRE_COMPLETO} ${data.USERNAME} ${data.CORREO} ${data.ROL.NOMBRE}`.toLowerCase();
 
-						return dataStr.includes(filter.trim().toLowerCase());
-					};
-				});
-			}
-		
+					return dataStr.includes(filter.trim().toLowerCase());
+				};
+			});
 		}
 	}
 
@@ -101,5 +109,10 @@ export class UsuariosTableComponent implements AfterViewInit {
 		}
 	}
 
-	
+	openDialog(row: UsuarioInterface) {
+		this.dialog.open(PopupUsuarioComponent, {
+			width: '80%',
+			data: row
+		});
+	}
 }
