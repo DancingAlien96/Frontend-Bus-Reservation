@@ -9,7 +9,7 @@ import { SolicitudesInterfaces } from '../../shared/interfaces/solicitudes.inter
 import { PopupComponent } from '../popup/popup.component';
 import { MatDialog } from '@angular/material/dialog';
 import { PaginatorService } from '../../shared/services/paginator.service';
-import { MatTabsModule } from '@angular/material/tabs';
+import { MatTabGroup, MatTabsModule } from '@angular/material/tabs';
 import { DateFormatPipe } from '../../shared/pipes/date-time-format.pipe';
 import { MatCardModule } from '@angular/material/card';
 import { CommonModule, DatePipe } from '@angular/common';
@@ -55,11 +55,11 @@ import { AlertaEliminadoComponent } from '../alerta-eliminado/alerta-eliminado.c
 	]
 })
 export class SolicitudesTableComponent implements AfterViewInit {
-	estadoActivoTab!:number; // Puedes inicializarlo con el valor de tu tab "Todas"
+	estadoActivoTab!: number; // Puedes inicializarlo con el valor de tu tab "Todas"
 
-	mostrarColumnaEstado!:boolean;
-	private updateSubscription!:Subscription;
-	trashActive!:boolean;
+	mostrarColumnaEstado!: boolean;
+	private updateSubscription!: Subscription;
+	trashActive!: boolean;
 
 	savedstate: string | null = null;
 	idUsuario!: number;
@@ -82,6 +82,7 @@ export class SolicitudesTableComponent implements AfterViewInit {
 
 	@ViewChild(MatPaginator) paginator!: MatPaginator;
 	@ViewChild(MatSort) sort!: MatSort;
+	@ViewChild(MatTabGroup) tabGroup!: MatTabGroup;
 
 	constructor(
 		private solicitudesService: SolicitudesService,
@@ -152,9 +153,6 @@ export class SolicitudesTableComponent implements AfterViewInit {
 		}
 	}
 
-	
-
-
 	ngAfterViewInit() {
 		this.getAllRequest();
 		this.cdr.detectChanges();
@@ -164,7 +162,7 @@ export class SolicitudesTableComponent implements AfterViewInit {
 			this.getAllRequest();
 			this.filterByTab(this.tabIndex);
 		})*/
-
+		this.tabGroup.selectedIndex = 1;
 	}
 
 	ngOnDestroy() {
@@ -173,7 +171,6 @@ export class SolicitudesTableComponent implements AfterViewInit {
 		}
 	}
 
- 
 	filterByTab(index: number) {
 		switch (index) {
 			case 0: // todas
@@ -199,7 +196,6 @@ export class SolicitudesTableComponent implements AfterViewInit {
 				break;
 		}
 		this.tabIndex = index;
-		console.log(this.tabIndex);
 	}
 
 	getEstadoLabel(estado: number): string {
@@ -253,9 +249,6 @@ export class SolicitudesTableComponent implements AfterViewInit {
 			this.idUsuario = usuario.ID_USUARIO;
 			if (this.idUsuario == 1) {
 				this.solicitudesService.getSolicitudes().subscribe((data) => {
-
-
-					
 					this.dataSource = new MatTableDataSource(data); // Asigna los datos al dataSource
 					this.dataSource.paginator = this.paginator;
 					this.dataSource.sort = this.sort;
@@ -309,8 +302,7 @@ export class SolicitudesTableComponent implements AfterViewInit {
 		}
 	}
 
-
-	applyFilter(event: Event, ) {
+	applyFilter(event: Event) {
 		const filterValue = (event.target as HTMLInputElement).value;
 		this.dataSource.filter = filterValue.trim().toLowerCase();
 
@@ -320,19 +312,18 @@ export class SolicitudesTableComponent implements AfterViewInit {
 	}
 
 	openDialog(row: SolicitudesInterfaces) {
-	  const dialogRef=	this.dialog.open(PopupComponent, {
+		const dialogRef = this.dialog.open(PopupComponent, {
 			width: '80%',
 			data: row
 		});
 
-
-		 dialogRef.afterClosed().subscribe(estado=>{
-			if(estado === true){
-				this.filterAfterSave(this.tabIndex);
+		dialogRef.afterClosed().subscribe((estado) => {
+			if (estado === true) {
+				this, this.getAllRequest();
+				this.tabGroup.selectedIndex = 0;
 			}
-		 })
-			}
-
+		});
+	}
 
 	onDateFilter() {
 		this.filtradoFechas = !this.filtradoFechas;
@@ -362,57 +353,4 @@ export class SolicitudesTableComponent implements AfterViewInit {
 		// Prevent dates before minDate from being selected.
 		return d ? d >= minDate : false;
 	};
-
-
-
-	filterAfterSave(index: number) {
-		// Define los estados correspondientes a cada tab
-		let estadoFiltro: number | null = null;
-	
-		switch (index) {
-			case 0: // "Todas"
-				estadoFiltro = null;
-				break;
-			case 1: // "Aprobadas"
-				estadoFiltro = 1; // Cambia a la constante de estado que representa "Aprobadas"
-				break;
-			case 2: // "Finalizadas"
-				estadoFiltro = 2; // Cambia a la constante de estado que representa "Finalizadas"
-				break;
-			case 3: // "Pendientes"
-				estadoFiltro = 3; // Cambia a la constante de estado que representa "Pendientes"
-				break;
-			case 4: // "Rechazadas"
-				estadoFiltro = 4; // Cambia a la constante de estado que representa "Rechazadas"
-				break;
-			case 5: // "Eliminadas"
-				estadoFiltro = 5; // Cambia a la constante de estado que representa "Eliminadas"
-				break;
-			default:
-				estadoFiltro = null;
-		}
-	
-		if (estadoFiltro === null) {
-			// Muestra todas las solicitudes si estadoFiltro es null
-			this.solicitudesService.getSolicitudes().subscribe((data) => {
-				this.dataSource = new MatTableDataSource(data);
-				this.dataSource.paginator = this.paginator;
-				this.dataSource.sort = this.sort;
-			});
-		} else {
-			// Filtra las solicitudes según el estado
-			this.solicitudesService.getSolicitudes().subscribe((data) => {
-				const solicitudesFiltradas = data.filter((solicitud) => solicitud.ESTADO === estadoFiltro);
-				this.dataSource = new MatTableDataSource(solicitudesFiltradas);
-				this.dataSource.paginator = this.paginator;
-				this.dataSource.sort = this.sort;
-			});
-		}
-	}
-	
-
-
-
-
-
 }
