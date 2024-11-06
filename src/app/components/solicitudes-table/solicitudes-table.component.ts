@@ -22,6 +22,9 @@ import { MY_FORMATS } from '../../shared/utils/date-format.utils';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { ComunicationService } from '../../shared/services/comunication.service';
+import { AlertaEliminadoComponent } from '../alerta-eliminado/alerta-eliminado.component';
 
 @Component({
 	providers: [
@@ -52,10 +55,13 @@ import { RouterLink } from '@angular/router';
 	]
 })
 export class SolicitudesTableComponent implements AfterViewInit {
+	private updateSubscription!:Subscription;
+	trashActive!:boolean;
 	savedstate: string | null = null;
 	idUsuario!: number;
 	filtradoFechas: boolean = false;
 	solicitudesFiltradas: boolean = false;
+	refresh!:boolean;
 	rol!: number;
 	tabIndex = 0;
 	displayedColumns: string[] = [
@@ -77,7 +83,8 @@ export class SolicitudesTableComponent implements AfterViewInit {
 		private solicitudesService: SolicitudesService,
 		private dialog: MatDialog,
 		private cdr: ChangeDetectorRef,
-		private fb: FormBuilder
+		private fb: FormBuilder,
+		private comunicacionService:ComunicationService
 	) {
 		this.formSearch = this.fb.group({
 			inicio: new FormControl<Date | null>(null, Validators.required),
@@ -144,7 +151,16 @@ export class SolicitudesTableComponent implements AfterViewInit {
 	ngAfterViewInit() {
 		this.getAllRequest();
 		this.cdr.detectChanges();
+		this.updateSubscription = this.comunicacionService.getUpdateObservable().subscribe(()=>{
+			this.getAllRequest();
+		})
 	}
+
+ ngOnDestroy(){
+	if(this.updateSubscription){
+		this.updateSubscription.unsubscribe();
+	}
+ }
 
 	filterByTab(index: number) {
 		switch (index) {
@@ -200,6 +216,24 @@ export class SolicitudesTableComponent implements AfterViewInit {
 		return estadoLabel;
 	}
 
+     alert(event: Event): void {
+		event.stopPropagation(); 
+		const dialogRef = this.dialog.open(AlertaEliminadoComponent, {
+			width: '400px'
+		  });
+		
+
+		dialogRef.afterClosed().subscribe(result=>{
+			if(result== true){
+			 //hacer algo con el backend 
+			}
+			else{
+				//hacer algo mas con el backend
+			}
+		})
+
+		
+	  }
 	getAllRequest() {
 		const usuarioSession = sessionStorage.getItem('usuario');
 
@@ -248,11 +282,10 @@ export class SolicitudesTableComponent implements AfterViewInit {
 					this.dataSource = new MatTableDataSource(data); // Asigna los datos al dataSource
 					this.dataSource.paginator = this.paginator;
 					this.dataSource.sort = this.sort;
-					//console.log(data);
-
+					
 					this.dataSource.filterPredicate = (data: SolicitudesInterfaces, filter: string) => {
 						let estadoLabel = this.getEstadoLabel(data.ESTADO);
-
+						
 						const dataStr =
 							`${data.ID_SOLICITUD} ${data.VEHICULO.PLACA}  ${data.VEHICULO.MARCA}  ${data.VEHICULO.COLOR}  ${data.VEHICULO.TIPO} ${data.FECHA_CREACION} ${data.FECHA_HORA_ENTREGA} ${data.FECHA_HORA_DEVOLUCION} ${data.NOMBRE_SOLICITANTE} ${estadoLabel}`.toLowerCase();
 
@@ -277,7 +310,8 @@ export class SolicitudesTableComponent implements AfterViewInit {
 			width: '80%',
 			data: row
 		});
-	}
+		      
+			}
 
 	onDateFilter() {
 		this.filtradoFechas = !this.filtradoFechas;
