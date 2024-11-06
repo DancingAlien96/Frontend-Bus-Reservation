@@ -1,177 +1,257 @@
 <mat-dialog-content>
-	@if (currentPage == 1) {
-	<mat-card class="popup-card">
-		<mat-card-header>
-			<mat-card-title
-				>Solicitud #{{ data.ID_SOLICITUD }} <span [ngClass]="'dot ' + getEstadoLabel(data.ESTADO)"></span
-			></mat-card-title>
+  @if (currentPage == 1) {
+  <mat-card class="popup-card">
+    <mat-card-header>
+      <mat-card-title
+        >Solicitud #{{ data.ID_SOLICITUD }}
+        <span [ngClass]="'dot ' + getEstadoLabel(data.ESTADO)"></span
+      ></mat-card-title>
 
-			<mat-card-subtitle>Creada el {{ data.FECHA_CREACION | date : 'medium' }}</mat-card-subtitle>
-		</mat-card-header>
+      <mat-card-subtitle
+        >Creada el
+        {{ data.FECHA_CREACION | date : "medium" }}</mat-card-subtitle
+      >
+    </mat-card-header>
 
-		<mat-card-content class="grid-container">
-			<section>
-				<h3>Detalles de la Solicitud</h3>
+    <mat-card-content class="grid-container">
+      <section>
+        <h3>Detalles de la Solicitud</h3>
 
-				<div class="content-container">
-					<p>
-						<strong>Vehículo Solicitado:</strong> <br />
-						{{ data.VEHICULO.TIPO + ' ' + data.VEHICULO.MARCA + ' ' + data.VEHICULO.COLOR }}
-					</p>
-					@if (!(idRol == 2)) {
-					<mat-icon (click)="pageAndDetails(2, data.ID_VEHICULO)" fontIcon="info" class="button-back"></mat-icon>
-					}
-				</div>
-				@if (idRol == 1) {
+        <div class="content-container">
+          <p>
+            <strong>Vehículo Solicitado:</strong> <br />
+            {{
+              data.VEHICULO.TIPO +
+                " " +
+                data.VEHICULO.MARCA +
+                " " +
+                data.VEHICULO.COLOR
+            }}
+          </p>
+          @if (!(idRol == 2)) {
+          <mat-icon
+            (click)="pageAndDetails(2, data.ID_VEHICULO)"
+            fontIcon="info"
+            class="button-back"
+          ></mat-icon>
+          }
+        </div>
+        @if (idRol == 1) {
 
-				<div *ngIf="data.ESTADO == 0">
-					@if (this.haySolicitudes ) {
-					<h4 class="red">
-						<strong>ADVERTENCIA:</strong><br />
-						Este vehículo tiene solicitudes aprobadas para las fechas solicitadas
-					</h4>
-					} @else {
-					<h4>Este vehículo esta disponible para las fechas solicitadas</h4>
-					}
-				</div>
-				}
+        <div *ngIf="data.ESTADO == 0">
+          @if (this.haySolicitudes ) {
+          <h4 class="red">
+            <strong>ADVERTENCIA:</strong><br />
+            Este vehículo tiene solicitudes aprobadas para las fechas
+            solicitadas
+          </h4>
+          } @else {
+          <h4>Este vehículo esta disponible para las fechas solicitadas</h4>
+          }
+        </div>
+        }
 
-				<p><strong>Destino del viaje:</strong> {{ data.DESTINO }}</p>
-				<p><strong>Diligencia a realizar:</strong> {{ data.DILIGENCIA }}</p>
-			</section>
+        <p><strong>Destino del viaje:</strong> {{ data.DESTINO }}</p>
+        <p><strong>Diligencia a realizar:</strong> {{ data.DILIGENCIA }}</p>
+      </section>
 
-			<section>
-				<h3>Fechas</h3>
-				<p>
-					<strong>Fecha y Hora de Entrega:</strong>
-					{{ data.FECHA_HORA_ENTREGA | date : "d 'de' MMMM 'de' y 'a las' h:mm a" }}
-				</p>
-				<p>
-					<strong>Fecha y Hora de Devolución:</strong>
-					{{ data.FECHA_HORA_DEVOLUCION | date : "d 'de' MMMM 'de' y 'a las' h:mm a" }}
-				</p>
-			</section>
+      <section>
+        <h3>Fechas</h3>
+        <p>
+          <strong>Fecha y Hora de Entrega:</strong>
+          {{
+            data.FECHA_HORA_ENTREGA | date : "d 'de' MMMM 'de' y 'a las' h:mm a"
+          }}
+        </p>
+        <p>
+          <strong>Fecha y Hora de Devolución:</strong>
+          {{
+            data.FECHA_HORA_DEVOLUCION
+              | date : "d 'de' MMMM 'de' y 'a las' h:mm a"
+          }}
+        </p>
+      </section>
 
-			<section>
-				<h3>Piloto</h3>
-				<p><strong>Con Piloto:</strong> {{ data.CON_PILOTO ? 'Sí' : 'No' }}</p>
-				<p><strong>Nombre del conductor:</strong> {{ data.NOMBRE_PILOTO }}</p>
-			</section>
+      <section>
+        <h3>Piloto</h3>
+        <p><strong>Con Piloto:</strong> {{ data.CON_PILOTO ? "Sí" : "No" }}</p>
+        <p><strong>Nombre del conductor:</strong> {{ data.NOMBRE_PILOTO }}</p>
+      </section>
 
-			<section>
-				<h3>Estado de la Solicitud</h3>
+      <section>
+        <h3>Estado de la Solicitud</h3>
 
-				@if (this.idRol == 1) {
-				<mat-form-field>
-					<mat-label>Estado</mat-label>
-					<mat-select [(value)]="this.estadoTemporal" (selectionChange)="changes($event)">
-						@for (estadoSelect of estados; track estadoSelect) {
-						<mat-option [value]="estadoSelect.id">{{ estadoSelect.estado }}</mat-option>
-						}
-					</mat-select>
-				</mat-form-field>
-				@if (this.areaJustificacion == true) {
-				<p>
-					<mat-form-field appearance="outline" class="areaJustificacion">
-						<mat-label>Justificacion</mat-label>
-						<textarea formControlName="areaTexto" matInput placeholder=""> </textarea>
+        @if (this.idRol == 1 && data.MODIFICABLE==true) { 
+       		@switch(data.ESTADO){
+
+
+				@case (0) {
+					<mat-form-field>
+						<mat-label>Estado</mat-label>
+						
+						<mat-select [(value)]="this.estadoTemporal" (selectionChange)="changes($event)">
+							@for (estadoSelect of estadosPendiente; track estadoSelect) {
+								<mat-option [value]="estadoSelect.id">{{ estadoSelect.estado }}</mat-option>
+							
+							}
+						</mat-select>
 					</mat-form-field>
-				</p>
-				} } @else {
-
-				<h2>{{ getEstadoLabel(data.ESTADO) }}</h2>
-
+	
+	
 				}
-			</section>
-		</mat-card-content>
-	</mat-card>
 
-	} @if (currentPage==2) {
-	<mat-card class="popup-card">
-		<mat-icon (click)="page(1)" fontIcon="arrow_back" class="button-back"></mat-icon>
+				@case (1) {
+					<mat-form-field>
+						<mat-label>Estado</mat-label>
+						
+						<mat-select [(value)]="this.estadoTemporal" (selectionChange)="changes($event)">
+							@for (estadoSelect of estadosAprobada; track estadoSelect) {
+								<mat-option [value]="estadoSelect.id">{{ estadoSelect.estado }}</mat-option>
+							
+							}
+						</mat-select>
+					</mat-form-field>
+	
+	
+				}
+							}				
+			  @if (this.areaJustificacion == true) {
+        <form [formGroup]="formSubmit">
+          <p>
+            <mat-form-field appearance="outline" class="areaJustificacion">
+              <mat-label>Justificacion</mat-label>
+              <textarea formControlName="motivo" matInput placeholder="">
+              </textarea>
+            </mat-form-field>
+          </p>
+        </form>
+        }
+	
+	} 
+  
+  
+  @else {
 
-		<mat-card-header>
-			<mat-card-title>Detalles del Vehículo</mat-card-title>
-		</mat-card-header>
+        <h2>{{ getEstadoLabel(this.estadoTemporal) }}</h2>
 
-		<mat-card-content class="grid-container">
-			<section>
-				<p><strong>Placa del Vehículo:</strong> {{ vehiculo?.PLACA }}</p>
-				<p><strong>Tipo de Vehículo:</strong> {{ vehiculo?.TIPO }}</p>
-			</section>
+        }
+      </section>
+    </mat-card-content>
+  </mat-card>
 
-			<section>
-				<p><strong>Marca del Vehículo:</strong> {{ vehiculo?.MARCA }}</p>
-				<p><strong>Color del Vehículo:</strong> {{ vehiculo?.COLOR }}</p>
-			</section>
+  } @if (currentPage==2) {
+  <mat-card class="popup-card">
+    <mat-icon
+      (click)="page(1)"
+      fontIcon="arrow_back"
+      class="button-back"
+    ></mat-icon>
 
-			<section>
-				<p>
-					<strong>Registro del Inventario:</strong>
-					{{ vehiculo?.REGISTRO_DE_INVENTARIO }}
-				</p>
-				<p>
-					<strong>Kilometraje del Vehículo:</strong>
-					{{ condiciones?.KILOMETRAJE }}
-				</p>
-			</section>
+    <mat-card-header>
+      <mat-card-title>Detalles del Vehículo</mat-card-title>
+    </mat-card-header>
 
-			<section>
-				<p>
-					<strong>Nivel de Combustible:</strong>
-					{{ condiciones?.NIVEL_COMBUSTIBLE | combustiblePipe }}
-				</p>
-				<mat-progress-bar [mode]="'determinate'" [value]="(condiciones?.NIVEL_COMBUSTIBLE ?? 0) * 100">
-				</mat-progress-bar>
-			</section>
-		</mat-card-content>
-	</mat-card>
-	}
+    <mat-card-content class="grid-container">
+      <section>
+        <p><strong>Placa del Vehículo:</strong> {{ vehiculo?.PLACA }}</p>
+        <p><strong>Tipo de Vehículo:</strong> {{ vehiculo?.TIPO }}</p>
+      </section>
+
+      <section>
+        <p><strong>Marca del Vehículo:</strong> {{ vehiculo?.MARCA }}</p>
+        <p><strong>Color del Vehículo:</strong> {{ vehiculo?.COLOR }}</p>
+      </section>
+
+      <section>
+        <p>
+          <strong>Registro del Inventario:</strong>
+          {{ vehiculo?.REGISTRO_DE_INVENTARIO }}
+        </p>
+        <p>
+          <strong>Kilometraje del Vehículo:</strong>
+          {{ condiciones?.KILOMETRAJE }}
+        </p>
+      </section>
+
+      <section>
+        <p>
+          <strong>Nivel de Combustible:</strong>
+          {{ condiciones?.NIVEL_COMBUSTIBLE | combustiblePipe }}
+        </p>
+        <mat-progress-bar
+          [mode]="'determinate'"
+          [value]="(condiciones?.NIVEL_COMBUSTIBLE ?? 0) * 100"
+        >
+        </mat-progress-bar>
+      </section>
+    </mat-card-content>
+  </mat-card>
+  }
 </mat-dialog-content>
 <mat-dialog-actions>
-	<div class="pop-container">
-		<div>
-			@if (this.currentPage == 1 && this.idRol != 3) {
-			<button mat-button class="pop-container-button" (click)="onPDF()">
-				Generar PDF
-				<mat-icon fontIcon="picture_as_pdf" aria-hidden="false"></mat-icon>
-			</button>
-			} @if (this.currentPage == 2) {
-			<button mat-button class="pop-container-button" (click)="page(1)">
-				<mat-icon>arrow_back</mat-icon>
-				Regresar
-			</button>
-			}
-			<!-- Se muestran solo si no es solicitante -->
-			@if (!(this.idRol == 2) && this.currentPage == 1) {
-			<!-- FECV  -->
-			@if (this.data.FECV == null) {
-			<button class="pop-container-button" mat-button (click)="onFECV()">Generar Formulario de entrega</button>
-			} @else {
-			<button class="pop-container-button" mat-button (click)="onFECV()">Ver Formulario de entrega</button>
-			<!-- FDCV -->
-			@if (this.data.FDCV == null) {
-			<button class="pop-container-button" mat-button (click)="onFDCV()">Generar Formulario de devolucion</button>
-			} @else if (!(this.data.FDCV == null) ) {
-			<button class="pop-container-button" mat-button (click)="onFDCV()">Ver Formulario de devolucion</button>
-			} } }
+  <div class="pop-container">
+    <div>
+      @if (this.currentPage == 1 && this.idRol != 3) {
+      <button mat-button class="pop-container-button" (click)="onPDF()">
+        Generar PDF
+        <mat-icon fontIcon="picture_as_pdf" aria-hidden="false"></mat-icon>
+      </button>
+      } @if (this.currentPage == 2) {
+      <button mat-button class="pop-container-button" (click)="page(1)">
+        <mat-icon>arrow_back</mat-icon>
+        Regresar
+      </button>
+      }
+      <!-- Se muestran solo si no es solicitante -->
+      @if (!(this.idRol == 2) && this.currentPage == 1) {
+      <!-- FECV  -->
+      @if (this.data.FECV == null) {
+      <button class="pop-container-button" mat-button (click)="onFECV()">
+        Generar Formulario de entrega
+      </button>
+      } @else {
+      <button class="pop-container-button" mat-button (click)="onFECV()">
+        Ver Formulario de entrega
+      </button>
+      <!-- FDCV -->
+      @if (this.data.FDCV == null) {
+      <button class="pop-container-button" mat-button (click)="onFDCV()">
+        Generar Formulario de devolucion
+      </button>
+      } @else if (!(this.data.FDCV == null) ) {
+      <button class="pop-container-button" mat-button (click)="onFDCV()">
+        Ver Formulario de devolucion
+      </button>
+      } } }
 
-			<!--  -->
-		</div>
-		<div>
-			@if (this.eBoton == true) {
-			<button class="pop-container-button" mat-button (click)="save()">
-				Guardar
-				<mat-icon fontIcon="save" aria-hidden="false"></mat-icon>
-			</button>
-			<button class="pop-container-button" mat-button [mat-dialog-close]="" cdkFocusInitial>
-				Cancelar
-				<mat-icon fontIcon="close" aria-hidden="false"></mat-icon>
-			</button>
-			} @else {
+      <!--  -->
+    </div>
+    <div>
+      @if (this.eBoton == true) {
+      <button class="pop-container-button" mat-button (click)="save()">
+        Guardar
+        <mat-icon fontIcon="save" aria-hidden="false"></mat-icon>
+      </button>
+      <button
+        class="pop-container-button"
+        mat-button
+        [mat-dialog-close]=""
+        cdkFocusInitial
+      >
+        Cancelar
+        <mat-icon fontIcon="close" aria-hidden="false"></mat-icon>
+      </button>
+      } @else {
 
-			<button class="pop-container-button" mat-button [mat-dialog-close]="" cdkFocusInitial>Cerrar</button>
-			}
-		</div>
-	</div>
+      <button
+        class="pop-container-button"
+        mat-button
+        [mat-dialog-close]=""
+        cdkFocusInitial
+      >
+        Cerrar
+      </button>
+      }
+    </div>
+  </div>
 </mat-dialog-actions>

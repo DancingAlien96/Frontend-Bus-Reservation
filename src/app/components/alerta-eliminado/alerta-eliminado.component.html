@@ -1,0 +1,13 @@
+<div mat-dialog-content class="confirm-dialog-content">
+    <mat-icon color="warn" class="confirm-dialog-icon">warning</mat-icon>
+    <h2 class="confirm-dialog-title">¿Estás seguro?</h2>
+    <p class="confirm-dialog-message">¿Realmente deseas eliminar esta solicitud? Esta acción no se puede deshacer.</p>
+  </div>
+  
+  <mat-dialog-actions align="end">
+    <div class="buttons-container">
+    <button mat-button (click)="cancelar()" class="cancel-button">Cancelar</button>
+    <button mat-button color="warn" (click)="confirmar()" class="confirm-button">Aceptar</button>
+    </div>
+  </mat-dialog-actions>
+  
