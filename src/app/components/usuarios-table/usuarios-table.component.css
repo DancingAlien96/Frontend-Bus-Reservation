@@ -8,7 +8,6 @@ table {
 }
 
 td,
-
 th {
 	width: auto;
 }
@@ -19,12 +18,42 @@ th {
 .dot {
 	height: 15px;
 	width: 15px;
-	background-color: #3bda0b;
 	border-radius: 50%;
 	display: inline-block;
 }
 
+.Activo {
+	background-color: #4caf50;
+}
+.Inactivo {
+	background-color: #f44336;
+}
 
 td {
 	vertical-align: middle;
+}
+
+/* styles.css o en el archivo de estilos del componente */
+.status-active {
+	background-color: #d4f4e0; /* color verde claro */
+	color: #3c9a5f; /* color verde oscuro */
+	border-radius: 5px;
+	text-align: center;
+	vertical-align: middle;
+	padding: 1dvh;
+}
+
+.status-not-active {
+	background-color: #fde2e2; /* color rojo claro */
+	color: #d9534f; /* color rojo oscuro */
+	border-radius: 5px;
+	text-align: center;
+	vertical-align: middle;
+	padding: 1dvh;
+}
+
+mat-card-header {
+	display: flex;
+	justify-content: space-between;
+	padding: 20px;
 }

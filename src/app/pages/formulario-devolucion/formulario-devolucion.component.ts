@@ -28,7 +28,7 @@ import {
 } from '../../shared/interfaces';
 import { VehiculoService } from '../../shared/services/vehiculo.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FunctionsService } from '../../shared/services/functions.service';
 import { FdcvService } from '../../shared/services/fdcv.service';
 
@@ -75,22 +75,22 @@ export class FormularioDevolucionComponent {
 		private fdcvs: FdcvService,
 		private _snackBar: MatSnackBar,
 		private route: ActivatedRoute,
-		private fs: FunctionsService
+		private fs: FunctionsService,
+		private router: Router
 	) {
-		this.route.queryParams.subscribe((params) => {
-			if (params['solicitud']) {
-				this.solicitud = JSON.parse(params['solicitud']);
-				this.fecv = this.solicitud.FECV!;
+		const navigation = this.router.getCurrentNavigation();
+		if (navigation?.extras.state && navigation.extras.state['solicitud']) {
+			this.solicitud = navigation.extras.state['solicitud'];
+			this.fecv = this.solicitud.FECV!;
 
-				this.loadFormSubmit();
-				this.initializeVehicleForm();
-				this.vs.getVehiculo(this.solicitud.ID_VEHICULO).subscribe((vehiculo) => {
-					this.vehiculo = vehiculo;
-					this.loadFormVehiculo();
-				});
-				this.onDevDateHourChange();
-			}
-		});
+			this.loadFormSubmit();
+			this.initializeVehicleForm();
+			this.vs.getVehiculo(this.solicitud.ID_VEHICULO).subscribe((vehiculo) => {
+				this.vehiculo = vehiculo;
+				this.loadFormVehiculo();
+			});
+			this.onDevDateHourChange();
+		}
 	}
 
 	onSubmit() {

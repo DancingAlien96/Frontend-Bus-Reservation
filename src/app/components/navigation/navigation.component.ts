@@ -14,6 +14,7 @@ import { LoginService } from '../../shared/services/login.service';
 import { AuthService } from '../../shared/services/auth.service';
 import { CookieService } from 'ngx-cookie-service';
 import { UsuarioInterface } from '../../shared/interfaces/usuario.interface';
+import { MatMenuModule } from '@angular/material/menu';
 
 @Component({
 	selector: 'app-navigation',
@@ -29,7 +30,8 @@ import { UsuarioInterface } from '../../shared/interfaces/usuario.interface';
 		AsyncPipe,
 		RouterOutlet,
 		RouterLink,
-		UpperCasePipe
+		UpperCasePipe,
+		MatMenuModule
 	]
 })
 export class NavigationComponent {
@@ -41,7 +43,7 @@ export class NavigationComponent {
 		icon: 'logout',
 		rute: null
 	};
-	constructor(private authService: AuthService, private cookies: CookieService, private router: Router) {
+	constructor(private authService: AuthService, private router: Router) {
 		const usuarioSession = sessionStorage.getItem('usuario');
 
 		if (usuarioSession != null) {
@@ -68,17 +70,14 @@ export class NavigationComponent {
 						rute: 'vehiculos'
 					});
 
-					
 					this.menuOption.push({
 						name: 'Gestionar Usuarios',
 						icon: 'person',
 						rute: 'usuarios'
 					});
-					
+
 					break;
 
-					
-					
 				case 2:
 					this.menuOption.push({
 						name: 'Solicitudes',

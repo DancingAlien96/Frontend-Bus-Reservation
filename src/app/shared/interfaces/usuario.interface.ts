@@ -8,7 +8,9 @@ export interface UsuarioInterface {
 	FECHA_NACIMIENTO: Date;
 	TELEFONO_UNO: string;
 	TELEFONO_DOS: string;
-	ID_ROL:number;
+	ACTIVO: boolean;
+	DEFAULT_PASSWORD: boolean;
+	ID_ROL: number;
 	ROL: RolInterface;
 }
 
@@ -19,12 +21,33 @@ export interface UsuarioNoRolInterface {
 	NOMBRE_COMPLETO: string;
 	CUI: number;
 	REGISTRO_PERSONAL: number;
-	FECHA_NACIMIENTO: Date | string;
-	TELEFONO_UNO: string | null;
-	TELEFONO_DOS: string | null;
+	FECHA_NACIMIENTO: Date;
+	TELEFONO_UNO: string;
+	TELEFONO_DOS: string;
+	ACTIVO: boolean;
+	DEFAULT_PASSWORD: boolean;
+	ID_ROL: number;
 }
 
 export interface RolInterface {
 	ID_ROL: number;
 	NOMBRE: string;
+}
+
+export interface UsuarioNewPasswordInterface {
+	USERNAME: string;
+	PASSWORD: string;
+	NEW_PASSWORD: string;
+}
+
+export interface UsuarioPostInterface {
+	USERNAME: string;
+	CORREO: string;
+	NOMBRE_COMPLETO: string;
+	CUI: number;
+	REGISTRO_PERSONAL: number;
+	FECHA_NACIMIENTO: string;
+	TELEFONO_UNO: string;
+	TELEFONO_DOS: string | null;
+	ID_ROL: number;
 }

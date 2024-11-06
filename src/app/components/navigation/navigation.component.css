@@ -87,3 +87,7 @@ mat-icon {
 	color: #eb3b5a;
 	transform: scale(1.2);
 }
+
+.userinfo-button :hover {
+	cursor: pointer;
+}

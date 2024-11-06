@@ -1,0 +1,96 @@
+<mat-dialog-content>
+	<mat-card class="popup-card">
+		<mat-card-header>
+			<mat-card-title>Información del Usuario</mat-card-title>
+			<mat-card-subtitle>{{ usuario.USERNAME }}</mat-card-subtitle>
+		</mat-card-header>
+
+		<mat-card-content class="grid-container">
+			<section>
+				<h3>Datos personales</h3>
+				<p><strong>Nombre completo:</strong> {{ usuario.NOMBRE_COMPLETO }}</p>
+				<p><strong>CUI/DPI:</strong> {{ usuario.CUI }}</p>
+				<p><strong>Registro personal:</strong> {{ usuario.REGISTRO_PERSONAL }}</p>
+				<p><strong>Fecha de nacimiento:</strong> {{ usuario.FECHA_NACIMIENTO }}</p>
+				<p><strong>Edad:</strong> {{ usuario.FECHA_NACIMIENTO | edadPipe }} años</p>
+			</section>
+
+			<section>
+				<h3>Contacto</h3>
+				<p><strong>Correo:</strong> {{ usuario.CORREO }}</p>
+				<p>
+					@if (usuario.TELEFONO_UNO) {
+					<strong>Telefonos:</strong>
+					<br />
+					{{ usuario.TELEFONO_UNO }}
+					<br />
+					{{ usuario.TELEFONO_DOS }}
+					} @else {
+					<strong>Telefono:</strong>{{ usuario.TELEFONO_UNO }}
+					}
+				</p>
+			</section>
+
+			<section>
+				<h3>Información de usuario</h3>
+				<p><strong>Nombre de usuario:</strong> {{ usuario.USERNAME }}</p>
+				<p><strong>Rol:</strong> {{ usuario.ROL.NOMBRE }}</p>
+				<p class="flex-container content-container">
+					<strong>Estado: </strong>
+					<body [ngClass]="usuario.ACTIVO === true ? 'status-active' : 'status-not-active'">
+						<span [ngClass]="'dot ' + (usuario.ACTIVO | usuarioActivoPipe)"></span>
+						{{ usuario.ACTIVO | usuarioActivoPipe }}
+					</body>
+				</p>
+			</section>
+		</mat-card-content>
+		@if (usuario.DEFAULT_PASSWORD) {
+		<div class="center">
+			<mat-icon>warning</mat-icon>
+			<h4>El usuario tiene una contraseña autogenerada por defecto.</h4>
+		</div>
+		}
+	</mat-card>
+</mat-dialog-content>
+<mat-dialog-actions>
+	<div class="pop-container">
+		<div>
+			@if (usuario.ACTIVO) {
+			<button
+				matTooltip="Desactivar"
+				mat-flat-button
+				color="primary"
+				(click)="onActivate(usuario)"
+				class="activate-button"
+			>
+				<mat-icon> block </mat-icon>
+				Desactivar
+			</button>
+			} @else {<button
+				matTooltip="Activar"
+				mat-flat-button
+				color="primary"
+				(click)="onActivate(usuario)"
+				class="activate-button"
+			>
+				<mat-icon> check_circle </mat-icon>
+				Activar
+			</button>
+			} @if (usuario.DEFAULT_PASSWORD) {
+			<button
+				matTooltip="Reiniciar contraseña"
+				mat-flat-button
+				color="primary"
+				(click)="onReset(usuario)"
+				class="activate-button"
+			>
+				<mat-icon>lock_reset</mat-icon>
+				Reiniciar contraseña
+			</button>
+			}
+		</div>
+		<div>
+			<button class="pop-container-button" mat-button [mat-dialog-close]="" cdkFocusInitial>Cerrar</button>
+		</div>
+	</div>
+</mat-dialog-actions>

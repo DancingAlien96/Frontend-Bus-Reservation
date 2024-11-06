@@ -1,20 +1,42 @@
+import { UsuarioNewPasswordInterface } from './../interfaces/usuario.interface';
 import { Injectable } from '@angular/core';
 import { environment } from '../../../enviroment/environment.prod';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { UsuarioInterface } from '../interfaces/usuario.interface';
+import { Observable, Subject } from 'rxjs';
+import { UsuarioInterface, UsuarioPostInterface } from '../interfaces/usuario.interface';
 
 @Injectable({
-  providedIn: 'root'
+	providedIn: 'root'
 })
 export class UsuariosService {
-  readonly url = environment.api;
-  constructor(private http:HttpClient) {
+	readonly url = environment.api;
+	private updateSubject = new Subject<void>();
+	getUpdateObservable(): Observable<void> {
+		return this.updateSubject.asObservable();
+	}
+	emitUpdate() {
+		this.updateSubject.next();
+	}
 
-   }
+	constructor(private http: HttpClient) {}
 
+	getUsuarios(): Observable<UsuarioInterface[]> {
+		return this.http.get<UsuarioInterface[]>(`${this.url}/usuario`);
+	}
 
-   getUsuarios():Observable<UsuarioInterface[]>{
-    return this.http.get<UsuarioInterface[]>(`${this.url}/usuario`);
-   }
+	patchActivarDesactivarUsuario(idUsuario: number): Observable<UsuarioInterface> {
+		return this.http.patch<UsuarioInterface>(`${this.url}/usuario/activate/${idUsuario}`, {});
+	}
+
+	patchResetPassword(idUsuario: number): Observable<UsuarioNewPasswordInterface> {
+		return this.http.patch<UsuarioNewPasswordInterface>(`${this.url}/usuario/reset/${idUsuario}`, {});
+	}
+
+	postUsuario(usuario: UsuarioPostInterface): Observable<UsuarioInterface> {
+		return this.http.post<UsuarioInterface>(`${this.url}/usuario`, usuario);
+	}
+
+	patchChangePassword(newUserInfo: UsuarioNewPasswordInterface): Observable<UsuarioInterface> {
+		return this.http.patch<UsuarioInterface>(`${this.url}/usuario/change-password`, newUserInfo);
+	}
 }

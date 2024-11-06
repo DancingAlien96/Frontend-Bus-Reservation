@@ -20,7 +20,7 @@ import { MAT_DATE_LOCALE, MatNativeDateModule } from '@angular/material/core';
 import { provideMomentDateAdapter } from '@angular/material-moment-adapter';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { NgxMatTimepickerModule } from 'ngx-mat-timepicker';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FecvService } from '../../shared/services/fecv.service';
 import { FunctionsService } from '../../shared/services/functions.service';
 import { MY_FORMATS } from '../../shared/utils/date-format.utils';
@@ -65,19 +65,19 @@ export default class FormularioEntregaComponent {
 		private fecvs: FecvService,
 		private _snackBar: MatSnackBar,
 		private route: ActivatedRoute,
-		private fs: FunctionsService
+		private fs: FunctionsService,
+		private router: Router
 	) {
-		this.route.queryParams.subscribe((params) => {
-			if (params['solicitud']) {
-				this.solicitud = JSON.parse(params['solicitud']);
-				this.loadFormSubmit();
-				this.initializeVehicleForm();
-				this.vs.getVehiculo(this.solicitud.ID_VEHICULO).subscribe((vehiculo) => {
-					this.vehiculo = vehiculo;
-					this.loadFormVehiculo();
-				});
-			}
-		});
+		const navigation = this.router.getCurrentNavigation();
+		if (navigation?.extras.state && navigation.extras.state['solicitud']) {
+			this.solicitud = navigation.extras.state['solicitud'];
+			this.loadFormSubmit();
+			this.initializeVehicleForm();
+			this.vs.getVehiculo(this.solicitud.ID_VEHICULO).subscribe((vehiculo) => {
+				this.vehiculo = vehiculo;
+				this.loadFormVehiculo();
+			});
+		}
 	}
 
 	onSubmit() {

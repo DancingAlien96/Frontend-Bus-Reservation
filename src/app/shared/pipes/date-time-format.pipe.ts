@@ -6,7 +6,7 @@ import { LOCALE_ID, Pipe, PipeTransform } from '@angular/core';
 	standalone: true
 })
 export class DateFormatPipe implements PipeTransform {
-	transform(value: string) {
+	transform(value: string | Date) {
 		const datePipe = new DatePipe('es');
 		const date = new Date(value);
 		return datePipe.transform(date, "d 'de' MMMM 'de' y");

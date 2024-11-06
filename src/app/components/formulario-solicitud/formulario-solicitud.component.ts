@@ -109,7 +109,7 @@ export default class FormularioSolicitudComponent {
 				NOMBRE_PILOTO: this.formSubmit.get('nombrePiloto')?.value,
 				ESTADO: 0,
 				MODIFICABLE: true,
-				MOTIVO_RECHAZO: null,
+				MOTIVO_RECHAZO: '',
 				ENTREGADO: false,
 				DEVUELTO: false
 			};

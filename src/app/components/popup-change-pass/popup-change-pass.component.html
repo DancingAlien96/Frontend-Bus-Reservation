@@ -1,0 +1,60 @@
+<mat-dialog-content>
+	<mat-card class="popup-card">
+		<mat-card-header>
+			<mat-card-title>Cambiar contraseña</mat-card-title>
+			<mat-card-subtitle>Ingrese su contraseña actual y la nueva contraseña</mat-card-subtitle>
+		</mat-card-header>
+		<mat-card-content class="grid-container">
+			<form [formGroup]="formSubmit">
+				<mat-form-field appearance="outline">
+					<mat-label>Contraseña actual</mat-label>
+					<input matInput #oldPassword formControlName="oldPassword" [type]="hideOld ? 'password' : 'text'" />
+					<button
+						mat-icon-button
+						matSuffix
+						(click)="hideOld = !hideOld"
+						[attr.aria-label]="'Ocultar contraseña'"
+						[attr.aria-pressed]="hideOld"
+					>
+						<mat-icon>{{ hideOld ? 'visibility_off' : 'visibility' }}</mat-icon>
+					</button>
+					@if (formSubmit.controls['oldPassword'].hasError('required')) {
+					<mat-error>Requerido</mat-error>
+					}
+				</mat-form-field>
+
+				<mat-form-field appearance="outline">
+					<mat-label>Contraseña nueva</mat-label>
+					<input matInput #newPassword formControlName="newPassword" [type]="hideNew ? 'password' : 'text'" />
+					<button
+						mat-icon-button
+						matSuffix
+						(click)="hideNew = !hideNew"
+						[attr.aria-label]="'Ocultar contraseña'"
+						[attr.aria-pressed]="hideNew"
+					>
+						<mat-icon>{{ hideNew ? 'visibility_off' : 'visibility' }}</mat-icon>
+					</button>
+					@if (formSubmit.controls['newPassword'].hasError('required')) {
+					<mat-error>Requerido</mat-error>
+					} @if ( newPassword.value.length < 8 ) {
+					<mat-hint class="error-hint" align="end">
+						Cantidad mínima de caracteres: {{ newPassword.value.length }} / 8
+					</mat-hint>
+					} @else {
+					<mat-hint align="end"> {{ newPassword.value.length }} / 8 </mat-hint>
+					}
+				</mat-form-field>
+			</form>
+		</mat-card-content>
+	</mat-card>
+</mat-dialog-content>
+<mat-dialog-actions>
+	<div class="pop-container">
+		<div></div>
+		<div>
+			<button class="pop-container-button" mat-button (click)="onSubmit()" [mat-dialog-close]="">Guardar</button>
+			<button class="pop-container-button" mat-button [mat-dialog-close]="" cdkFocusInitial>Cancelar</button>
+		</div>
+	</div>
+</mat-dialog-actions>

@@ -1,0 +1,63 @@
+<mat-card class="popup-card">
+	<mat-card-header>
+		<mat-card-title>Perfil de usuario</mat-card-title>
+		<mat-card-subtitle>{{ usuario.USERNAME }}</mat-card-subtitle>
+	</mat-card-header>
+	@if (usuario.DEFAULT_PASSWORD) {
+
+	<div class="alert">
+		<span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+		<div class="grid-container-auto">
+			<mat-icon>warning</mat-icon>
+			<h2>Este usuario tiene una contraseña autogenerada por defecto.</h2>
+		</div>
+	</div>
+	}
+	<mat-card-content class="grid-container">
+		<section>
+			<h3>Datos personales</h3>
+			<p><strong>Nombre completo:</strong> {{ usuario.NOMBRE_COMPLETO }}</p>
+			<p><strong>CUI/DPI:</strong> {{ usuario.CUI }}</p>
+			<p><strong>Registro personal:</strong> {{ usuario.REGISTRO_PERSONAL }}</p>
+			<p><strong>Fecha de nacimiento:</strong> {{ usuario.FECHA_NACIMIENTO | dateFormat }}</p>
+			<p><strong>Edad:</strong> {{ usuario.FECHA_NACIMIENTO | edadPipe }} años</p>
+		</section>
+
+		<section>
+			<h3>Contacto</h3>
+			<p>
+				<strong>Correo: </strong> <a href="mailto:{{ usuario.CORREO }}">{{ usuario.CORREO }}</a>
+			</p>
+			<p>
+				@if (usuario.TELEFONO_UNO) {
+				<strong>Telefonos:</strong>
+				<br />
+				{{ usuario.TELEFONO_UNO }}
+				<br />
+				{{ usuario.TELEFONO_DOS }}
+				} @else {
+				<strong>Telefono:</strong>{{ usuario.TELEFONO_UNO }}
+				}
+			</p>
+		</section>
+
+		<section>
+			<h3>Información de usuario</h3>
+			<p><strong>Nombre de usuario:</strong> {{ usuario.USERNAME }}</p>
+			<p><strong>Rol:</strong> {{ usuario.ROL.NOMBRE }}</p>
+			<p class="flex-container content-container">
+				<strong>Estado: </strong>
+				<body [ngClass]="usuario.ACTIVO === true ? 'status-active' : 'status-not-active'">
+					<span [ngClass]="'dot ' + (usuario.ACTIVO | usuarioActivoPipe)"></span>
+					{{ usuario.ACTIVO | usuarioActivoPipe }}
+				</body>
+			</p>
+		</section>
+
+		<section>
+			<h3>Seguridad</h3>
+			<button mat-raised-button color="primary" (click)="openDialog()">Cambiar contraseña</button>
+		</section>
+	</mat-card-content>
+	@if (usuario.DEFAULT_PASSWORD) { }
+</mat-card>
