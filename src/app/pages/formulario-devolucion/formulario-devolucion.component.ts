@@ -11,7 +11,7 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSliderModule } from '@angular/material/slider';
-import { BoolToNumber, CombustiblePipe, ToNumberPipe } from '../../shared/pipes/condiciones.pipe';
+import { BoolToNumber, CombustiblePipe, KilometrosPipe, ToNumberPipe } from '../../shared/pipes/condiciones.pipe';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MAT_DATE_LOCALE, MatNativeDateModule } from '@angular/material/core';
 import { NgxMatTimepickerModule } from 'ngx-mat-timepicker';
@@ -56,7 +56,8 @@ import { SolicitudesService } from '../../shared/services/solicitudes.service';
 		MatNativeDateModule,
 		NgxMatTimepickerModule,
 		MatDialogModule,
-		ToNumberPipe
+		ToNumberPipe,
+		KilometrosPipe
 	],
 	templateUrl: './formulario-devolucion.component.html',
 	styleUrl: './formulario-devolucion.component.css',
@@ -166,11 +167,11 @@ export class FormularioDevolucionComponent {
 			limpiaparabrisas: [this.fecv.LIMPIAPARABRISAS.toString(), Validators.required],
 			kilometrajeEntrega: [this.fecv.KILOMETRAJE, [Validators.required, Validators.min(0)]],
 			nivelCombustibleEntrega: [this.fecv.NIVEL_COMBUSTIBLE, Validators.required],
-			facturaSerie: [null],
-			noFactura: [null],
-			galones: [null],
-			precio: [null],
-			total: [null],
+			facturaSerie: [''],
+			noFactura: [''],
+			galones: [''],
+			precio: [''],
+			total: [''],
 			fechaLlenado: new FormControl<Date | null>(null),
 			observaciones: [this.fecv.OBSERVACIONES, Validators.maxLength(150)],
 			fechaEntrega: new FormControl<Date | null>(fechaHoraEntrega, Validators.required),
@@ -202,6 +203,9 @@ export class FormularioDevolucionComponent {
 	}
 
 	buildFdcv(): FdcvInterface {
+		let kilometrosRecorridos =
+			this.formSubmit.controls['kilometrajeFinal'].value - this.formSubmit.controls['kilometrajeEntrega'].value;
+		// colorcar formato de un solo decimal
 		return {
 			ID_SOLICITUD: this.formSubmit.controls['id'].value,
 			NOMBRE_PILOTO: this.formSubmit.controls['nombrePiloto'].value,
@@ -247,7 +251,7 @@ export class FormularioDevolucionComponent {
 				.toJSON(),
 			KILOMETRAJE_FINAL: this.formSubmit.controls['kilometrajeFinal'].value,
 			NIVEL_COMBUSTIBLE_FINAL: this.formSubmit.controls['combustibleFinal'].value,
-			KILOMETROS_RECORRIDOS: this.formSubmit.controls['kilometrosRecorridos'].value,
+			KILOMETROS_RECORRIDOS: KilometrosPipe.prototype.transform(kilometrosRecorridos),
 			FALLA_O_INCIDENCIA: this.formSubmit.controls['fallaOIncidencia'].value,
 			NOMBRE_RECEPTOR: this.formSubmit.controls['nombreReceptor'].value
 		};

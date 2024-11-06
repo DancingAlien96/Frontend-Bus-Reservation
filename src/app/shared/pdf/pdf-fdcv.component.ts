@@ -21,12 +21,12 @@ export class PdfFDCVComponent {
 	static combustiblePipe = new CombustiblePipe();
 	constructor() {}
 
-	static async createPDF(fecv: FdcvInterface, vehiculo: VehiculoInterface) {
+	static async createPDF(fdcv: FdcvInterface, vehiculo: VehiculoInterface) {
 		const logoDataURL = await ImageUtils.getBase64ImageFromURL('../../../assets/logo-usac-bn.jpg');
 
 		const pdfDefinition: any = {
 			info: {
-				title: `FECV-${fecv.ID_SOLICITUD.toString().padStart(2, '0')}`
+				title: `FDCV-${fdcv.ID_SOLICITUD.toString().padStart(2, '0')}`
 			},
 			pageSize: 'A4',
 			content: [
@@ -44,7 +44,7 @@ export class PdfFDCVComponent {
 							alignment: 'center'
 						},
 						{
-							text: `FECV-${fecv.ID_SOLICITUD.toString().padStart(2, '0')}`,
+							text: `FDCV-${fdcv.ID_SOLICITUD.toString().padStart(2, '0')}`,
 							width: 50,
 							height: 50,
 							alignment: 'right',
@@ -87,17 +87,17 @@ export class PdfFDCVComponent {
 										style: 'sectionHeader'
 									},
 
-									{ text: 'NO. EMISIÓN: ' + (fecv.ID_SOLICITUD || 0).toString().padStart(2, '0'), style: 'field' },
-									{ text: 'NOMBRE DEL CONDUCTOR: ' + fecv.NOMBRE_PILOTO, style: 'field' },
+									{ text: 'NO. EMISIÓN: ' + (fdcv.ID_SOLICITUD || 0).toString().padStart(2, '0'), style: 'field' },
+									{ text: 'NOMBRE DEL CONDUCTOR: ' + fdcv.NOMBRE_PILOTO, style: 'field' },
 
-									{ text: 'CARGO QUE OCUPA: ' + fecv.CARGO_PILOTO, style: 'field' },
+									{ text: 'CARGO QUE OCUPA: ' + fdcv.CARGO_PILOTO, style: 'field' },
 									{
-										text: 'COMISIÓN: ' + fecv.COMISION,
+										text: 'COMISIÓN: ' + fdcv.COMISION,
 										style: 'field'
 									},
 
 									{
-										text: 'FECHA: ' + PdfFDCVComponent.datePipe.transform(fecv.FECHA_HORA_ENTREGA, 'dd/MM/yyyy'),
+										text: 'FECHA: ' + PdfFDCVComponent.datePipe.transform(fdcv.FECHA_HORA_ENTREGA, 'dd/MM/yyyy'),
 										style: 'field',
 										margin: [0, 5, 0, 10]
 									},
@@ -122,7 +122,7 @@ export class PdfFDCVComponent {
 																h: 6, // Alto del rectángulo
 																r: 2, // Radio de las esquinas (para bordes redondeados)
 																lineColor: 'black',
-																color: fecv.TARJETA_CIRCULACION ? 'black' : 'white'
+																color: fdcv.TARJETA_CIRCULACION ? 'black' : 'white'
 															}
 														],
 														width: '*',
@@ -145,7 +145,7 @@ export class PdfFDCVComponent {
 																h: 6, // Alto del rectángulo
 																r: 2, // Radio de las esquinas (para bordes redondeados)
 																lineColor: 'black',
-																color: !fecv.TARJETA_CIRCULACION ? 'black' : 'white'
+																color: !fdcv.TARJETA_CIRCULACION ? 'black' : 'white'
 															}
 														],
 														margin: [5, 0, 0, 0] // Ajusta la posición del rectángulo al lado del texto
@@ -173,7 +173,7 @@ export class PdfFDCVComponent {
 																h: 6, // Alto del rectángulo
 																r: 2, // Radio de las esquinas (para bordes redondeados)
 																lineColor: 'black',
-																color: fecv.LLAVES_ENCENDIDO ? 'black' : 'white'
+																color: fdcv.LLAVES_ENCENDIDO ? 'black' : 'white'
 															}
 														],
 														width: '*',
@@ -196,7 +196,7 @@ export class PdfFDCVComponent {
 																h: 6, // Alto del rectángulo
 																r: 2, // Radio de las esquinas (para bordes redondeados)
 																lineColor: 'black',
-																color: !fecv.LLAVES_ENCENDIDO ? 'black' : 'white'
+																color: !fdcv.LLAVES_ENCENDIDO ? 'black' : 'white'
 															}
 														],
 														margin: [5, 0, 0, 0] // Ajusta la posición del rectángulo al lado del texto
@@ -221,7 +221,7 @@ export class PdfFDCVComponent {
 																h: 6, // Alto del rectángulo
 																r: 2, // Radio de las esquinas (para bordes redondeados)
 																lineColor: 'black',
-																color: fecv.LLAVES_GASOLINA ? 'black' : 'white'
+																color: fdcv.LLAVES_GASOLINA ? 'black' : 'white'
 															}
 														],
 														width: '*',
@@ -244,7 +244,7 @@ export class PdfFDCVComponent {
 																h: 6, // Alto del rectángulo
 																r: 2, // Radio de las esquinas (para bordes redondeados)
 																lineColor: 'black',
-																color: !fecv.LLAVES_GASOLINA ? 'black' : 'white'
+																color: !fdcv.LLAVES_GASOLINA ? 'black' : 'white'
 															}
 														],
 														margin: [5, 0, 0, 0] // Ajusta la posición del rectángulo al lado del texto
@@ -269,7 +269,7 @@ export class PdfFDCVComponent {
 																h: 6, // Alto del rectángulo
 																r: 2, // Radio de las esquinas (para bordes redondeados)
 																lineColor: 'black',
-																color: fecv.LLAVES_LLANTA ? 'black' : 'white'
+																color: fdcv.LLAVES_LLANTA ? 'black' : 'white'
 															}
 														],
 														width: '*',
@@ -292,7 +292,7 @@ export class PdfFDCVComponent {
 																h: 6, // Alto del rectángulo
 																r: 2, // Radio de las esquinas (para bordes redondeados)
 																lineColor: 'black',
-																color: !fecv.LLAVES_LLANTA ? 'black' : 'white'
+																color: !fdcv.LLAVES_LLANTA ? 'black' : 'white'
 															}
 														],
 														margin: [5, 0, 0, 0] // Ajusta la posición del rectángulo al lado del texto
@@ -323,7 +323,7 @@ export class PdfFDCVComponent {
 																h: 6, // Alto del rectángulo
 																r: 2, // Radio de las esquinas (para bordes redondeados)
 																lineColor: 'black',
-																color: fecv.ENCENDIDO_MOTOR ? 'black' : 'white'
+																color: fdcv.ENCENDIDO_MOTOR ? 'black' : 'white'
 															}
 														],
 														width: '*',
@@ -346,7 +346,7 @@ export class PdfFDCVComponent {
 																h: 6, // Alto del rectángulo
 																r: 2, // Radio de las esquinas (para bordes redondeados)
 																lineColor: 'black',
-																color: !fecv.ENCENDIDO_MOTOR ? 'black' : 'white'
+																color: !fdcv.ENCENDIDO_MOTOR ? 'black' : 'white'
 															}
 														],
 														margin: [5, 0, 0, 0] // Ajusta la posición del rectángulo al lado del texto
@@ -373,7 +373,7 @@ export class PdfFDCVComponent {
 																h: 6, // Alto del rectángulo
 																r: 2, // Radio de las esquinas (para bordes redondeados)
 																lineColor: 'black',
-																color: fecv.RETROVISORES_EXTERIOR ? 'black' : 'white'
+																color: fdcv.RETROVISORES_EXTERIOR ? 'black' : 'white'
 															}
 														],
 														width: '*',
@@ -396,7 +396,7 @@ export class PdfFDCVComponent {
 																h: 6, // Alto del rectángulo
 																r: 2, // Radio de las esquinas (para bordes redondeados)
 																lineColor: 'black',
-																color: !fecv.RETROVISORES_EXTERIOR ? 'black' : 'white'
+																color: !fdcv.RETROVISORES_EXTERIOR ? 'black' : 'white'
 															}
 														],
 														margin: [5, 0, 0, 0] // Ajusta la posición del rectángulo al lado del texto
@@ -422,7 +422,7 @@ export class PdfFDCVComponent {
 																h: 6, // Alto del rectángulo
 																r: 2, // Radio de las esquinas (para bordes redondeados)
 																lineColor: 'black',
-																color: fecv.RETROVISORES_INTERIOR ? 'black' : 'white'
+																color: fdcv.RETROVISORES_INTERIOR ? 'black' : 'white'
 															}
 														],
 														width: '*',
@@ -445,7 +445,7 @@ export class PdfFDCVComponent {
 																h: 6, // Alto del rectángulo
 																r: 2, // Radio de las esquinas (para bordes redondeados)
 																lineColor: 'black',
-																color: !fecv.RETROVISORES_INTERIOR ? 'black' : 'white'
+																color: !fdcv.RETROVISORES_INTERIOR ? 'black' : 'white'
 															}
 														],
 														margin: [5, 0, 0, 0] // Ajusta la posición del rectángulo al lado del texto
@@ -471,7 +471,7 @@ export class PdfFDCVComponent {
 																h: 6, // Alto del rectángulo
 																r: 2, // Radio de las esquinas (para bordes redondeados)
 																lineColor: 'black',
-																color: fecv.LLANTA_REPUESTO ? 'black' : 'white'
+																color: fdcv.LLANTA_REPUESTO ? 'black' : 'white'
 															}
 														],
 														width: '*',
@@ -494,7 +494,7 @@ export class PdfFDCVComponent {
 																h: 6, // Alto del rectángulo
 																r: 2, // Radio de las esquinas (para bordes redondeados)
 																lineColor: 'black',
-																color: !fecv.LLANTA_REPUESTO ? 'black' : 'white'
+																color: !fdcv.LLANTA_REPUESTO ? 'black' : 'white'
 															}
 														],
 														margin: [5, 0, 0, 0] // Ajusta la posición del rectángulo al lado del texto
@@ -519,7 +519,7 @@ export class PdfFDCVComponent {
 																h: 6, // Alto del rectángulo
 																r: 2, // Radio de las esquinas (para bordes redondeados)
 																lineColor: 'black',
-																color: fecv.LLAVE_CHUCHOS ? 'black' : 'white'
+																color: fdcv.LLAVE_CHUCHOS ? 'black' : 'white'
 															}
 														],
 														width: '*',
@@ -542,7 +542,7 @@ export class PdfFDCVComponent {
 																h: 6, // Alto del rectángulo
 																r: 2, // Radio de las esquinas (para bordes redondeados)
 																lineColor: 'black',
-																color: !fecv.LLAVE_CHUCHOS ? 'black' : 'white'
+																color: !fdcv.LLAVE_CHUCHOS ? 'black' : 'white'
 															}
 														],
 														margin: [5, 0, 0, 0] // Ajusta la posición del rectángulo al lado del texto
@@ -558,25 +558,25 @@ export class PdfFDCVComponent {
 									{
 										columns: [
 											{ width: 150, text: 'CONDICIONES SILVINES:', style: 'field' },
-											{ text: this.estadoPipe.transform(fecv.SILVINES), style: 'value' }
+											{ text: this.estadoPipe.transform(fdcv.SILVINES), style: 'value' }
 										]
 									},
 									{
 										columns: [
 											{ width: 150, text: 'CONDICIONES STOPS:', style: 'field' },
-											{ text: this.estadoPipe.transform(fecv.STOP), style: 'value' }
+											{ text: this.estadoPipe.transform(fdcv.STOP), style: 'value' }
 										]
 									},
 									{
 										columns: [
 											{ width: 150, text: 'CONDICIONES DE LUZ DE RETROCESO:', style: 'field' },
-											{ text: this.estadoPipe.transform(fecv.LUZ_RETROCESO), style: 'value' }
+											{ text: this.estadoPipe.transform(fdcv.LUZ_RETROCESO), style: 'value' }
 										]
 									},
 									{
 										columns: [
 											{ width: 150, text: 'CONDICIONES DE LUZ DE EMERGENCIA:', style: 'field' },
-											{ text: this.estadoPipe.transform(fecv.LUZ_EMERGENCIA), style: 'value' }
+											{ text: this.estadoPipe.transform(fdcv.LUZ_EMERGENCIA), style: 'value' }
 										]
 									},
 									{
@@ -597,14 +597,14 @@ export class PdfFDCVComponent {
 									{
 										columns: [
 											{ width: 150, text: 'CONDICIONES DE LLANTAS:', style: 'field' },
-											{ text: this.estadoPipe.transform(fecv.CONDICIONES_LLANTA), style: 'value' }
+											{ text: this.estadoPipe.transform(fdcv.CONDICIONES_LLANTA), style: 'value' }
 										]
 									},
 
 									{
 										columns: [
 											{ width: 150, text: 'CONDICIONES LIMPIA PARABRISAS:', style: 'field' },
-											{ text: this.estadoPipe.transform(fecv.LIMPIAPARABRISAS), style: 'value' }
+											{ text: this.estadoPipe.transform(fdcv.LIMPIAPARABRISAS), style: 'value' }
 										]
 									},
 									{
@@ -617,7 +617,7 @@ export class PdfFDCVComponent {
 										style: 'field'
 									},
 									{
-										text: fecv.KILOMETRAJE + ' km s',
+										text: fdcv.KILOMETRAJE + ' km s',
 										style: 'value'
 									},
 									{
@@ -629,7 +629,7 @@ export class PdfFDCVComponent {
 									{
 										text:
 											'NIVEL DEL TANQUE AL MOMENTO DE RECIBIR EL VEHÍCULO: ' +
-											this.combustiblePipe.transform(fecv.NIVEL_COMBUSTIBLE),
+											this.combustiblePipe.transform(fdcv.NIVEL_COMBUSTIBLE),
 										style: 'field'
 									},
 
@@ -639,21 +639,22 @@ export class PdfFDCVComponent {
 										margin: [0, 10, 0, 0]
 									},
 
-									{ text: 'FACTURA SERIE: ' + fecv.FACTURA_SERIE, style: 'field' },
-									{ text: 'NO.' + fecv.NO_FACTURA, style: 'value' },
-									{ text: 'GALONES' + fecv.GALONES, style: 'value' },
-									{ text: 'PRECIO' + fecv.PRECIO, style: 'value' },
+									{ text: 'FACTURA SERIE: ' + (fdcv.FACTURA_SERIE || ''), style: 'field' },
+									{ text: 'NO.' + (fdcv.NO_FACTURA || ''), style: 'value' },
+									{ text: 'GALONES ' + (fdcv.GALONES || ''), style: 'value' },
+									{ text: 'PRECIO ' + (fdcv.PRECIO || ''), style: 'value' },
 
 									{
 										columns: [
-											{ text: 'TOTAL: ' + fecv.TOTAL, style: 'field' },
+											{ text: 'TOTAL: ' + (fdcv.TOTAL || ''), style: 'field' },
 											{
-												text: 'FECHA: ' + PdfFDCVComponent.datePipe.transform(fecv.FECHA_LLENADO, 'dd/MM/yyyy'),
+												text: 'FECHA: ' + (PdfFDCVComponent.datePipe.transform(fdcv.FECHA_LLENADO, 'dd/MM/yyyy') || ''),
 												style: 'field'
 											}
 										],
 										margin: [0, 10, 0, 10]
 									},
+
 									{
 										text: 'OBSERVACIONES:',
 										style: 'subSectionHeader'
@@ -663,7 +664,7 @@ export class PdfFDCVComponent {
 										style: 'field'
 									},
 									{
-										text: fecv.OBSERVACIONES_DEVOLUCION,
+										text: fdcv.OBSERVACIONES_DEVOLUCION,
 										style: 'observations'
 									},
 									{
@@ -674,7 +675,7 @@ export class PdfFDCVComponent {
 									},
 
 									{
-										text: 'FECHA: ' + this.datePipe.transform(fecv.FECHA_HORA_ENTREGA, 'dd/MM/yyyy'),
+										text: 'FECHA: ' + this.datePipe.transform(fdcv.FECHA_HORA_ENTREGA, 'dd/MM/yyyy'),
 										style: 'sectionHeader',
 										alignment: 'center',
 										margin: 25
@@ -694,19 +695,19 @@ export class PdfFDCVComponent {
 				{
 					columns: [
 						{
-							text: 'FECHA DE ENTRADA: ' + this.datePipe.transform(fecv.FECHA_HORA_DEVOLUCION, 'dd/MM/yyyy'),
+							text: 'FECHA DE ENTRADA: ' + this.datePipe.transform(fdcv.FECHA_HORA_DEVOLUCION, 'dd/MM/yyyy'),
 							style: 'field'
 						},
-						{ text: 'HORA DE ENTRADA ' + this.datePipe.transform(fecv.FECHA_HORA_DEVOLUCION, 'HH:mm'), style: 'field' }
+						{ text: 'HORA DE ENTRADA ' + this.datePipe.transform(fdcv.FECHA_HORA_DEVOLUCION, 'HH:mm'), style: 'field' }
 					],
 					margin: [0, 5, 0, 5]
 				},
 				{
 					columns: [
-						{ text: 'KILOMETRAJE FINAL: ' + fecv.KILOMETRAJE_FINAL, style: 'field' },
-						{ text: 'KILOMETROS RECORRIDOS ' + fecv.KILOMETROS_RECORRIDOS, style: 'field' },
+						{ text: 'KILOMETRAJE FINAL: ' + fdcv.KILOMETRAJE_FINAL, style: 'field' },
+						{ text: 'KILOMETROS RECORRIDOS ' + fdcv.KILOMETROS_RECORRIDOS, style: 'field' },
 						{
-							text: 'NIVEL DEL TANQUE DE COMBUSTIBLE  ' + this.combustiblePipe.transform(fecv.NIVEL_COMBUSTIBLE_FINAL),
+							text: 'NIVEL DEL TANQUE DE COMBUSTIBLE  ' + this.combustiblePipe.transform(fdcv.NIVEL_COMBUSTIBLE_FINAL),
 							style: 'field'
 						}
 					],
@@ -718,12 +719,12 @@ export class PdfFDCVComponent {
 					margin: [0, 5, 0, 5]
 				},
 				{
-					text: 'ALGUNA FALLA O SITUACIÓN QUE REQUIERA MANTENIMIENTO: ' + fecv.FALLA_O_INCIDENCIA,
+					text: 'ALGUNA FALLA O SITUACIÓN QUE REQUIERA MANTENIMIENTO: ' + fdcv.FALLA_O_INCIDENCIA,
 					style: 'field',
 					margin: [0, 5, 0, 5]
 				},
 				{
-					text: 'NOMBRE DEL ENCARGADO DE RECIBIR EL VEHÍCULO: ' + fecv.NOMBRE_RECEPTOR,
+					text: 'NOMBRE DEL ENCARGADO DE RECIBIR EL VEHÍCULO: ' + fdcv.NOMBRE_RECEPTOR,
 					style: 'field',
 					margin: [0, 5, 0, 5]
 				},
@@ -765,7 +766,7 @@ export class PdfFDCVComponent {
 
 				// Escribimos el contenido HTML para incrustar el PDF dentro de la ventana "about:blank"
 				pdfWindow.document.write(`<html>
-					<head><title>Solicitud FECV-${(fecv.ID_SOLICITUD || 0).toString().padStart(2, '0')}</title></head>
+					<head><title>Solicitud FDCV-${(fdcv.ID_SOLICITUD || 0).toString().padStart(2, '0')}</title></head>
 					<body style="margin:0">
 					<iframe src="${url}" width="100%" height="100%" style="border:none;"></iframe>
 					</body>
