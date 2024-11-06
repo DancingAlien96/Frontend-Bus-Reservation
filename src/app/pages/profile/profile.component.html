@@ -3,13 +3,16 @@
 		<mat-card-title>Perfil de usuario</mat-card-title>
 		<mat-card-subtitle>{{ usuario.USERNAME }}</mat-card-subtitle>
 	</mat-card-header>
-	<div class="alert" *ngIf="usuario.DEFAULT_PASSWORD">
+	@if (usuario.DEFAULT_PASSWORD) {
+
+	<div class="alert">
 		<span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
 		<div class="grid-container-auto">
 			<mat-icon>warning</mat-icon>
 			<h2>Este usuario tiene una contraseña autogenerada por defecto.</h2>
 		</div>
 	</div>
+	}
 	<mat-card-content class="grid-container">
 		<section>
 			<h3>Datos personales</h3>

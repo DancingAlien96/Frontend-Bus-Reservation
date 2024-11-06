@@ -11,6 +11,12 @@ import { UsuarioInterface, UsuarioPostInterface } from '../interfaces/usuario.in
 export class UsuariosService {
 	readonly url = environment.api;
 	private updateSubject = new Subject<void>();
+	getUpdateObservable(): Observable<void> {
+		return this.updateSubject.asObservable();
+	}
+	emitUpdate() {
+		this.updateSubject.next();
+	}
 
 	constructor(private http: HttpClient) {}
 
@@ -30,15 +36,7 @@ export class UsuariosService {
 		return this.http.post<UsuarioInterface>(`${this.url}/usuario`, usuario);
 	}
 
-	getUpdateObservable(): Observable<void> {
-		return this.updateSubject.asObservable();
-	}
-
 	patchChangePassword(newUserInfo: UsuarioNewPasswordInterface): Observable<UsuarioInterface> {
 		return this.http.patch<UsuarioInterface>(`${this.url}/usuario/change-password`, newUserInfo);
-	}
-
-	emitUpdate() {
-		this.updateSubject.next();
 	}
 }

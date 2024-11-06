@@ -61,6 +61,9 @@ export class PopupChangePassComponent {
 
 		this.us.patchChangePassword(this.newUserInfo).subscribe((data) => {
 			alert('Contraseña cambiada con exito');
+			sessionStorage.removeItem('usuario');
+			sessionStorage.setItem('usuario', JSON.stringify(data));
+			window.location.reload();
 		});
 	}
 }
