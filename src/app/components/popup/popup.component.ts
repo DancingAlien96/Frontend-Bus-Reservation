@@ -1,22 +1,15 @@
 import { PersonalService } from './../../shared/services/personal.service';
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Inject, Output } from '@angular/core';
-import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  FormsModule,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import {
-  MAT_DIALOG_DATA,
-  MatDialogActions,
-  MatDialogClose,
-  MatDialogContent,
-  MatDialogRef,
-  MatDialogTitle,
+	MAT_DIALOG_DATA,
+	MatDialogActions,
+	MatDialogClose,
+	MatDialogContent,
+	MatDialogRef,
+	MatDialogTitle
 } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -25,11 +18,7 @@ import { Router, RouterModule } from '@angular/router';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatCardModule } from '@angular/material/card';
 import { VehiculoService } from '../../shared/services/vehiculo.service';
-import {
-  BitacoraCondicionesInterface,
-  SolicitudesInterfaces,
-  VehiculoInterface,
-} from '../../shared/interfaces';
+import { BitacoraCondicionesInterface, SolicitudesInterfaces, VehiculoInterface } from '../../shared/interfaces';
 import { MatIcon } from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select';
 import { EstadosInterface } from '../../shared/interfaces/options.interface';
@@ -42,40 +31,37 @@ import { PdfFECVComponent } from '../../shared/pdf/pdf-fecv.component';
 import { PdfFDCVComponent } from '../../shared/pdf/pdf-fdcv.component';
 import { ComunicationService } from '../../shared/services/comunication.service';
 @Component({
-  selector: 'app-popup',
-  standalone: true,
-  imports: [
-    CommonModule,
-    MatFormFieldModule,
-    MatInputModule,
-    FormsModule,
-    MatButtonModule,
-    MatDialogTitle,
-    MatDialogContent,
-    MatDialogActions,
-    MatDialogClose,
-    RouterModule,
-    MatChipsModule,
-    MatCardModule,
-    MatIcon,
-    MatSelectModule,
-    CombustiblePipe,
-    MatProgressBarModule,
-    ReactiveFormsModule,
-  ],
-  templateUrl: './popup.component.html',
-  styleUrl: './popup.component.css',
-  providers: [DateFormatPipe],
+	selector: 'app-popup',
+	standalone: true,
+	imports: [
+		CommonModule,
+		MatFormFieldModule,
+		MatInputModule,
+		FormsModule,
+		MatButtonModule,
+		MatDialogTitle,
+		MatDialogContent,
+		MatDialogActions,
+		MatDialogClose,
+		RouterModule,
+		MatChipsModule,
+		MatCardModule,
+		MatIcon,
+		MatSelectModule,
+		CombustiblePipe,
+		MatProgressBarModule,
+		ReactiveFormsModule
+	],
+	templateUrl: './popup.component.html',
+	styleUrl: './popup.component.css',
+	providers: [DateFormatPipe]
 })
 export class PopupComponent {
-  señal!: boolean;
-  estadoLabel!: string;
-  numero!: number;
-  formSubmit: FormGroup;
-  areaTexto = new FormControl('', [
-    Validators.required,
-    Validators.minLength(10),
-  ]);
+	señal!: boolean;
+	estadoLabel!: string;
+	numero!: number;
+	formSubmit: FormGroup;
+	areaTexto = new FormControl('', [Validators.required, Validators.minLength(10)]);
 	idUsuario!: number;
 	actualEstado!: number;
 	motivo: string | null = null;
@@ -97,50 +83,19 @@ export class PopupComponent {
 		{ id: 3, estado: 'Finalizada' },
 		{ id: 4, estado: 'Eliminada' },
 		{ id: 5, estado: 'Anulada' }
-	];estados: EstadosInterface[] = [
-    { id: 0, estado: 'Pendiente' },
-    { id: 1, estado: 'Aprobada' },
-    { id: 2, estado: 'Rechazada' },
-    { id: 3, estado: 'Finalizada' },
-    { id: 4, estado: 'Eliminada' },
-    { id: 5, estado: 'Anulada' },
-  ];
+	];
 
-  estadosPendiente: EstadosInterface[] = [
-    { id: 0, estado: 'Pendiente' },
-    { id: 1, estado: 'Aprobada' },
-    { id: 2, estado: 'Rechazada' },
-  ];
+	estadosPendiente: EstadosInterface[] = [
+		{ id: 0, estado: 'Pendiente' },
+		{ id: 1, estado: 'Aprobada' },
+		{ id: 2, estado: 'Rechazada' }
+	];
 
-  estadosAprobada: EstadosInterface[] = [
-    { id: 1, estado: 'Aprobada' },
-    { id: 3, estado: 'Finalizada' },
-    { id: 5, estado: 'Anulada' },
-  ];
-
-
-
-estados: EstadosInterface[] = [
-    { id: 0, estado: 'Pendiente' },
-    { id: 1, estado: 'Aprobada' },
-    { id: 2, estado: 'Rechazada' },
-    { id: 3, estado: 'Finalizada' },
-    { id: 4, estado: 'Eliminada' },
-    { id: 5, estado: 'Anulada' },
-  ];
-
-  estadosPendiente: EstadosInterface[] = [
-    { id: 0, estado: 'Pendiente' },
-    { id: 1, estado: 'Aprobada' },
-    { id: 2, estado: 'Rechazada' },
-  ];
-
-  estadosAprobada: EstadosInterface[] = [
-    { id: 1, estado: 'Aprobada' },
-    { id: 3, estado: 'Finalizada' },
-    { id: 5, estado: 'Anulada' },
-  ];
-
+	estadosAprobada: EstadosInterface[] = [
+		{ id: 1, estado: 'Aprobada' },
+		{ id: 3, estado: 'Finalizada' },
+		{ id: 5, estado: 'Anulada' }
+	];
 
 	currentPage: number = 1;
 	constructor(
@@ -153,23 +108,21 @@ estados: EstadosInterface[] = [
 		private solicitudesService: SolicitudesService,
 		private datePipe: DateFormatPipe,
 		private router: Router,
-    private fb: FormBuilder,
-    private comunicacionService: ComunicationService
+		private fb: FormBuilder,
+		private comunicacionService: ComunicationService
 	) {
-    
-    this.usuarioSession = sessionStorage.getItem('usuario');
-    this.usuario = JSON.parse(this.usuarioSession);
-    this.idRol = this.usuario.ID_ROL;
-    this.estadoTemporal = data.ESTADO;
-    console.log(this.estadoTemporal);
-    this.getDisponibilidad();
-    this.numero = 25;
+		this.usuarioSession = sessionStorage.getItem('usuario');
+		this.usuario = JSON.parse(this.usuarioSession);
+		this.idRol = this.usuario.ID_ROL;
+		this.estadoTemporal = data.ESTADO;
+		console.log(this.estadoTemporal);
+		this.getDisponibilidad();
+		this.numero = 25;
 
-    this.formSubmit = this.fb.group({
-      motivo: [null, [Validators.required, Validators.maxLength(250)]],
-      estadoNuevo: [data.ESTADO, [Validators.required]],
-    });
-    
+		this.formSubmit = this.fb.group({
+			motivo: [null, [Validators.required, Validators.maxLength(250)]],
+			estadoNuevo: [data.ESTADO, [Validators.required]]
+		});
 	}
 
 	pageAndDetails(pagenumber: number, idVehiculo: number): void {
@@ -205,63 +158,56 @@ estados: EstadosInterface[] = [
 			});
 	}
 
-  save(): void {
-    const config = new MatSnackBarConfig();
-    config.horizontalPosition = 'center';
-    config.verticalPosition = 'bottom';
-    config.panelClass = 'OkSnackBar'; //tipo de snackbar
-    config.duration = 3000;
-    if (this.formSubmit.valid) {
-      this.motivo = this.formSubmit.get('motivo')?.value;
-    }
-    console.log(this.data.ID_SOLICITUD);
-    console.log(`el estado temporal es ${this.estadoTemporal}`);
-    console.log(`el motivo es: ${this.motivo}`);
+	save(): void {
+		const config = new MatSnackBarConfig();
+		config.horizontalPosition = 'center';
+		config.verticalPosition = 'bottom';
+		config.panelClass = 'OkSnackBar'; //tipo de snackbar
+		config.duration = 3000;
+		if (this.formSubmit.valid) {
+			this.motivo = this.formSubmit.get('motivo')?.value;
+		}
+		console.log(this.data.ID_SOLICITUD);
+		console.log(`el estado temporal es ${this.estadoTemporal}`);
+		console.log(`el motivo es: ${this.motivo}`);
 
-    if (this.motivo != null) {
-      this.solicitudesService
-        .actualizarEstado(
-          this.data.ID_SOLICITUD,
-          this.estadoTemporal,
-          this.motivo
-        )
-        .subscribe((res) => {
-          console.log(res);
-          this.toast.open('guardado', 'cerrar', config);
-          this.comunicacionService.emitUpdate();
-          this.dialogRef.close();
-        });
-    } else {
-      this.solicitudesService
-        .actualizarEstado(this.data.ID_SOLICITUD, this.estadoTemporal, '')
-        .subscribe((res) => {
-          console.log(res);
-          this.toast.open('guardado', 'cerrar', config);
-          this.comunicacionService.emitUpdate();
+		if (this.motivo != null) {
+			this.solicitudesService
+				.actualizarEstado(this.data.ID_SOLICITUD, this.estadoTemporal, this.motivo)
+				.subscribe((res) => {
+					console.log(res);
+					this.toast.open('guardado', 'cerrar', config);
+					this.comunicacionService.emitUpdate();
+					this.dialogRef.close();
+				});
+		} else {
+			this.solicitudesService.actualizarEstado(this.data.ID_SOLICITUD, this.estadoTemporal, '').subscribe((res) => {
+				console.log(res);
+				this.toast.open('guardado', 'cerrar', config);
+				this.comunicacionService.emitUpdate();
 
-          this.dialogRef.close();
-        });
-    }
-  }
-
+				this.dialogRef.close();
+			});
+		}
+	}
 
 	onPDF(): void {
 		PdfSolicitudComponent.createPDF(this.data, this.personalService);
 	}
 
-  changes(event: any) {
-    console.log(event.value);
+	changes(event: any) {
+		console.log(event.value);
 
-    this.estadoTemporal = event.value;
+		this.estadoTemporal = event.value;
 
-    console.log(this.estadoTemporal);
-    this.eBoton = true;
-    if (event.value == 2 || event.value == 5) {
-      this.areaJustificacion = true;
-    } else {
-      this.areaJustificacion = false;
-    }
-  }
+		console.log(this.estadoTemporal);
+		this.eBoton = true;
+		if (event.value == 2 || event.value == 5) {
+			this.areaJustificacion = true;
+		} else {
+			this.areaJustificacion = false;
+		}
+	}
 
 	getEstadoLabel(estado: number): string {
 		let estadoLabel = '';
