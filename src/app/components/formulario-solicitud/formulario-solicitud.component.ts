@@ -21,6 +21,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
 import { min, noop } from 'rxjs';
 import { MY_FORMATS } from '../../shared/utils/date-format.utils';
+import { Router } from '@angular/router';
 
 @Component({
 	selector: 'app-formulario-solicitud',
@@ -54,7 +55,8 @@ export default class FormularioSolicitudComponent {
 		private fb: FormBuilder,
 		private vs: VehiculoService,
 		private sps: SolicitudesService,
-		private _snackBar: MatSnackBar
+		private _snackBar: MatSnackBar,
+		private router: Router
 	) {
 		this.formSubmit = this.fb.group({
 			nombreSolicitante: [null, [Validators.required, Validators.maxLength(150)]],
@@ -65,7 +67,7 @@ export default class FormularioSolicitudComponent {
 			horaEntrega: [null, Validators.required],
 			horaDevolucion: [null, Validators.required],
 			vehiculo: [null, Validators.required],
-			conPiloto: ['0', Validators.required],
+			conPiloto: ['1', Validators.required],
 			nombrePiloto: [null, [Validators.maxLength(150), Validators.required]]
 		});
 		this.formSubmit.controls['devolucion'].disable();
@@ -109,7 +111,7 @@ export default class FormularioSolicitudComponent {
 				NOMBRE_PILOTO: this.formSubmit.get('nombrePiloto')?.value,
 				ESTADO: 0,
 				MODIFICABLE: true,
-				MOTIVO_RECHAZO: '',
+				MOTIVO_RECHAZO: ' ',
 				ENTREGADO: false,
 				DEVUELTO: false
 			};
@@ -117,7 +119,10 @@ export default class FormularioSolicitudComponent {
 			this.sps.postSolicitud(this.solicitud).subscribe((resp) => {
 				if (resp) {
 					this.openSnackBar(2);
-					this.formSubmit.reset();
+					this.formSubmit.disable();
+					this.router.navigate(['/solicitudes']);
+				} else {
+					this.openSnackBar(3);
 				}
 			});
 		} else {

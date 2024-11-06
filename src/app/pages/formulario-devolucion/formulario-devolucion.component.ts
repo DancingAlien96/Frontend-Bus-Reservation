@@ -31,6 +31,9 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FunctionsService } from '../../shared/services/functions.service';
 import { FdcvService } from '../../shared/services/fdcv.service';
+import { PdfFECVComponent } from '../../shared/pdf/pdf-fecv.component';
+import { PdfFDCVComponent } from '../../shared/pdf/pdf-fdcv.component';
+import { SolicitudesService } from '../../shared/services/solicitudes.service';
 
 @Component({
 	selector: 'app-formulario-devolucion',
@@ -76,7 +79,8 @@ export class FormularioDevolucionComponent {
 		private _snackBar: MatSnackBar,
 		private route: ActivatedRoute,
 		private fs: FunctionsService,
-		private router: Router
+		private router: Router,
+		private ss: SolicitudesService
 	) {
 		const navigation = this.router.getCurrentNavigation();
 		if (navigation?.extras.state && navigation.extras.state['solicitud']) {
@@ -123,6 +127,10 @@ export class FormularioDevolucionComponent {
 				this._snackBar.open('Formulario de devolucion guardado', 'Cerrar', {
 					duration: 2000
 				});
+				this.formSubmit.disable();
+				PdfFDCVComponent.createPDF(fdcv, this.vehiculo);
+				this.ss.actualizarEstado(this.solicitud.ID_SOLICITUD, 3, ' ').subscribe((solicitud) => {});
+				this.router.navigate(['/solicitudes']);
 			});
 		}
 	}

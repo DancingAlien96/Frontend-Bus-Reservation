@@ -92,7 +92,7 @@
 					<mat-label>Fecha de nacimiento</mat-label>
 					<input matInput [matDatepicker]="dpNacimiento" formControlName="fechaNacimiento" />
 					<mat-datepicker-toggle matIconSuffix [for]="dpNacimiento"></mat-datepicker-toggle>
-					<mat-datepicker #dpNacimiento></mat-datepicker>
+					<mat-datepicker #dpNacimiento startView="multi-year"></mat-datepicker>
 					@if (formSubmit.controls["fechaNacimiento"].hasError('')) {
 					<mat-error>Fecha de nacimiento no válido</mat-error>
 					} @if (formSubmit.controls['fechaNacimiento'].hasError('required') ) {
@@ -142,7 +142,7 @@
 
 				<br />
 				<br />
-				<button mat-flat-button color="primary" (click)="onSubmit()">Enviar</button>
+				<button mat-flat-button color="primary" #submit (click)="onSubmit()">Enviar</button>
 			</form>
 		</div>
 	</mat-card-content>

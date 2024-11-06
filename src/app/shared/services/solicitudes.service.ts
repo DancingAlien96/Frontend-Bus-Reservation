@@ -50,12 +50,8 @@ export class SolicitudesService {
 		return this.http.get(`${this.url}/solicitud/filter?user=${id}`);
 	}
 
-
-	actualizarEstado(ID_SOLICITUD:number, ESTADO:number, MOTIVO_RECHAZO:string):Observable<UsuarioInterface>{
-		const actual = { ID_SOLICITUD, ESTADO,MOTIVO_RECHAZO };
-		return this.http.patch<UsuarioInterface>(`${this.url}/solicitud`,actual);
+	actualizarEstado(ID_SOLICITUD: number, ESTADO: number, MOTIVO_RECHAZO: string): Observable<UsuarioInterface> {
+		const actual = { ID_SOLICITUD, ESTADO, MOTIVO_RECHAZO };
+		return this.http.patch<UsuarioInterface>(`${this.url}/solicitud`, actual);
 	}
-
-
-
 }

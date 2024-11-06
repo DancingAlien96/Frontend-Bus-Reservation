@@ -17,6 +17,7 @@ import { MY_FORMATS } from '../../shared/utils/date-format.utils';
 import { RolInterface, UsuarioPostInterface } from '../../shared/interfaces';
 import { RolService } from '../../shared/services/rol.service';
 import { UsuariosService } from '../../shared/services/usuarios.service';
+import { Router } from '@angular/router';
 
 @Component({
 	selector: 'app-nuevo-usuario',
@@ -49,7 +50,8 @@ export default class NuevoUsuarioComponent {
 		private fb: FormBuilder,
 		private rs: RolService,
 		private us: UsuariosService,
-		private datePipe: DatePipe
+		private datePipe: DatePipe,
+		private router: Router
 	) {
 		this.rs.getRoles().subscribe((data) => {
 			this.roles = data;
@@ -66,7 +68,6 @@ export default class NuevoUsuarioComponent {
 			telefonoDos: [null, [Validators.maxLength(25)]],
 			idRol: [null, Validators.required]
 		});
-		this.formSubmit.controls['telefonoDos'].disable();
 	}
 
 	onSubmit() {
@@ -76,6 +77,7 @@ export default class NuevoUsuarioComponent {
 			this.us.postUsuario(this.usuario).subscribe((data) => {
 				alert('Usuario creado correctamente');
 				this.formSubmit.disable();
+				this.router.navigate(['/usuarios']);
 			});
 		}
 	}

@@ -24,6 +24,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FecvService } from '../../shared/services/fecv.service';
 import { FunctionsService } from '../../shared/services/functions.service';
 import { MY_FORMATS } from '../../shared/utils/date-format.utils';
+import { PdfFECVComponent } from '../../shared/pdf/pdf-fecv.component';
 
 @Component({
 	selector: 'app-formulario-entrega',
@@ -107,10 +108,12 @@ export default class FormularioEntregaComponent {
 			};
 
 			this.fecvs.postFECV(this.fecvPost).subscribe((fecv) => {
+				this.formSubmit.disable();
 				this._snackBar.open('Formulario de entrega guardado', 'Cerrar', {
 					duration: 2000
 				});
-				console.log(fecv);
+				PdfFECVComponent.createPDF(fecv, this.vehiculo);
+				this.router.navigate(['/solicitudes']);
 			});
 		}
 	}
