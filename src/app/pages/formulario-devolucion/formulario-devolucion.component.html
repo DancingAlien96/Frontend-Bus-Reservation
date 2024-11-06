@@ -544,7 +544,7 @@
 								<mat-form-field appearance="outline">
 									<mat-label>Kilometros recorridos</mat-label>
 									<input
-										[value]="(kmFinal.value | number) - (kmEntrega.value | number)"
+										[value]="(kmFinal.value | number) - (kmEntrega.value | number) | kilometrosPipe"
 										formControlName="kilometrosRecorridos"
 										matInput
 										type="number"

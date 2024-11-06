@@ -116,3 +116,13 @@ export class BoolToNumber implements PipeTransform {
 		return value ? '1' : '0';
 	}
 }
+
+@Pipe({
+	name: 'kilometrosPipe',
+	standalone: true
+})
+export class KilometrosPipe implements PipeTransform {
+	transform(value: number) {
+		return parseFloat(value.toFixed(1));
+	}
+}
