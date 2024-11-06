@@ -13,7 +13,7 @@
 	<mat-divider></mat-divider>
 	<mat-card-content>
 		<div class="container">
-			@if (this.idUsuario == 1 || this.idUsuario==2) {
+			@if (this.rol == 1 || this.rol==2) {
 			<mat-tab-group (selectedIndexChange)="filterByTab($event)">
 				<mat-tab label="Todas"></mat-tab>
 				<mat-tab label="Aprobadas"></mat-tab>
@@ -125,6 +125,7 @@
 
   
 						
+
 					<tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
 					<tr (click)="openDialog(row)" class="stylerow" mat-row *matRowDef="let row; columns: displayedColumns"></tr>
 

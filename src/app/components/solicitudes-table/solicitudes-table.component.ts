@@ -60,11 +60,12 @@ export class SolicitudesTableComponent implements AfterViewInit {
 	mostrarColumnaEstado!:boolean;
 	private updateSubscription!:Subscription;
 	trashActive!:boolean;
+
 	savedstate: string | null = null;
 	idUsuario!: number;
 	filtradoFechas: boolean = false;
 	solicitudesFiltradas: boolean = false;
-	refresh!:boolean;
+	refresh!: boolean;
 	rol!: number;
 	tabIndex = 0;
 	displayedColumns: string[] = [
@@ -87,7 +88,7 @@ export class SolicitudesTableComponent implements AfterViewInit {
 		private dialog: MatDialog,
 		private cdr: ChangeDetectorRef,
 		private fb: FormBuilder,
-		private comunicacionService:ComunicationService
+		private comunicacionService: ComunicationService
 	) {
 		this.formSearch = this.fb.group({
 			inicio: new FormControl<Date | null>(null, Validators.required),
@@ -163,13 +164,14 @@ export class SolicitudesTableComponent implements AfterViewInit {
 			this.getAllRequest();
 			this.filterByTab(this.tabIndex);
 		})*/
+
 	}
 
- ngOnDestroy(){
-	if(this.updateSubscription){
-		this.updateSubscription.unsubscribe();
+	ngOnDestroy() {
+		if (this.updateSubscription) {
+			this.updateSubscription.unsubscribe();
+		}
 	}
- }
 
  
 	filterByTab(index: number) {
@@ -227,24 +229,20 @@ export class SolicitudesTableComponent implements AfterViewInit {
 		return estadoLabel;
 	}
 
-     alert(event: Event): void {
-		event.stopPropagation(); 
+	alert(event: Event): void {
+		event.stopPropagation();
 		const dialogRef = this.dialog.open(AlertaEliminadoComponent, {
 			width: '400px'
-		  });
-		
+		});
 
-		dialogRef.afterClosed().subscribe(result=>{
-			if(result== true){
-			 //hacer algo con el backend 
-			}
-			else{
+		dialogRef.afterClosed().subscribe((result) => {
+			if (result == true) {
+				//hacer algo con el backend
+			} else {
 				//hacer algo mas con el backend
 			}
-		})
-
-		
-	  }
+		});
+	}
 	getAllRequest() {
 		const usuarioSession = sessionStorage.getItem('usuario');
 
@@ -291,15 +289,16 @@ export class SolicitudesTableComponent implements AfterViewInit {
 						return dataStr.includes(filter.trim().toLowerCase());
 					};
 				});
-			} else {
+			}
+			if (this.rol == 2) {
 				this.solicitudesService.solicitudFiltrada(id).subscribe((data) => {
 					this.dataSource = new MatTableDataSource(data); // Asigna los datos al dataSource
 					this.dataSource.paginator = this.paginator;
 					this.dataSource.sort = this.sort;
-					
+
 					this.dataSource.filterPredicate = (data: SolicitudesInterfaces, filter: string) => {
 						let estadoLabel = this.getEstadoLabel(data.ESTADO);
-						
+
 						const dataStr =
 							`${data.ID_SOLICITUD} ${data.VEHICULO.PLACA}  ${data.VEHICULO.MARCA}  ${data.VEHICULO.COLOR}  ${data.VEHICULO.TIPO} ${data.FECHA_CREACION} ${data.FECHA_HORA_ENTREGA} ${data.FECHA_HORA_DEVOLUCION} ${data.NOMBRE_SOLICITANTE} ${estadoLabel}`.toLowerCase();
 
@@ -326,12 +325,14 @@ export class SolicitudesTableComponent implements AfterViewInit {
 			data: row
 		});
 
+
 		 dialogRef.afterClosed().subscribe(estado=>{
 			if(estado === true){
 				this.filterAfterSave(this.tabIndex);
 			}
 		 })
 			}
+
 
 	onDateFilter() {
 		this.filtradoFechas = !this.filtradoFechas;
