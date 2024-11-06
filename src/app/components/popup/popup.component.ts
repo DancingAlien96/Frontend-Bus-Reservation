@@ -178,7 +178,7 @@ export class PopupComponent {
 					console.log(res);
 					this.toast.open('guardado', 'cerrar', config);
 					this.comunicacionService.emitUpdate();
-					this.dialogRef.close();
+					this.dialogRef.close(true);
 				});
 		} else {
 			this.solicitudesService.actualizarEstado(this.data.ID_SOLICITUD, this.estadoTemporal, '').subscribe((res) => {
@@ -186,7 +186,7 @@ export class PopupComponent {
 				this.toast.open('guardado', 'cerrar', config);
 				this.comunicacionService.emitUpdate();
 
-				this.dialogRef.close();
+				this.dialogRef.close(true);
 			});
 		}
 	}
