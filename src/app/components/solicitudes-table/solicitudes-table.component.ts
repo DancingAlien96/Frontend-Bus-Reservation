@@ -25,6 +25,7 @@ import { RouterLink } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { ComunicationService } from '../../shared/services/comunication.service';
 import { AlertaEliminadoComponent } from '../alerta-eliminado/alerta-eliminado.component';
+import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 
 @Component({
 	providers: [
@@ -89,7 +90,8 @@ export class SolicitudesTableComponent implements AfterViewInit {
 		private dialog: MatDialog,
 		private cdr: ChangeDetectorRef,
 		private fb: FormBuilder,
-		private comunicacionService: ComunicationService
+		private comunicacionService: ComunicationService,
+		private toast: MatSnackBar,
 	) {
 		this.formSearch = this.fb.group({
 			inicio: new FormControl<Date | null>(null, Validators.required),
@@ -162,7 +164,7 @@ export class SolicitudesTableComponent implements AfterViewInit {
 			this.getAllRequest();
 			this.filterByTab(this.tabIndex);
 		})*/
-		this.tabGroup.selectedIndex = 1;
+		this.tabGroup.selectedIndex = 0;
 	}
 
 	ngOnDestroy() {
@@ -225,7 +227,15 @@ export class SolicitudesTableComponent implements AfterViewInit {
 		return estadoLabel;
 	}
 
-	alert(event: Event): void {
+	alert(event: Event, idRow:number): void {
+		console.log(`este es el id de la solicitud ${idRow}`);
+		
+
+		const config = new MatSnackBarConfig();
+		config.horizontalPosition = 'center';
+		config.verticalPosition = 'bottom';
+		config.panelClass = 'OkSnackBar'; //tipo de snackbar
+		config.duration = 3000;
 		event.stopPropagation();
 		const dialogRef = this.dialog.open(AlertaEliminadoComponent, {
 			width: '400px'
@@ -233,9 +243,16 @@ export class SolicitudesTableComponent implements AfterViewInit {
 
 		dialogRef.afterClosed().subscribe((result) => {
 			if (result == true) {
-				//hacer algo con el backend
+				this.solicitudesService.actualizarEstado(idRow, 4, " ").subscribe(res=>{
+					this, this.getAllRequest();
+					this.tabGroup.selectedIndex = 0;
+		
+					console.log(res);
+					this.toast.open('solicitud eliminada', 'cerrar', config);
+					dialogRef.close();
+				});
 			} else {
-				//hacer algo mas con el backend
+				dialogRef.close();
 			}
 		});
 	}

@@ -55,8 +55,11 @@
 			<section>
 				<h3>Piloto</h3>
 				<p><strong>Con Piloto:</strong> {{ data.CON_PILOTO ? 'Sí' : 'No' }}</p>
-				<p><strong>Nombre del conductor:</strong> {{ data.NOMBRE_PILOTO }}</p>
-			</section>
+				 @if (data.CON_PILOTO == true) {
+					<p><strong>Nombre del conductor:</strong> {{ data.NOMBRE_PILOTO }}</p>
+	
+				 }
+							</section>
 
 			<section>
 				<h3>Estado de la Solicitud</h3>
