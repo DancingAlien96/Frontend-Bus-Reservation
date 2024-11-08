@@ -3,7 +3,7 @@ import { CanActivateFn, Router } from '@angular/router';
 
 export const authLoginGuard: CanActivateFn = (route, state) => {
 	const router = inject(Router);
-	const token = sessionStorage.getItem('token');
+	const token = localStorage.getItem('token');
 	if (token) {
 		// Si el token existe, redirigir a 'home'
 		router.navigate(['/home']).then(() => {

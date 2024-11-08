@@ -14,6 +14,7 @@
 				<h3>Detalles de la Solicitud</h3>
 
 				<div class="content-container">
+					
 					<p>
 						<strong>Vehículo Solicitado:</strong> <br />
 						{{ data.VEHICULO.TIPO + ' ' + data.VEHICULO.MARCA + ' ' + data.VEHICULO.COLOR }}
@@ -35,12 +36,18 @@
 					}
 				</div>
 				}
-
+				<p>
+					<strong>
+						Solicitante:
+					</strong>		
+					 {{data.NOMBRE_SOLICITANTE}}
+					</p>
+					
 				<p><strong>Destino del viaje:</strong> {{ data.DESTINO }}</p>
 				<p><strong>Diligencia a realizar:</strong> {{ data.DILIGENCIA }}</p>
 			</section>
 
-			<section>
+			<section >
 				<h3>Fechas</h3>
 				<p>
 					<strong>Fecha y Hora de Entrega:</strong>
@@ -94,6 +101,9 @@
 						<mat-form-field appearance="outline" class="areaJustificacion">
 							<mat-label>Justificacion</mat-label>
 							<textarea formControlName="motivo" matInput placeholder=""> </textarea>
+							<mat-error *ngIf="formSubmit.get('motivo')?.hasError('required') && formSubmit.get('motivo')?.touched">
+								Este campo es obligatorio
+							  </mat-error>
 						</mat-form-field>
 					</p>
 				</form>

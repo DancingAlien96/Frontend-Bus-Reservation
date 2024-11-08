@@ -5,7 +5,7 @@ export const solicitanteUnwishGuard: CanActivateFn = (route, state) => {
   //este guard es cuando solicitante no es deseado en alguna ruta
 
   const router = inject(Router);
-  const usuarioSession = sessionStorage.getItem('usuario');
+  const usuarioSession = localStorage.getItem('usuario');
   if (usuarioSession) {
     try {
       const usuario = JSON.parse(usuarioSession);

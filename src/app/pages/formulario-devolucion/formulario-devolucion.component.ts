@@ -303,7 +303,7 @@ export class FormularioDevolucionComponent {
 				Validators.min(this.formSubmit.controls['horaEntrega'].value)
 			]);
 			this.minHoraDevolucion = this.formSubmit.controls['horaEntrega'].value;
-			console.log(this.minHoraDevolucion);
+			//console.log(this.minHoraDevolucion);
 		} else {
 			this.formSubmit.controls['horaDevolucion'].setValidators([Validators.required]);
 			this.minHoraDevolucion = '0:00';
