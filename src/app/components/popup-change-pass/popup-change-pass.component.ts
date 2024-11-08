@@ -40,7 +40,7 @@ export class PopupChangePassComponent {
 	usuario!: UsuarioInterface;
 
 	constructor(private fb: FormBuilder, private us: UsuariosService) {
-		const usuarioSession = sessionStorage.getItem('usuario');
+		const usuarioSession = localStorage.getItem('usuario');
 
 		if (usuarioSession) {
 			this.usuario = JSON.parse(usuarioSession);
@@ -61,8 +61,8 @@ export class PopupChangePassComponent {
 
 		this.us.patchChangePassword(this.newUserInfo).subscribe((data) => {
 			alert('Contraseña cambiada con exito');
-			sessionStorage.removeItem('usuario');
-			sessionStorage.setItem('usuario', JSON.stringify(data));
+			localStorage.removeItem('usuario');
+			localStorage.setItem('usuario', JSON.stringify(data));
 			window.location.reload();
 		});
 	}

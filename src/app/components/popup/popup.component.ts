@@ -111,11 +111,11 @@ export class PopupComponent {
 		private fb: FormBuilder,
 		private comunicacionService: ComunicationService
 	) {
-		this.usuarioSession = sessionStorage.getItem('usuario');
+		this.usuarioSession = localStorage.getItem('usuario');
 		this.usuario = JSON.parse(this.usuarioSession);
 		this.idRol = this.usuario.ID_ROL;
 		this.estadoTemporal = data.ESTADO;
-		console.log(this.estadoTemporal);
+		//console.log(this.estadoTemporal);
 		this.getDisponibilidad();
 		this.numero = 25;
 
@@ -148,7 +148,7 @@ export class PopupComponent {
 		this.solicitudesService
 			.getSolicitudesByDateAndVehicle(inicioFormatted, finFormatted, this.data.VEHICULO)
 			.subscribe((data) => {
-				console.log(data);
+				//console.log(data);
 
 				if (data.length > 0) {
 					this.haySolicitudes = true;
@@ -165,25 +165,33 @@ export class PopupComponent {
 		config.verticalPosition = 'bottom';
 		config.panelClass = 'OkSnackBar'; //tipo de snackbar
 		config.duration = 3000;
-		if (this.formSubmit.valid) {
-			this.motivo = this.formSubmit.get('motivo')?.value;
+		const valorMotivo = this.formSubmit.get('motivo')?.value;
+		if(!valorMotivo){
+			//console.log("El campo 'motivo' está vacío. No se puede continuar.");
+			this.formSubmit.get('motivo')?.markAsTouched(); // Marca el campo como "touched" para mostrar el mensaje de error
+			return;
 		}
+
+		if (this.formSubmit.valid) {
+		   this.motivo = valorMotivo;	
+		}
+		/*
 		console.log(this.data.ID_SOLICITUD);
 		console.log(`el estado temporal es ${this.estadoTemporal}`);
 		console.log(`el motivo es: ${this.motivo}`);
-
+*/
 		if (this.motivo != null) {
 			this.solicitudesService
 				.actualizarEstado(this.data.ID_SOLICITUD, this.estadoTemporal, this.motivo)
 				.subscribe((res) => {
-					console.log(res);
+					//console.log(res);
 					this.toast.open('guardado', 'cerrar', config);
 					this.comunicacionService.emitUpdate();
 					this.dialogRef.close(true);
 				});
 		} else {
 			this.solicitudesService.actualizarEstado(this.data.ID_SOLICITUD, this.estadoTemporal, '').subscribe((res) => {
-				console.log(res);
+				//console.log(res);
 				this.toast.open('guardado', 'cerrar', config);
 				this.comunicacionService.emitUpdate();
 
@@ -197,11 +205,11 @@ export class PopupComponent {
 	}
 
 	changes(event: any) {
-		console.log(event.value);
+		//console.log(event.value);
 
 		this.estadoTemporal = event.value;
 
-		console.log(this.estadoTemporal);
+		//console.log(this.estadoTemporal);
 		this.eBoton = true;
 		if (event.value == 2 || event.value == 5) {
 			this.areaJustificacion = true;

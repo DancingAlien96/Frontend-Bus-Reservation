@@ -4,7 +4,7 @@ import { CanActivateFn, Router } from '@angular/router';
 export const userUnwishGuard: CanActivateFn = (route, state) => {
   //este guard sirve cuando el guardia no es deseado
   const router = inject(Router);
-  const usuarioSession = sessionStorage.getItem('usuario');
+  const usuarioSession = localStorage.getItem('usuario');
   if (usuarioSession) {
     try {
       const usuario = JSON.parse(usuarioSession);

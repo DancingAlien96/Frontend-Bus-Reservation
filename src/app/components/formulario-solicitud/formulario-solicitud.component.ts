@@ -75,7 +75,7 @@ export default class FormularioSolicitudComponent {
 	}
 
 	onSubmit() {
-		const usuarioStorage = sessionStorage.getItem('usuario');
+		const usuarioStorage = localStorage.getItem('usuario');
 		const usuario = usuarioStorage ? JSON.parse(usuarioStorage) : null;
 
 		if (usuario) {

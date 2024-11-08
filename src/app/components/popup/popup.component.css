@@ -30,12 +30,12 @@ mat-card-subtitle {
 .grid-container {
 	display: grid;
 	grid-template-columns: 1fr 1fr; /* Dos columnas de igual tamaño */
-	gap: 20px; /* Espacio entre columnas */
-	margin-top: 20px;
+	gap: 10px; /* Espacio entre columnas */
+	margin-top: 5px;
 }
 
 section {
-	margin-bottom: 20px;
+	margin-bottom: 5px;
 }
 
 h3 {
@@ -122,3 +122,4 @@ p {
 .Finalizada {
 	background-color: #2685de;
 }
+

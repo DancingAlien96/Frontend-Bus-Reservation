@@ -76,7 +76,7 @@ export class UsuariosTableComponent implements AfterViewInit {
 	}
 
 	getAllUsers() {
-		const usuarioSession = sessionStorage.getItem('usuario');
+		const usuarioSession = localStorage.getItem('usuario');
 		const usuario = JSON.parse(usuarioSession!);
 		this.idUsuario = usuario.ID_USUARIO;
 

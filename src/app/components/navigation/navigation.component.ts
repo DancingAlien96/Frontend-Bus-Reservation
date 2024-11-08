@@ -44,7 +44,7 @@ export class NavigationComponent {
 		rute: null
 	};
 	constructor(private authService: AuthService, private router: Router) {
-		const usuarioSession = sessionStorage.getItem('usuario');
+		const usuarioSession = localStorage.getItem('usuario');
 
 		if (usuarioSession != null) {
 			this.usuario = JSON.parse(usuarioSession);
