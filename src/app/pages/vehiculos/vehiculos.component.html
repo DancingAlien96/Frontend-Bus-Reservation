@@ -59,6 +59,28 @@
 						</td>
 					</ng-container>
 
+					<!-- ACCIONES Column -->
+					<ng-container matColumnDef="ACCIONES">
+						<th mat-header-cell *matHeaderCellDef mat-sort-header>Acciones</th>
+						<td mat-cell *matCellDef="let row">
+							<button mat-icon-button color="primary" (click)="onActionEdit($event, row)" matTooltip="Editar">
+								<mat-icon>edit</mat-icon>
+							</button>
+
+							@if (row.ESTADO == 0) {
+
+							<button mat-icon-button color="primary" (click)="onActivate($event, row)" matTooltip="Fuera de servicio">
+								<mat-icon>block</mat-icon>
+							</button>
+							} @else {
+
+							<button mat-icon-button color="primary" (click)="onActivate($event, row)" matTooltip="Activar">
+								<mat-icon>check</mat-icon>
+							</button>
+							}
+						</td>
+					</ng-container>
+
 					<tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
 					<tr (click)="openDialog(row)" class="stylerow" mat-row *matRowDef="let row; columns: displayedColumns"></tr>
 

@@ -1,14 +1,21 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { environment } from '../../../enviroment/environment.prod';
-import { VehiculoInterface } from '../interfaces/vehiculo.interface';
+import { BitacoraCondicionesPostInterface, VehiculoInterface } from '../interfaces/vehiculo.interface';
 
 @Injectable({
 	providedIn: 'root'
 })
 export class VehiculoService {
 	readonly url = environment.api;
+	private updateSubject = new Subject<void>();
+	getUpdateObservable(): Observable<void> {
+		return this.updateSubject.asObservable();
+	}
+	emitUpdate() {
+		this.updateSubject.next();
+	}
 
 	constructor(private http: HttpClient) {}
 
@@ -18,5 +25,13 @@ export class VehiculoService {
 
 	getVehiculo(idVehiculo: number): Observable<VehiculoInterface> {
 		return this.http.get<VehiculoInterface>(`${this.url}/vehiculo/${idVehiculo}`);
+	}
+
+	updateBitacoraCondiciones(condiciones: BitacoraCondicionesPostInterface) {
+		return this.http.post(`${this.url}/condiciones`, condiciones);
+	}
+
+	patchActivarDesactivarVehiculo(ID_VEHICULO: number) {
+		return this.http.patch(`${this.url}/vehiculo/activate/${ID_VEHICULO}`, {});
 	}
 }

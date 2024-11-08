@@ -13,6 +13,11 @@ import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
 import { PaginatorService } from '../../shared/services/paginator.service';
 import { CommonModule } from '@angular/common';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 @Component({
 	selector: 'app-vehiculos',
@@ -26,7 +31,10 @@ import { CommonModule } from '@angular/common';
 		MatTabsModule,
 		MatCardModule,
 		MatDividerModule,
-		CommonModule
+		CommonModule,
+		MatIconModule,
+		MatButtonModule,
+		MatTooltipModule
 	],
 	templateUrl: './vehiculos.component.html',
 	styleUrl: './vehiculos.component.css',
@@ -35,13 +43,15 @@ import { CommonModule } from '@angular/common';
 export class VehiculosComponent implements AfterViewInit {
 	savedstate: string | null = null;
 	dataSource!: MatTableDataSource<VehiculoInterface>;
-	displayedColumns: string[] = ['ID_VEHICULO', 'PLACA', 'TIPO', 'MARCA', 'COLOR', 'ESTADO'];
+	displayedColumns: string[] = ['ID_VEHICULO', 'PLACA', 'TIPO', 'MARCA', 'COLOR', 'ESTADO', 'ACCIONES'];
 	tabIndex = 0;
+
+	private updateSubscription!: Subscription;
 
 	@ViewChild(MatPaginator) paginator!: MatPaginator;
 	@ViewChild(MatSort) sort!: MatSort;
 
-	constructor(private vehiculoService: VehiculoService, private dialog: MatDialog) {}
+	constructor(private vehiculoService: VehiculoService, private dialog: MatDialog, private router: Router) {}
 
 	filterByTab(index: number) {
 		switch (index) {
@@ -90,6 +100,15 @@ export class VehiculosComponent implements AfterViewInit {
 
 	ngAfterViewInit() {
 		this.getAllVehiculos();
+		this.updateSubscription = this.vehiculoService.getUpdateObservable().subscribe(() => {
+			this.getAllVehiculos();
+		});
+	}
+
+	ngOnDestroy() {
+		if (this.updateSubscription) {
+			this.updateSubscription.unsubscribe();
+		}
 	}
 
 	getAllVehiculos() {
@@ -113,6 +132,19 @@ export class VehiculosComponent implements AfterViewInit {
 		this.dialog.open(PopupVehiculosComponent, {
 			width: '80%',
 			data: row
+		});
+	}
+
+	onActionEdit(event: Event, row: VehiculoInterface) {
+		event.stopPropagation();
+		console.log(row);
+		this.router.navigate(['/editar-vehiculo'], { state: { vehiculo: row } });
+	}
+
+	onActivate(event: Event, vehiculo: VehiculoInterface) {
+		event.stopPropagation();
+		this.vehiculoService.patchActivarDesactivarVehiculo(vehiculo.ID_VEHICULO).subscribe((data) => {
+			this.vehiculoService.emitUpdate();
 		});
 	}
 }

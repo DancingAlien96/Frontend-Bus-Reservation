@@ -36,7 +36,6 @@ import { RouterLink } from '@angular/router';
 		MatSortModule,
 		MatPaginatorModule,
 		MatTabsModule,
-		DateFormatPipe,
 		MatCardModule,
 		CommonModule,
 		MatDividerModule,

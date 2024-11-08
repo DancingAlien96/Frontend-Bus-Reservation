@@ -1,0 +1,316 @@
+<mat-card appearance="outlined">
+	<mat-card-header>
+		<mat-card-title> Editar Vehiculo </mat-card-title>
+	</mat-card-header>
+	<mat-divider></mat-divider>
+	<mat-card-content>
+		<div class="vehicle-data container">
+			<h2>DATOS DEL VEHICULO</h2>
+			<table [formGroup]="formVehiculo">
+				<tr>
+					<td>
+						<mat-form-field appearance="outline">
+							<mat-label>Tipo</mat-label>
+							<input readonly formControlName="tipo" matInput type="text" />
+						</mat-form-field>
+					</td>
+					<td>
+						<mat-form-field appearance="outline">
+							<mat-label>Color</mat-label>
+							<input readonly formControlName="color" matInput type="text" />
+						</mat-form-field>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<mat-form-field appearance="outline">
+							<mat-label>Placa</mat-label>
+							<input readonly formControlName="placa" matInput type="text" />
+						</mat-form-field>
+					</td>
+					<td>
+						<mat-form-field appearance="outline">
+							<mat-label>Marca</mat-label>
+							<input readonly formControlName="marca" matInput type="text" />
+						</mat-form-field>
+					</td>
+				</tr>
+			</table>
+		</div>
+		<div class="container">
+			<form [formGroup]="formSubmit">
+				<h2>I. DOCUMENTOS DEL VEHICULO</h2>
+				<table>
+					<tr>
+						<td class="label-td">
+							<mat-label> Tarjeta de Circulación </mat-label>
+						</td>
+						<td class="input-td">
+							<mat-radio-group formControlName="tarjetaCirculacion" class="radio-group">
+								<mat-radio-button value="1">Si</mat-radio-button>
+								<mat-radio-button value="0">No</mat-radio-button>
+							</mat-radio-group>
+						</td>
+					</tr>
+					<tr>
+						<td><h3>Llaves</h3></td>
+					</tr>
+					<tr>
+						<td class="label-td">
+							<mat-label> Llave de Encendido de Motor </mat-label>
+						</td>
+						<td class="input-td">
+							<mat-radio-group formControlName="llavesEncendido" class="radio-group">
+								<mat-radio-button value="1">Si</mat-radio-button>
+								<mat-radio-button value="0">No</mat-radio-button>
+							</mat-radio-group>
+						</td>
+					</tr>
+
+					<tr>
+						<td class="label-td">
+							<mat-label> Llave de Tanque de Gasolina </mat-label>
+						</td>
+						<td class="input-td">
+							<mat-radio-group formControlName="llavesGasolina" class="radio-group">
+								<mat-radio-button value="1">Si</mat-radio-button>
+								<mat-radio-button value="0">No</mat-radio-button>
+							</mat-radio-group>
+						</td>
+					</tr>
+
+					<tr>
+						<td class="label-td">
+							<mat-label> Llave de Llanta de Repuesto </mat-label>
+						</td>
+						<td class="input-td">
+							<mat-radio-group formControlName="llavesLlanta" class="radio-group">
+								<mat-radio-button value="1">Si</mat-radio-button>
+								<mat-radio-button value="0">No</mat-radio-button>
+							</mat-radio-group>
+						</td>
+					</tr>
+				</table>
+
+				<h2>II CONDICIONES DEL VEHICULO</h2>
+				<h3>Motor</h3>
+				<table>
+					<tr>
+						<td class="label-td">
+							<mat-label> Encendido </mat-label>
+						</td>
+						<td class="input-td">
+							<mat-radio-group formControlName="encendidoMotor" class="radio-group">
+								<mat-radio-button value="1">Bueno</mat-radio-button>
+								<mat-radio-button value="0">Lento</mat-radio-button>
+							</mat-radio-group>
+						</td>
+					</tr>
+				</table>
+
+				<h3>Retrovisores</h3>
+				<table>
+					<tr>
+						<td class="label-td">
+							<mat-label> Exteriores </mat-label>
+						</td>
+						<td class="input-td">
+							<mat-radio-group formControlName="retrovisoresExterior" class="radio-group">
+								<mat-radio-button value="1">Si</mat-radio-button>
+								<mat-radio-button value="0">No</mat-radio-button>
+							</mat-radio-group>
+						</td>
+					</tr>
+					<tr>
+						<td class="label-td">
+							<mat-label> Interiores </mat-label>
+						</td>
+						<td class="input-td">
+							<mat-radio-group formControlName="retrovisoresInterior" class="radio-group">
+								<mat-radio-button value="1">Si</mat-radio-button>
+								<mat-radio-button value="0">No</mat-radio-button>
+							</mat-radio-group>
+						</td>
+					</tr>
+				</table>
+
+				<div></div>
+
+				<h3>Accesorios</h3>
+				<table>
+					<tr>
+						<td class="label-td">
+							<mat-label> Llanta de Repuesto </mat-label>
+						</td>
+						<td class="input-td">
+							<mat-radio-group formControlName="llantaRepuesto" class="radio-group">
+								<mat-radio-button value="1">Si</mat-radio-button>
+								<mat-radio-button value="0">No</mat-radio-button>
+							</mat-radio-group>
+						</td>
+					</tr>
+					<tr>
+						<td class="label-td">
+							<mat-label> Llave de Chuchos </mat-label>
+						</td>
+						<td class="input-td">
+							<mat-radio-group formControlName="llaveChuchos" class="radio-group">
+								<mat-radio-button value="1">Si</mat-radio-button>
+								<mat-radio-button value="0">No</mat-radio-button>
+							</mat-radio-group>
+						</td>
+					</tr>
+					<tr>
+						<td class="label-td">
+							<mat-label> Tricket </mat-label>
+						</td>
+						<td class="input-td">
+							<mat-radio-group formControlName="tricket" class="radio-group">
+								<mat-radio-button value="1">Si</mat-radio-button>
+								<mat-radio-button value="0">No</mat-radio-button>
+							</mat-radio-group>
+						</td>
+					</tr>
+					<tr>
+						<td><mat-label> Otros </mat-label></td>
+						<td>
+							<mat-form-field appearance="outline">
+								<mat-label> Otros </mat-label>
+								<input #otros formControlName="otros" matInput type="text" />
+								@if ( otros.value.length > 300 ) {
+								<mat-hint class="error-hint" align="end">
+									Límite de caracteres permitidos: {{ otros.value.length }} / 300
+								</mat-hint>
+								} @else {
+								<mat-hint align="end"> {{ otros.value.length }} / 300 </mat-hint>
+								}
+							</mat-form-field>
+						</td>
+					</tr>
+				</table>
+
+				<h3>Luces</h3>
+				<table>
+					<tr>
+						<td class="label-td">
+							<mat-label> Condiciones silvines </mat-label>
+						</td>
+						<td class="input-td">
+							<mat-radio-group formControlName="silvines" class="radio-group">
+								<mat-radio-button value="1">Buen estado</mat-radio-button>
+								<mat-radio-button value="0">Mal estado</mat-radio-button>
+								<mat-radio-button value="2">Con daños</mat-radio-button>
+							</mat-radio-group>
+						</td>
+					</tr>
+					<tr>
+						<td class="label-td">
+							<mat-label> Condiciones stops </mat-label>
+						</td>
+						<td class="input-td">
+							<mat-radio-group formControlName="stops" class="radio-group">
+								<mat-radio-button value="1">Buen estado</mat-radio-button>
+								<mat-radio-button value="0">Mal estado</mat-radio-button>
+								<mat-radio-button value="2">Con daños</mat-radio-button>
+							</mat-radio-group>
+						</td>
+					</tr>
+					<tr>
+						<td class="label-td">
+							<mat-label> Condiciones de luz de retroceso</mat-label>
+						</td>
+						<td class="input-td">
+							<mat-radio-group formControlName="luzRetroceso" class="radio-group">
+								<mat-radio-button value="1">Buen estado</mat-radio-button>
+								<mat-radio-button value="0">Mal estado</mat-radio-button>
+								<mat-radio-button value="2">Con daños</mat-radio-button>
+							</mat-radio-group>
+						</td>
+					</tr>
+					<tr>
+						<td class="label-td">
+							<mat-label> Condiciones de luz de emergencia </mat-label>
+						</td>
+						<td class="input-td">
+							<mat-radio-group formControlName="luzEmergencia" class="radio-group">
+								<mat-radio-button value="1">Buen estado</mat-radio-button>
+								<mat-radio-button value="0">Mal estado</mat-radio-button>
+								<mat-radio-button value="2">Con daños</mat-radio-button>
+							</mat-radio-group>
+						</td>
+					</tr>
+				</table>
+
+				<h3>Otros</h3>
+				<table>
+					<tr>
+						<td class="label-td">
+							<mat-label> Condiciones de llantas </mat-label>
+						</td>
+						<td class="input-td">
+							<mat-radio-group formControlName="condicionesLlanta" class="radio-group">
+								<mat-radio-button value="1">Buen estado</mat-radio-button>
+								<mat-radio-button value="0">Mal estado</mat-radio-button>
+								<mat-radio-button value="2">Con daños</mat-radio-button>
+							</mat-radio-group>
+						</td>
+					</tr>
+					<tr>
+						<td class="label-td">
+							<mat-label> Condiciones de Limpia Parabrisas </mat-label>
+						</td>
+						<td class="input-td">
+							<mat-radio-group formControlName="limpiaparabrisas" class="radio-group">
+								<mat-radio-button value="1">Buen estado</mat-radio-button>
+								<mat-radio-button value="0">Mal estado</mat-radio-button>
+								<mat-radio-button value="2">Con daños</mat-radio-button>
+							</mat-radio-group>
+						</td>
+					</tr>
+					<tr>
+						<td><mat-label>Kilometraje</mat-label></td>
+						<td>
+							<mat-form-field appearance="outline">
+								<mat-label>Kilometraje al Momento de Recibir</mat-label>
+								<input formControlName="kilometraje" matInput type="number" />
+							</mat-form-field>
+							@if (formSubmit.controls['kilometraje'].hasError('required') ) {
+							<mat-error>Requerido</mat-error>
+							}
+						</td>
+					</tr>
+				</table>
+
+				<h3>Combustible</h3>
+				<div class="center-content">
+					<div class="example-label-container">
+						<label>Nivel del tanque al recibir el vehículos </label>
+						<strong>
+							<label class="example-value-label">{{ slider.value | combustiblePipe }}</label>
+						</strong>
+					</div>
+					<mat-slider [max]="1" [min]="0" [step]="0.25" [showTickMarks]="true">
+						<input matSliderThumb formControlName="nivelCombustible" #slider />
+					</mat-slider>
+				</div>
+
+				<h3>Observaciones</h3>
+				<mat-form-field appearance="outline">
+					<mat-label>
+						Indique daños a la estructura del vehículo o cualquier otra situacion que merezca su atención
+					</mat-label>
+					<textarea #observaciones formControlName="observaciones" matInput></textarea>
+					@if ( observaciones.value.length > 300 ) {
+					<mat-hint class="error-hint" align="end">
+						Límite de caracteres permitidos: {{ observaciones.value.length }} / 300
+					</mat-hint>
+					} @else {
+					<mat-hint align="end"> {{ observaciones.value.length }} / 300 </mat-hint>
+					}
+				</mat-form-field>
+
+				<button mat-flat-button color="primary" (click)="onSubmit()">Enviar</button>
+			</form>
+		</div>
+	</mat-card-content>
+</mat-card>
