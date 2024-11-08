@@ -39,3 +39,23 @@
     max-width: 100%;
     height: auto;
   }
+
+
+  /* Centrar el enlace de "¿Olvidaste tu contraseña?" y darle espacio */
+.forgot-password {
+  border: none;
+  text-align: center;
+  margin-top: 8px;
+  margin-bottom: 16px;
+}
+
+.forgot-password a {
+  color: var(--primaryColor) ;/* Color azul acorde al tema Material */
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.forgot-password a:hover {
+  text-decoration: underline;
+}
+
