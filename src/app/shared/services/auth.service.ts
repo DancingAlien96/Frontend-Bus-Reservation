@@ -12,13 +12,13 @@ export class AuthService {
 	constructor(private cookies: CookieService, private router: Router) {}
 
 	isLoggedIn(): boolean {
-		const token = sessionStorage.getItem('token');
+		const token = localStorage.getItem('token');
 		return !!token; // Convertimos el valor a booleano
 	}
 
 	logOut() {
-		sessionStorage.removeItem('token');
-		sessionStorage.clear();
+		localStorage.removeItem('token');
+		localStorage.clear();
 		this.router.navigate(['/login']);
 	}
 }

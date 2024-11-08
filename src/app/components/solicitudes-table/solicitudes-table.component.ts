@@ -228,7 +228,7 @@ export class SolicitudesTableComponent implements AfterViewInit {
 	}
 
 	alert(event: Event, idRow:number): void {
-		console.log(`este es el id de la solicitud ${idRow}`);
+		//console.log(`este es el id de la solicitud ${idRow}`);
 		
 
 		const config = new MatSnackBarConfig();
@@ -247,7 +247,7 @@ export class SolicitudesTableComponent implements AfterViewInit {
 					this, this.getAllRequest();
 					this.tabGroup.selectedIndex = 0;
 		
-					console.log(res);
+					//console.log(res);
 					this.toast.open('solicitud eliminada', 'cerrar', config);
 					dialogRef.close();
 				});
@@ -257,7 +257,7 @@ export class SolicitudesTableComponent implements AfterViewInit {
 		});
 	}
 	getAllRequest() {
-		const usuarioSession = sessionStorage.getItem('usuario');
+		const usuarioSession = localStorage.getItem('usuario');
 
 		if (usuarioSession != null) {
 			const usuario = JSON.parse(usuarioSession);

@@ -97,7 +97,7 @@ export class PopupVehiculosComponent {
 		private fb: FormBuilder,
 		private datePipe: DatePipe
 	) {
-		this.usuario = JSON.parse(sessionStorage.getItem('usuario') as string);
+		this.usuario = JSON.parse(localStorage.getItem('usuario') as string);
 		this.condiciones = vehiculo.BITACORA_CONDICIONES;
 		this.formSearch = this.fb.group({
 			inicio: new FormControl<Date | null>(null, Validators.required),

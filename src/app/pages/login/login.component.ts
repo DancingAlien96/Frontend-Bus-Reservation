@@ -49,8 +49,8 @@ export class LoginComponent {
 				)
 				.subscribe((res) => {
 					if (res) {
-						sessionStorage.setItem('token', res.token);
-						sessionStorage.setItem('usuario', JSON.stringify(res.usuario));
+						localStorage.setItem('token', res.token);
+						localStorage.setItem('usuario', JSON.stringify(res.usuario));
 						// Redirigir a 'home'
 						this.router.navigate(['/home']);
 					}

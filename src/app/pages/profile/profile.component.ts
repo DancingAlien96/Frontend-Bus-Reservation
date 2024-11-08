@@ -22,7 +22,7 @@ export default class ProfileComponent {
 	usuario!: UsuarioInterface;
 
 	constructor(private authService: AuthService, private router: Router, private dialog: MatDialog) {
-		const usuarioSession = sessionStorage.getItem('usuario');
+		const usuarioSession = localStorage.getItem('usuario');
 
 		if (usuarioSession != null) {
 			this.usuario = JSON.parse(usuarioSession);
