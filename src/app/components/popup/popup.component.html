@@ -14,7 +14,6 @@
 				<h3>Detalles de la Solicitud</h3>
 
 				<div class="content-container">
-					
 					<p>
 						<strong>Vehículo Solicitado:</strong> <br />
 						{{ data.VEHICULO.TIPO + ' ' + data.VEHICULO.MARCA + ' ' + data.VEHICULO.COLOR }}
@@ -37,17 +36,15 @@
 				</div>
 				}
 				<p>
-					<strong>
-						Solicitante:
-					</strong>		
-					 {{data.NOMBRE_SOLICITANTE}}
-					</p>
-					
+					<strong> Solicitante: </strong>
+					{{ data.NOMBRE_SOLICITANTE }}
+				</p>
+
 				<p><strong>Destino del viaje:</strong> {{ data.DESTINO }}</p>
 				<p><strong>Diligencia a realizar:</strong> {{ data.DILIGENCIA }}</p>
 			</section>
 
-			<section >
+			<section>
 				<h3>Fechas</h3>
 				<p>
 					<strong>Fecha y Hora de Entrega:</strong>
@@ -62,11 +59,11 @@
 			<section>
 				<h3>Piloto</h3>
 				<p><strong>Con Piloto:</strong> {{ data.CON_PILOTO ? 'Sí' : 'No' }}</p>
-				 @if (data.CON_PILOTO == true) {
-					<p><strong>Nombre del conductor:</strong> {{ data.NOMBRE_PILOTO }}</p>
-	
-				 }
-							</section>
+				@if (data.CON_PILOTO == true) {
+				<p><strong>Nombre del conductor:</strong> {{ data.NOMBRE_PILOTO }}</p>
+
+				}
+			</section>
 
 			<section>
 				<h3>Estado de la Solicitud</h3>
@@ -75,7 +72,7 @@
 				<mat-form-field>
 					<mat-label>Estado</mat-label>
 
-					<mat-select [(value)]="this.estadoTemporal" (selectionChange)="changes($event)">
+					<mat-select [(value)]="this.estadoTemporal" (selectionChange)="selectedValueChanges($event)">
 						@for (estadoSelect of estadosPendiente; track estadoSelect) {
 						<mat-option [value]="estadoSelect.id">{{ estadoSelect.estado }}</mat-option>
 
@@ -87,7 +84,7 @@
 				<mat-form-field>
 					<mat-label>Estado</mat-label>
 
-					<mat-select [(value)]="this.estadoTemporal" (selectionChange)="changes($event)">
+					<mat-select [(value)]="this.estadoTemporal" (selectionChange)="selectedValueChanges($event)">
 						@for (estadoSelect of estadosAprobada; track estadoSelect) {
 						<mat-option [value]="estadoSelect.id">{{ estadoSelect.estado }}</mat-option>
 
@@ -103,7 +100,7 @@
 							<textarea formControlName="motivo" matInput placeholder=""> </textarea>
 							<mat-error *ngIf="formSubmit.get('motivo')?.hasError('required') && formSubmit.get('motivo')?.touched">
 								Este campo es obligatorio
-							  </mat-error>
+							</mat-error>
 						</mat-form-field>
 					</p>
 				</form>

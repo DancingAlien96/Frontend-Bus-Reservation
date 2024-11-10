@@ -39,7 +39,6 @@ import { ComunicationService } from '../../shared/services/comunication.service'
 		MatInputModule,
 		FormsModule,
 		MatButtonModule,
-		MatDialogTitle,
 		MatDialogContent,
 		MatDialogActions,
 		MatDialogClose,
@@ -159,52 +158,40 @@ export class PopupComponent {
 	}
 
 	save(): void {
-		
 		const config = new MatSnackBarConfig();
 		config.horizontalPosition = 'center';
 		config.verticalPosition = 'bottom';
 		config.panelClass = 'OkSnackBar'; //tipo de snackbar
 		config.duration = 3000;
-		const valorMotivo = this.formSubmit.get('motivo')?.value;
-		if(!valorMotivo){
-			//console.log("El campo 'motivo' está vacío. No se puede continuar.");
-			this.formSubmit.get('motivo')?.markAsTouched(); // Marca el campo como "touched" para mostrar el mensaje de error
-			return;
-		}
 
 		if (this.formSubmit.valid) {
-		   this.motivo = valorMotivo;	
-		}
-		/*
-		console.log(this.data.ID_SOLICITUD);
-		console.log(`el estado temporal es ${this.estadoTemporal}`);
-		console.log(`el motivo es: ${this.motivo}`);
-*/
-		if (this.motivo != null) {
 			this.solicitudesService
-				.actualizarEstado(this.data.ID_SOLICITUD, this.estadoTemporal, this.motivo)
+				.actualizarEstado(this.data.ID_SOLICITUD, this.estadoTemporal, this.motivo || ' ')
 				.subscribe((res) => {
 					//console.log(res);
 					this.toast.open('guardado', 'cerrar', config);
 					this.comunicacionService.emitUpdate();
 					this.dialogRef.close(true);
 				});
-		} else {
-			this.solicitudesService.actualizarEstado(this.data.ID_SOLICITUD, this.estadoTemporal, '').subscribe((res) => {
-				//console.log(res);
-				this.toast.open('guardado', 'cerrar', config);
-				this.comunicacionService.emitUpdate();
-
-				this.dialogRef.close(true);
-			});
 		}
+		/*
+		console.log(this.data.ID_SOLICITUD);
+		console.log(`el estado temporal es ${this.estadoTemporal}`);
+		console.log(`el motivo es: ${this.motivo}`);*/
 	}
 
+	/**
+	 *
+	 */
 	onPDF(): void {
 		PdfSolicitudComponent.createPDF(this.data, this.personalService);
 	}
 
-	changes(event: any) {
+	/**
+	 *
+	 * @param event  nuevo valor seleccionado
+	 */
+	selectedValueChanges(event: any) {
 		//console.log(event.value);
 
 		this.estadoTemporal = event.value;
@@ -213,8 +200,12 @@ export class PopupComponent {
 		this.eBoton = true;
 		if (event.value == 2 || event.value == 5) {
 			this.areaJustificacion = true;
+			this.formSubmit.controls['motivo'].setValidators([Validators.required, Validators.minLength(10)]);
+			this.formSubmit.controls['motivo'].updateValueAndValidity();
 		} else {
 			this.areaJustificacion = false;
+			this.formSubmit.controls['motivo'].setValidators(null);
+			this.formSubmit.controls['motivo'].updateValueAndValidity();
 		}
 	}
 
