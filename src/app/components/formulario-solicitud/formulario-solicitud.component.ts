@@ -132,7 +132,8 @@ export default class FormularioSolicitudComponent {
 
 	ngOnInit() {
 		this.vs.getVehiculos().subscribe((data) => {
-			this.vehiculos = data;
+			const vehiculosFiltrados = data.filter((vehiculo) => vehiculo.ESTADO === 0);
+			this.vehiculos = vehiculosFiltrados;
 		});
 	}
 

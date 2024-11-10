@@ -2,12 +2,19 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { environment } from '../../../enviroment/environment.prod';
-import { BitacoraCondicionesPostInterface, VehiculoInterface } from '../interfaces/vehiculo.interface';
+import {
+	BitacoraCondicionesPostInterface,
+	VehiculoInterface,
+	VehiculoPostInterface
+} from '../interfaces/vehiculo.interface';
 
 @Injectable({
 	providedIn: 'root'
 })
 export class VehiculoService {
+	postVehiculo(vehiculo: VehiculoPostInterface) {
+		return this.http.post(`${this.url}/vehiculo`, vehiculo);
+	}
 	readonly url = environment.api;
 	private updateSubject = new Subject<void>();
 	getUpdateObservable(): Observable<void> {

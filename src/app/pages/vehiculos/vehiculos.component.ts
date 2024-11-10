@@ -16,7 +16,7 @@ import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -34,7 +34,8 @@ import { Subscription } from 'rxjs';
 		CommonModule,
 		MatIconModule,
 		MatButtonModule,
-		MatTooltipModule
+		MatTooltipModule,
+		RouterLink
 	],
 	templateUrl: './vehiculos.component.html',
 	styleUrl: './vehiculos.component.css',
@@ -50,6 +51,7 @@ export class VehiculosComponent implements AfterViewInit {
 
 	@ViewChild(MatPaginator) paginator!: MatPaginator;
 	@ViewChild(MatSort) sort!: MatSort;
+	@ViewChild(MatTabGroup) tabGroup!: MatTabGroup;
 
 	constructor(private vehiculoService: VehiculoService, private dialog: MatDialog, private router: Router) {}
 
@@ -103,6 +105,8 @@ export class VehiculosComponent implements AfterViewInit {
 		this.updateSubscription = this.vehiculoService.getUpdateObservable().subscribe(() => {
 			this.getAllVehiculos();
 		});
+
+		this.tabGroup.selectedIndex = 0;
 	}
 
 	ngOnDestroy() {
@@ -145,6 +149,8 @@ export class VehiculosComponent implements AfterViewInit {
 		event.stopPropagation();
 		this.vehiculoService.patchActivarDesactivarVehiculo(vehiculo.ID_VEHICULO).subscribe((data) => {
 			this.vehiculoService.emitUpdate();
+			this, this.getAllVehiculos();
+			this.tabGroup.selectedIndex = 0;
 		});
 	}
 }
