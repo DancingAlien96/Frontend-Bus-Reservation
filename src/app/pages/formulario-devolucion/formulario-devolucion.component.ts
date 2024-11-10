@@ -233,9 +233,9 @@ export class FormularioDevolucionComponent {
 			OBSERVACIONES_DEVOLUCION: this.formSubmit.controls['observaciones'].value,
 			FACTURA_SERIE: this.formSubmit.controls['facturaSerie'].value,
 			NO_FACTURA: this.formSubmit.controls['noFactura'].value,
-			GALONES: this.formSubmit.controls['galones'].value,
-			PRECIO: this.formSubmit.controls['precio'].value,
-			TOTAL: this.formSubmit.controls['total'].value,
+			GALONES: this.formSubmit.controls['galones'].value || null,
+			PRECIO: this.formSubmit.controls['precio'].value || null,
+			TOTAL: this.formSubmit.controls['total'].value || null,
 			FECHA_LLENADO: this.formSubmit.controls['fechaLlenado'].value,
 			FECHA_HORA_ENTREGA: this.fs
 				.combinarFechaHora(

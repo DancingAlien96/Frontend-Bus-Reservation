@@ -1,0 +1,98 @@
+<mat-card appearance="outlined">
+	<mat-card-header>
+		<mat-card-title> Editar Vehiculo </mat-card-title>
+	</mat-card-header>
+	<mat-divider></mat-divider>
+	<mat-card-content>
+		<div class="vehicle-data container">
+			<h2>DATOS DEL VEHICULO</h2>
+			<form [formGroup]="formSubmit">
+				<table>
+					<tr>
+						<td>
+							<mat-form-field appearance="outline">
+								<mat-label>Tipo</mat-label>
+								<input matInput #tipo placeholder="Ej. Microbus" formControlName="tipo" />
+								@if (formSubmit.controls['tipo'].hasError('required')) {
+								<mat-error>Requerido</mat-error>
+								} @if ( tipo.value.length > 50 ) {
+								<mat-hint class="error-hint" align="end">
+									Límite de caracteres permitidos: {{ tipo.value.length }} / 50
+								</mat-hint>
+								} @else {
+								<mat-hint align="end"> {{ tipo.value.length }} / 50 </mat-hint>
+								}
+							</mat-form-field>
+						</td>
+						<td>
+							<mat-form-field appearance="outline">
+								<mat-label>Color</mat-label>
+								<input matInput #color placeholder="Ej. Gris" formControlName="color" />
+								@if (formSubmit.controls['color'].hasError('required')) {
+								<mat-error>Requerido</mat-error>
+								} @if ( color.value.length > 50 ) {
+								<mat-hint class="error-hint" align="end">
+									Límite de caracteres permitidos: {{ color.value.length }} / 50
+								</mat-hint>
+								} @else {
+								<mat-hint align="end"> {{ color.value.length }} / 50 </mat-hint>
+								}
+							</mat-form-field>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<mat-form-field appearance="outline">
+								<mat-label>Placa</mat-label>
+								<input matInput #placa placeholder="Ej. P-000ABC" formControlName="placa" />
+								@if (formSubmit.controls['placa'].hasError('required')) {
+								<mat-error>Requerido</mat-error>
+								} @if ( placa.value.length > 10 ) {
+								<mat-hint class="error-hint" align="end">
+									Límite de caracteres permitidos: {{ placa.value.length }} / 10
+								</mat-hint>
+								} @else {
+								<mat-hint align="end"> {{ placa.value.length }} / 10 </mat-hint>
+								}
+							</mat-form-field>
+						</td>
+						<td>
+							<mat-form-field appearance="outline">
+								<mat-label>Marca</mat-label>
+								<input matInput #marca placeholder="Ej. Toyota" formControlName="marca" />
+								@if (formSubmit.controls['marca'].hasError('required')) {
+								<mat-error>Requerido</mat-error>
+								} @if ( marca.value.length > 50 ) {
+								<mat-hint class="error-hint" align="end">
+									Límite de caracteres permitidos: {{ marca.value.length }} / 50
+								</mat-hint>
+								} @else {
+								<mat-hint align="end"> {{ marca.value.length }} / 50 </mat-hint>
+								}
+							</mat-form-field>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<mat-form-field appearance="outline">
+								<mat-label>Registro de inventario</mat-label>
+								<input matInput #registroInventario placeholder="" formControlName="registroInventario" />
+								@if (formSubmit.controls['registroInventario'].hasError('required')) {
+								<mat-error>Requerido</mat-error>
+								} @if ( registroInventario.value.length > 50 ) {
+								<mat-hint class="error-hint" align="end">
+									Límite de caracteres permitidos: {{ registroInventario.value.length }} / 50
+								</mat-hint>
+								} @else {
+								<mat-hint align="end"> {{ registroInventario.value.length }} / 50 </mat-hint>
+								}
+							</mat-form-field>
+						</td>
+					</tr>
+				</table>
+
+				<button mat-flat-button color="primary" (click)="onSubmit()">Enviar</button>
+			</form>
+		</div>
+	</mat-card-content>
+</mat-card>

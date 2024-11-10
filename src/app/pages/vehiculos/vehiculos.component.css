@@ -30,3 +30,32 @@ th {
 .Fuera {
 	background-color: #f7b731;
 }
+
+mat-card-header {
+	display: flex;
+	justify-content: space-between;
+	padding: 20px;
+}
+
+/* styles.css o en el archivo de estilos del componente */
+.container-0 {
+	width: 10rem;
+
+	background-color: #d4f4e0; /* color verde claro */
+	color: #3c9a5f; /* color verde oscuro */
+	border-radius: 5px;
+	text-align: center;
+	vertical-align: middle;
+	padding: 1dvh;
+}
+
+.container-1 {
+	width: 10rem;
+
+	background-color: #fef9e7; /* color amarillo claro */
+	color: #f0ad4e; /* color amarillo oscuro */
+	border-radius: 5px;
+	text-align: center;
+	vertical-align: middle;
+	padding: 1dvh;
+}

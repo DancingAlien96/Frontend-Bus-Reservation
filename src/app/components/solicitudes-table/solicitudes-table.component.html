@@ -105,25 +105,22 @@
 					<!-- ESTADO Column -->
 
 					<ng-container matColumnDef="ESTADO">
-						<th mat-header-cell *matHeaderCellDef mat-sort-header [style.display]="tabIndex != 0 ? 'none' : ''">
-							Estado
-						</th>
-						<td mat-cell *matCellDef="let row" [style.display]="tabIndex != 0 ? 'none' : ''">
-							<div style="display: flex; align-items: center">
-								<span [ngClass]="'dot ' + getEstadoLabel(row.ESTADO)" style="margin-right: 8px"></span>
+						<th mat-header-cell *matHeaderCellDef mat-sort-header>Estado</th>
+						<td mat-cell *matCellDef="let row">
+							<div [ngClass]="getEstadoLabel(row.ESTADO) + '-container'">
+								<span [ngClass]="'dot ' + getEstadoLabel(row.ESTADO)"></span>
 								<span>{{ getEstadoLabel(row.ESTADO) }}</span>
-
-								<ng-container *ngIf="row.ESTADO === 0 && rol === 2">
-									<button
-										mat-button
-										style="display: flex; align-items: center; margin-left: 16px"
-										(click)="alert($event, row.ID_SOLICITUD)"
-									>
-										<mat-icon fontIcon="delete" aria-hidden="false" style="margin-right: 1px; color: red"></mat-icon>
-										Eliminar
-									</button>
-								</ng-container>
 							</div>
+							<ng-container *ngIf="row.ESTADO === 0 && rol === 2">
+								<button
+									mat-button
+									style="display: flex; align-items: center; margin-left: 16px"
+									(click)="alert($event, row.ID_SOLICITUD)"
+								>
+									<mat-icon fontIcon="delete" aria-hidden="false" style="margin-right: 1px; color: red"></mat-icon>
+									Eliminar
+								</button>
+							</ng-container>
 						</td>
 					</ng-container>
 

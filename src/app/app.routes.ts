@@ -13,6 +13,8 @@ import NuevoUsuarioComponent from './pages/nuevo-usuario/nuevo-usuario.component
 import ProfileComponent from './pages/profile/profile.component';
 import { userUnwishGuard } from './shared/guards/user-unwish.guard';
 import { solicitanteUnwishGuard } from './shared/guards/solicitante-unwish.guard';
+import EditarVehiculoComponent from './pages/editar-vehiculo/editar-vehiculo.component';
+import NuevoVehiculoComponent from './pages/nuevo-vehiculo/nuevo-vehiculo.component';
 
 export const routes: Routes = [
 	{
@@ -30,10 +32,20 @@ export const routes: Routes = [
 		canActivate: [authGuard, userUnwishGuard]
 	},
 	{ path: 'login', loadComponent: () => LoginComponent, title: 'Login', canActivate: [authLoginGuard] },
-	{ path: 'vehiculos', loadComponent: () => VehiculosComponent, title: 'Vehículos', canActivate: [authGuard, solicitanteUnwishGuard] },
+	{
+		path: 'vehiculos',
+		loadComponent: () => VehiculosComponent,
+		title: 'Vehículos',
+		canActivate: [authGuard, solicitanteUnwishGuard]
+	},
 	{ path: 'solicitudes', loadComponent: () => SolicitudesComponent, title: 'Solicitudes', canActivate: [authGuard] },
 
-	{ path: 'usuarios', loadComponent: () => UsuariosComponent, title: 'Usuarios', canActivate: [authGuard, userUnwishGuard, solicitanteUnwishGuard] },
+	{
+		path: 'usuarios',
+		loadComponent: () => UsuariosComponent,
+		title: 'Usuarios',
+		canActivate: [authGuard, userUnwishGuard, solicitanteUnwishGuard]
+	},
 
 	{
 		path: 'form-entrega',
@@ -52,6 +64,18 @@ export const routes: Routes = [
 		loadComponent: () => NuevoUsuarioComponent,
 		title: 'Nuevo usuario',
 		canActivate: [authGuard, userUnwishGuard, solicitanteUnwishGuard]
+	},
+	{
+		path: 'editar-vehiculo',
+		loadComponent: () => EditarVehiculoComponent,
+		title: 'Editar vehículo',
+		canActivate: [authGuard, solicitanteUnwishGuard]
+	},
+	{
+		path: 'nuevo-vehiculo',
+		loadComponent: () => NuevoVehiculoComponent,
+		title: 'Nuevo vehículo',
+		canActivate: [authGuard, solicitanteUnwishGuard]
 	},
 	{ path: 'profile', loadComponent: () => ProfileComponent, title: 'Perfil de usuario', canActivate: [authGuard] },
 	{ path: '**', redirectTo: '' }
