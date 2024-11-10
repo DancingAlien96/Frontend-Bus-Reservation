@@ -21,6 +21,7 @@ th {
 	background-color: #3bda0b;
 	border-radius: 50%;
 	display: inline-block;
+	margin-right: 8px;
 }
 
 .Aprobada {
@@ -52,6 +53,8 @@ td {
 }
 
 .grid-container {
+	width: auto;
+
 	display: grid;
 	grid-template-columns: 1fr 1fr; /* Dos columnas de igual tamaño */
 	gap: 20px; /* Espacio entre columnas */
@@ -61,6 +64,7 @@ td {
 }
 
 .grid-container button {
+	width: 100%;
 	margin: 20px;
 	margin-right: 0;
 	margin-left: 0;
@@ -86,4 +90,78 @@ mat-card-header {
 	display: flex;
 	justify-content: space-between;
 	padding: 20px;
+}
+
+/* styles.css o en el archivo de estilos del componente */
+.Aprobada-container {
+	width: auto;
+
+	background-color: #d4f4e0; /* color verde claro */
+	color: #3c9a5f; /* color verde oscuro */
+	border-radius: 5px;
+	text-align: center;
+	vertical-align: middle;
+	padding: 1dvh;
+}
+
+.Rechazada-container {
+	width: auto;
+
+	background-color: #fde2e2; /* color rojo claro */
+	color: #d9534f; /* color rojo oscuro */
+	border-radius: 5px;
+	text-align: center;
+	vertical-align: middle;
+	padding: 1dvh;
+}
+
+.Pendiente-container {
+	width: auto;
+
+	background-color: #fef9e7; /* color amarillo claro */
+	color: #f0ad4e; /* color amarillo oscuro */
+	border-radius: 5px;
+	text-align: center;
+	vertical-align: middle;
+	padding: 1dvh;
+}
+
+.Eliminada-container {
+	width: auto;
+
+	background-color: #f4f4f4; /* color gris claro */
+	color: #7f8fa6; /* color gris oscuro */
+	border-radius: 5px;
+	text-align: center;
+	vertical-align: middle;
+	padding: 1dvh;
+}
+
+.Anulada-container {
+	width: auto;
+
+	background-color: #f4f4f4; /* color gris claro */
+	color: #7f8fa6; /* color gris oscuro */
+	border-radius: 5px;
+	text-align: center;
+	vertical-align: middle;
+	padding: 1dvh;
+}
+
+.Finalizada-container {
+	width: auto;
+
+	background-color: #e8f7ff; /* color azul claro */
+	color: #2685de; /* color azul oscuro */
+	border-radius: 5px;
+	text-align: center;
+	vertical-align: middle;
+	padding: 1dvh;
+}
+
+.center {
+	text-align: center;
+	align-items: center;
+	align-content: center;
+	width: auto;
 }

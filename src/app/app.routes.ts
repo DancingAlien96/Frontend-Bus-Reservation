@@ -14,6 +14,7 @@ import ProfileComponent from './pages/profile/profile.component';
 import { userUnwishGuard } from './shared/guards/user-unwish.guard';
 import { solicitanteUnwishGuard } from './shared/guards/solicitante-unwish.guard';
 import EditarVehiculoComponent from './pages/editar-vehiculo/editar-vehiculo.component';
+import NuevoVehiculoComponent from './pages/nuevo-vehiculo/nuevo-vehiculo.component';
 
 export const routes: Routes = [
 	{
@@ -68,6 +69,12 @@ export const routes: Routes = [
 		path: 'editar-vehiculo',
 		loadComponent: () => EditarVehiculoComponent,
 		title: 'Editar vehículo',
+		canActivate: [authGuard, solicitanteUnwishGuard]
+	},
+	{
+		path: 'nuevo-vehiculo',
+		loadComponent: () => NuevoVehiculoComponent,
+		title: 'Nuevo vehículo',
 		canActivate: [authGuard, solicitanteUnwishGuard]
 	},
 	{ path: 'profile', loadComponent: () => ProfileComponent, title: 'Perfil de usuario', canActivate: [authGuard] },

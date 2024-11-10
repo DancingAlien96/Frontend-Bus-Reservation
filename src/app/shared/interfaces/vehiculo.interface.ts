@@ -65,3 +65,12 @@ export interface BitacoraCondicionesPostInterface {
 	NIVEL_COMBUSTIBLE: number;
 	OBSERVACIONES: null;
 }
+
+export interface VehiculoPostInterface {
+	PLACA: string;
+	TIPO: string;
+	MARCA: string;
+	COLOR: string;
+	ESTADO: number;
+	REGISTRO_DE_INVENTARIO: string;
+}
