@@ -67,7 +67,8 @@ import { MY_FORMATS } from '../../shared/utils/date-format.utils';
 		MatNativeDateModule,
 		ReactiveFormsModule,
 		MatTableModule,
-		DateFormatPipe
+		DateFormatPipe,
+		MatButtonModule
 	],
 	templateUrl: './popup-vehiculos.component.html',
 	styleUrl: './popup-vehiculos.component.css',

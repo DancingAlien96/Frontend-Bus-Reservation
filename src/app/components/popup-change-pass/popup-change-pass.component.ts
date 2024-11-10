@@ -27,7 +27,8 @@ import { UsuariosService } from '../../shared/services/usuarios.service';
 		RouterModule,
 		MatCardModule,
 		MatIcon,
-		ReactiveFormsModule
+		ReactiveFormsModule,
+		MatButtonModule
 	],
 	templateUrl: './popup-change-pass.component.html',
 	styleUrl: './popup-change-pass.component.css'

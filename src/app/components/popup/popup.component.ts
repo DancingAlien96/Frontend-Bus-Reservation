@@ -49,7 +49,8 @@ import { ComunicationService } from '../../shared/services/comunication.service'
 		MatSelectModule,
 		CombustiblePipe,
 		MatProgressBarModule,
-		ReactiveFormsModule
+		ReactiveFormsModule,
+		MatButtonModule
 	],
 	templateUrl: './popup.component.html',
 	styleUrl: './popup.component.css',
