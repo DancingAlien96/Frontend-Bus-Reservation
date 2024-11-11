@@ -21,7 +21,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
 import { min, noop } from 'rxjs';
 import { MY_FORMATS } from '../../shared/utils/date-format.utils';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { AlertaComponent } from '../alerta/alerta.component';
 import { MatDialog } from '@angular/material/dialog';
 
@@ -41,7 +41,9 @@ import { MatDialog } from '@angular/material/dialog';
 		MatIconModule,
 		NgxMatTimepickerModule,
 		MatCardModule,
-		MatDividerModule
+		MatDividerModule,
+		MatIconModule,
+		RouterLink
 	],
 	templateUrl: './formulario-solicitud.component.html',
 	styleUrls: ['./formulario-solicitud.component.css'],
