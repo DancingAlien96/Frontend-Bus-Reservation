@@ -398,7 +398,18 @@
 					}
 				</mat-form-field>
 
-				<button mat-flat-button color="primary" (click)="onSubmit()">Enviar</button>
+				<div class="sticky">
+					<div>
+						<button mat-flat-button color="primary" routerLink="/solicitudes">
+							<mat-icon>arrow_back</mat-icon>
+							Regresar
+						</button>
+						<button mat-flat-button color="primary" (click)="onSubmit()">
+							<mat-icon>send</mat-icon>
+							Enviar
+						</button>
+					</div>
+				</div>
 			</form>
 		</div>
 	</mat-card-content>
