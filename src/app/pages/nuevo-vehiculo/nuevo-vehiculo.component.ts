@@ -1,3 +1,4 @@
+import { MatIconModule } from '@angular/material/icon';
 import { Component } from '@angular/core';
 import { ReactiveFormsModule, FormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -18,7 +19,7 @@ import { CombustiblePipe } from '../../shared/pipes/condiciones.pipe';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { VehiculoService } from '../../shared/services/vehiculo.service';
 import { FunctionsService } from '../../shared/services/functions.service';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { VehiculoInterface, VehiculoPostInterface } from '../../shared/interfaces';
 
 @Component({
@@ -41,7 +42,9 @@ import { VehiculoInterface, VehiculoPostInterface } from '../../shared/interface
 		MatDatepickerModule,
 		MatNativeDateModule,
 		NgxMatTimepickerModule,
-		MatDialogModule
+		MatDialogModule,
+		MatIconModule,
+		RouterLink
 	],
 	templateUrl: './nuevo-vehiculo.component.html',
 	styleUrl: './nuevo-vehiculo.component.css'

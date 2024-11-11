@@ -55,7 +55,8 @@ import { EdadPipe, UsuarioActivoPipe } from '../../shared/pipes/user.pipe';
 		ReactiveFormsModule,
 		MatTableModule,
 		EdadPipe,
-		UsuarioActivoPipe
+		UsuarioActivoPipe,
+		MatButtonModule
 	],
 	templateUrl: './popup-usuario.component.html',
 	styleUrl: './popup-usuario.component.css'

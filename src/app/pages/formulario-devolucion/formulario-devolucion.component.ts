@@ -1,3 +1,4 @@
+import { MatIconModule } from '@angular/material/icon';
 import { min } from 'rxjs';
 import { Component } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -28,7 +29,7 @@ import {
 } from '../../shared/interfaces';
 import { VehiculoService } from '../../shared/services/vehiculo.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { FunctionsService } from '../../shared/services/functions.service';
 import { FdcvService } from '../../shared/services/fdcv.service';
 import { PdfFECVComponent } from '../../shared/pdf/pdf-fecv.component';
@@ -57,7 +58,9 @@ import { SolicitudesService } from '../../shared/services/solicitudes.service';
 		NgxMatTimepickerModule,
 		MatDialogModule,
 		ToNumberPipe,
-		KilometrosPipe
+		KilometrosPipe,
+		MatIconModule,
+		RouterLink
 	],
 	templateUrl: './formulario-devolucion.component.html',
 	styleUrl: './formulario-devolucion.component.css',

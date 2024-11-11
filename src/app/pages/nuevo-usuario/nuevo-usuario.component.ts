@@ -17,7 +17,7 @@ import { MY_FORMATS } from '../../shared/utils/date-format.utils';
 import { RolInterface, UsuarioPostInterface } from '../../shared/interfaces';
 import { RolService } from '../../shared/services/rol.service';
 import { UsuariosService } from '../../shared/services/usuarios.service';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
 @Component({
 	selector: 'app-nuevo-usuario',
@@ -35,7 +35,8 @@ import { Router } from '@angular/router';
 		MatIconModule,
 		NgxMatTimepickerModule,
 		MatCardModule,
-		MatDividerModule
+		MatDividerModule,
+		RouterLink
 	],
 	templateUrl: './nuevo-usuario.component.html',
 	styleUrl: './nuevo-usuario.component.css',

@@ -18,6 +18,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { Router, RouterLink } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { AlertaComponent } from '../../components/alerta/alerta.component';
 
 @Component({
 	selector: 'app-vehiculos',
@@ -147,10 +148,24 @@ export class VehiculosComponent implements AfterViewInit {
 
 	onActivate(event: Event, vehiculo: VehiculoInterface) {
 		event.stopPropagation();
-		this.vehiculoService.patchActivarDesactivarVehiculo(vehiculo.ID_VEHICULO).subscribe((data) => {
-			this.vehiculoService.emitUpdate();
-			this, this.getAllVehiculos();
-			this.tabGroup.selectedIndex = 0;
+		const message = `¿Está seguro de que desea ${vehiculo.ESTADO === 1 ? 'activar' : 'desactivar'} el vehículo?`;
+		const dialogRef = this.dialog.open(AlertaComponent, {
+			width: '400px',
+			data: {
+				title: 'Advertencia',
+				message: message,
+				type: 1
+			}
+		});
+
+		dialogRef.afterClosed().subscribe((result) => {
+			if (result === true) {
+				this.vehiculoService.patchActivarDesactivarVehiculo(vehiculo.ID_VEHICULO).subscribe((data) => {
+					this.vehiculoService.emitUpdate();
+					this.getAllVehiculos();
+					this.tabGroup.selectedIndex = 0;
+				});
+			}
 		});
 	}
 }

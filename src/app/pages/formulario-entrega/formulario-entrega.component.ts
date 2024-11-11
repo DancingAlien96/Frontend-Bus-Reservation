@@ -20,11 +20,12 @@ import { MAT_DATE_LOCALE, MatNativeDateModule } from '@angular/material/core';
 import { provideMomentDateAdapter } from '@angular/material-moment-adapter';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { NgxMatTimepickerModule } from 'ngx-mat-timepicker';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { FecvService } from '../../shared/services/fecv.service';
 import { FunctionsService } from '../../shared/services/functions.service';
 import { MY_FORMATS } from '../../shared/utils/date-format.utils';
 import { PdfFECVComponent } from '../../shared/pdf/pdf-fecv.component';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
 	selector: 'app-formulario-entrega',
@@ -46,7 +47,9 @@ import { PdfFECVComponent } from '../../shared/pdf/pdf-fecv.component';
 		MatDatepickerModule,
 		MatNativeDateModule,
 		NgxMatTimepickerModule,
-		MatDialogModule
+		MatDialogModule,
+		MatIconModule,
+		RouterLink
 	],
 	templateUrl: './formulario-entrega.component.html',
 	styleUrl: './formulario-entrega.component.css',

@@ -23,7 +23,8 @@ import {
 import { VehiculoService } from '../../shared/services/vehiculo.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { FunctionsService } from '../../shared/services/functions.service';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
 	selector: 'app-editar-vehiculo',
@@ -45,7 +46,9 @@ import { Router } from '@angular/router';
 		MatDatepickerModule,
 		MatNativeDateModule,
 		NgxMatTimepickerModule,
-		MatDialogModule
+		MatDialogModule,
+		RouterLink,
+		MatIconModule
 	],
 	templateUrl: './editar-vehiculo.component.html',
 	styleUrl: './editar-vehiculo.component.css'
