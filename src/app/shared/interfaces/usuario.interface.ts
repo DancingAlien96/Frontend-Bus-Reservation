@@ -41,7 +41,6 @@ export interface UsuarioNewPasswordInterface {
 }
 
 export interface UsuarioPostInterface {
-	USERNAME: string;
 	CORREO: string;
 	NOMBRE_COMPLETO: string;
 	CUI: number;

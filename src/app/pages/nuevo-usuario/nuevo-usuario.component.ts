@@ -59,9 +59,11 @@ export default class NuevoUsuarioComponent {
 		});
 
 		this.formSubmit = this.fb.group({
-			username: [null, [Validators.required, Validators.maxLength(50)]],
 			correo: [null, [Validators.required, Validators.maxLength(100), Validators.email]],
-			nombreCompleto: [null, [Validators.required, Validators.maxLength(150)]],
+			nombreCompleto: [
+				null,
+				[Validators.required, Validators.maxLength(150), Validators.pattern(/^[a-zA-Z]+ [a-zA-Z]+$/)]
+			],
 			cui: [null, [Validators.required, Validators.maxLength(13), Validators.minLength(13)]],
 			registroPersonal: [null, [Validators.required, Validators.maxLength(15)]],
 			fechaNacimiento: new FormControl<Date | null>(null, Validators.required),
@@ -88,7 +90,6 @@ export default class NuevoUsuarioComponent {
 		const fecha = this.datePipe.transform(fechaForm, 'yyyy-MM-dd');
 
 		this.usuario = {
-			USERNAME: this.formSubmit.get('username')?.value,
 			CORREO: this.formSubmit.get('correo')?.value,
 			NOMBRE_COMPLETO: this.formSubmit.get('nombreCompleto')?.value,
 			CUI: this.formSubmit.get('cui')?.value,
