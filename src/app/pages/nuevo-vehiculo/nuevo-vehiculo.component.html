@@ -90,8 +90,18 @@
 						</td>
 					</tr>
 				</table>
-
-				<button mat-flat-button color="primary" (click)="onSubmit()">Enviar</button>
+				<div class="sticky">
+					<div>
+						<button mat-flat-button color="primary" routerLink="/vehiculos">
+							<mat-icon>arrow_back</mat-icon>
+							Regresar
+						</button>
+						<button mat-flat-button color="primary" #submit (click)="onSubmit()">
+							<mat-icon>send</mat-icon>
+							Enviar
+						</button>
+					</div>
+				</div>
 			</form>
 		</div>
 	</mat-card-content>
