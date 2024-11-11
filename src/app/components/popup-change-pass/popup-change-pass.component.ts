@@ -5,11 +5,11 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import {
-	MatDialogTitle,
 	MatDialogContent,
 	MatDialogActions,
 	MatDialogClose,
-	MatDialog
+	MatDialog,
+	MatDialogTitle
 } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIcon } from '@angular/material/icon';
@@ -27,7 +27,6 @@ import { AlertaComponent } from '../alerta/alerta.component';
 		MatInputModule,
 		FormsModule,
 		MatButtonModule,
-		MatDialogTitle,
 		MatDialogContent,
 		MatDialogActions,
 		MatDialogClose,
