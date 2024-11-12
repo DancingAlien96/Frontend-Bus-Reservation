@@ -141,14 +141,25 @@ export class FormularioDevolucionComponent {
 					SOLICITUD: solicitudbase
 				};
 
-				this.fdcvs.postFDCV(this.fdcvPost).subscribe((fdcv) => {
-					this._snackBar.open('Formulario de devolucion guardado', 'Cerrar', {
-						duration: 2000
-					});
-					this.formSubmit.disable();
-					PdfFDCVComponent.createPDF(fdcv, this.vehiculo);
-					this.ss.actualizarEstado(this.solicitud.ID_SOLICITUD, 3, ' ').subscribe((solicitud) => {});
-					this.router.navigate(['/solicitudes']);
+				this.fdcvs.postFDCV(this.fdcvPost).subscribe({
+					next: (fdcv) => {
+						this._snackBar.open('Formulario de devolucion guardado', 'Cerrar', {
+							duration: 2000
+						});
+						this.formSubmit.disable();
+						PdfFDCVComponent.createPDF(fdcv, this.vehiculo);
+						this.ss.actualizarEstado(this.solicitud.ID_SOLICITUD, 3, ' ').subscribe((solicitud) => {});
+						this.router.navigate(['/solicitudes']);
+					},
+					error: (error) => {
+						this.dialog.open(AlertaComponent, {
+							data: {
+								title: 'Error',
+								message: 'No se pudo guardar el formulario de devolución',
+								type: 0
+							}
+						});
+					}
 				});
 			});
 		} else {
