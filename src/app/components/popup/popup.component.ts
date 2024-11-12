@@ -168,9 +168,7 @@ export class PopupComponent {
 		config.panelClass = 'OkSnackBar'; //tipo de snackbar
 		config.duration = 3000;
 
-		console.log('antes de validar');
 		if (this.formSubmit.valid) {
-			console.log('valido');
 			const dialogRef = this.dialog.open(AlertaComponent, {
 				width: '400px',
 				data: {
@@ -206,6 +204,15 @@ export class PopupComponent {
 					});
 			});
 		} else {
+			this.dialog.open(AlertaComponent, {
+				width: '400px',
+				data: {
+					title: 'Error',
+					message: 'Faltan campos por completar',
+					type: 0
+				}
+			});
+
 			this.formSubmit.markAllAsTouched();
 		}
 		/*

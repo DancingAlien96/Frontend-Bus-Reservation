@@ -104,6 +104,7 @@ export class PopupChangePassComponent {
 					type: 0
 				}
 			});
+			this.formSubmit.markAllAsTouched();
 		}
 	}
 }
