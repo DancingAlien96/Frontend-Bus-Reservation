@@ -5,7 +5,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatDialogModule } from '@angular/material/dialog';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -25,6 +25,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { FunctionsService } from '../../shared/services/functions.service';
 import { Router, RouterLink } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
+import { AlertaComponent } from '../../components/alerta/alerta.component';
 
 @Component({
 	selector: 'app-editar-vehiculo',
@@ -64,7 +65,8 @@ export default class EditarVehiculoComponent {
 		private vs: VehiculoService,
 		private _snackBar: MatSnackBar,
 		private fs: FunctionsService,
-		private router: Router
+		private router: Router,
+		private dialog: MatDialog
 	) {
 		const navigation = this.router.getCurrentNavigation();
 		if (navigation?.extras.state && navigation.extras.state['vehiculo']) {
@@ -141,13 +143,44 @@ export default class EditarVehiculoComponent {
 
 	onSubmit() {
 		if (this.formSubmit.valid) {
-			this.condiciones = this.buildBitacoraCondiciones();
-			this.vs.updateBitacoraCondiciones(this.condiciones).subscribe((res) => {
-				if (res) {
-					this._snackBar.open('Bitácora de condiciones actualizada', 'Cerrar', {
-						duration: 3000
-					});
-					this.router.navigate(['/vehiculos']);
+			const dialogRef = this.dialog.open(AlertaComponent, {
+				data: {
+					title: 'Advertencia',
+					message: '¿Está seguro de actualizar la bitácora de condiciones?',
+					type: 1
+				}
+			});
+
+			dialogRef.afterClosed().subscribe((result) => {
+				if (!result) return;
+
+				this.condiciones = this.buildBitacoraCondiciones();
+				this.vs.updateBitacoraCondiciones(this.condiciones).subscribe({
+					next: (res) => {
+						if (res) {
+							this._snackBar.open('Bitácora de condiciones actualizada', 'Cerrar', {
+								duration: 3000
+							});
+							this.router.navigate(['/vehiculos']);
+						}
+					},
+					error: (err) => {
+						this.dialog.open(AlertaComponent, {
+							data: {
+								title: 'Error',
+								message: 'No se pudo actualizar la bitácora de condiciones',
+								type: 0
+							}
+						});
+					}
+				});
+			});
+		} else {
+			this.dialog.open(AlertaComponent, {
+				data: {
+					title: 'Error',
+					message: 'Favor de llenar todos los campos',
+					type: 0
 				}
 			});
 		}
