@@ -9,6 +9,8 @@ import { UsuarioInterface } from '../../shared/interfaces/usuario.interface';
 import { catchError, of } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+import { AlertaComponent } from '../../components/alerta/alerta.component';
 
 @Component({
 	selector: 'app-login',
@@ -25,7 +27,8 @@ export class LoginComponent {
 		private fb: FormBuilder,
 		private loginService: LoginService,
 		private _snakBar: MatSnackBar,
-		private router: Router
+		private router: Router,
+		private dialog: MatDialog
 	) {
 		this.formSubmit = this.fb.group({
 			USERNAME: [null, Validators.required],
@@ -35,27 +38,43 @@ export class LoginComponent {
 
 	onSubmit() {
 		if (this.formSubmit.valid) {
-			this.loginService
-				.access(this.formSubmit.value)
-				.pipe(
-					catchError((error) => {
-						if (error.status === 404) {
-							this._snakBar.open(error.error.message, 'Cerrar', { duration: 3000 });
-						} else {
-							this._snakBar.open('Error en el servidor', 'Cerrar', { duration: 3000 });
-						}
-						return of(null); // Retorna un observable vacío para continuar el flujo
-					})
-				)
-				.subscribe((res) => {
+			this.loginService.access(this.formSubmit.value).subscribe({
+				next: (res) => {
 					if (res) {
 						localStorage.setItem('token', res.token);
 						localStorage.setItem('usuario', JSON.stringify(res.usuario));
 						// Redirigir a 'home'
 						this.router.navigate(['/home']);
 					}
-				});
+				},
+				error: (error) => {
+					if (error.status === 404) {
+						this.dialog.open(AlertaComponent, {
+							data: {
+								title: 'Error',
+								message: 'Usuario o contraseña incorrectos',
+								type: 0
+							}
+						});
+					} else {
+						this.dialog.open(AlertaComponent, {
+							data: {
+								title: 'Error',
+								message: 'Error en el servidor',
+								type: 0
+							}
+						});
+					}
+				}
+			});
 		} else {
+			this.dialog.open(AlertaComponent, {
+				data: {
+					title: 'Error',
+					message: 'Complete los campos',
+					type: 0
+				}
+			});
 		}
 	}
 }

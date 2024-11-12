@@ -99,6 +99,9 @@ export default class FormularioSolicitudComponent {
 			});
 
 			dialogRef.afterClosed().subscribe((result) => {
+				if (!result) {
+					return;
+				}
 				this.solicitud = this.solicitud || {};
 				const entregaFecha = this.formSubmit.get('entrega')?.value;
 				const devolucionFecha = this.formSubmit.get('devolucion')?.value;

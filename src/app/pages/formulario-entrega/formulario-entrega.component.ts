@@ -6,7 +6,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { SolicitudBaseInterface, SolicitudesInterfaces, VehiculoInterface } from '../../shared/interfaces';
 import { VehiculoService } from '../../shared/services/vehiculo.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -26,6 +26,7 @@ import { FunctionsService } from '../../shared/services/functions.service';
 import { MY_FORMATS } from '../../shared/utils/date-format.utils';
 import { PdfFECVComponent } from '../../shared/pdf/pdf-fecv.component';
 import { MatIconModule } from '@angular/material/icon';
+import { AlertaComponent } from '../../components/alerta/alerta.component';
 
 @Component({
 	selector: 'app-formulario-entrega',
@@ -70,7 +71,8 @@ export default class FormularioEntregaComponent {
 		private _snackBar: MatSnackBar,
 		private route: ActivatedRoute,
 		private fs: FunctionsService,
-		private router: Router
+		private router: Router,
+		private dialog: MatDialog
 	) {
 		const navigation = this.router.getCurrentNavigation();
 		if (navigation?.extras.state && navigation.extras.state['solicitud']) {
@@ -86,37 +88,68 @@ export default class FormularioEntregaComponent {
 
 	onSubmit() {
 		if (this.formSubmit.valid) {
-			this.fecv = this.buildFecv();
-			let solicitudbase: SolicitudBaseInterface = {
-				ID_SOLICITUD: this.solicitud.ID_SOLICITUD,
-				ID_USUARIO: this.solicitud.ID_USUARIO,
-				ID_VEHICULO: this.solicitud.ID_VEHICULO,
-				NOMBRE_SOLICITANTE: this.solicitud.NOMBRE_SOLICITANTE,
-				DESTINO: this.solicitud.DESTINO,
-				DILIGENCIA: this.solicitud.DILIGENCIA,
-				FECHA_CREACION: this.solicitud.FECHA_CREACION,
-				FECHA_HORA_ENTREGA: this.solicitud.FECHA_HORA_ENTREGA,
-				FECHA_HORA_DEVOLUCION: this.solicitud.FECHA_HORA_DEVOLUCION,
-				CON_PILOTO: this.solicitud.CON_PILOTO,
-				NOMBRE_PILOTO: this.solicitud.NOMBRE_PILOTO,
-				ESTADO: this.solicitud.ESTADO,
-				MODIFICABLE: this.solicitud.MODIFICABLE,
-				MOTIVO_RECHAZO: this.solicitud.MOTIVO_RECHAZO,
-				ENTREGADO: this.solicitud.ENTREGADO,
-				DEVUELTO: this.solicitud.DEVUELTO
-			};
-			this.fecvPost = {
-				FECV: this.fecv,
-				SOLICITUD: solicitudbase
-			};
+			const dialogRef = this.dialog.open(AlertaComponent, {
+				data: {
+					title: '¿Estás seguro?',
+					message: `¿Desea guardar el formulario de entrega? \n
+					Esta acción no se puede deshacer`,
+					type: 1
+				}
+			});
 
-			this.fecvs.postFECV(this.fecvPost).subscribe((fecv) => {
-				this.formSubmit.disable();
-				this._snackBar.open('Formulario de entrega guardado', 'Cerrar', {
-					duration: 2000
+			dialogRef.afterClosed().subscribe((result) => {
+				if (!result) return;
+				this.fecv = this.buildFecv();
+				let solicitudbase: SolicitudBaseInterface = {
+					ID_SOLICITUD: this.solicitud.ID_SOLICITUD,
+					ID_USUARIO: this.solicitud.ID_USUARIO,
+					ID_VEHICULO: this.solicitud.ID_VEHICULO,
+					NOMBRE_SOLICITANTE: this.solicitud.NOMBRE_SOLICITANTE,
+					DESTINO: this.solicitud.DESTINO,
+					DILIGENCIA: this.solicitud.DILIGENCIA,
+					FECHA_CREACION: this.solicitud.FECHA_CREACION,
+					FECHA_HORA_ENTREGA: this.solicitud.FECHA_HORA_ENTREGA,
+					FECHA_HORA_DEVOLUCION: this.solicitud.FECHA_HORA_DEVOLUCION,
+					CON_PILOTO: this.solicitud.CON_PILOTO,
+					NOMBRE_PILOTO: this.solicitud.NOMBRE_PILOTO,
+					ESTADO: this.solicitud.ESTADO,
+					MODIFICABLE: this.solicitud.MODIFICABLE,
+					MOTIVO_RECHAZO: this.solicitud.MOTIVO_RECHAZO,
+					ENTREGADO: this.solicitud.ENTREGADO,
+					DEVUELTO: this.solicitud.DEVUELTO
+				};
+				this.fecvPost = {
+					FECV: this.fecv,
+					SOLICITUD: solicitudbase
+				};
+
+				this.fecvs.postFECV(this.fecvPost).subscribe({
+					next: (fecv) => {
+						this.formSubmit.disable();
+						this._snackBar.open('Formulario de entrega guardado', 'Cerrar', {
+							duration: 2000
+						});
+						PdfFECVComponent.createPDF(fecv, this.vehiculo);
+						this.router.navigate(['/solicitudes']);
+					},
+					error: (error) => {
+						this.dialog.open(AlertaComponent, {
+							data: {
+								title: 'Error',
+								message: 'Ha ocurrido un error al guardar el formulario de entrega',
+								type: 0
+							}
+						});
+					}
 				});
-				PdfFECVComponent.createPDF(fecv, this.vehiculo);
-				this.router.navigate(['/solicitudes']);
+			});
+		} else {
+			this.dialog.open(AlertaComponent, {
+				data: {
+					title: 'Error',
+					message: 'Por favor llene todos los campos requeridos',
+					type: 0
+				}
 			});
 		}
 	}

@@ -18,6 +18,8 @@ import { RolInterface, UsuarioPostInterface } from '../../shared/interfaces';
 import { RolService } from '../../shared/services/rol.service';
 import { UsuariosService } from '../../shared/services/usuarios.service';
 import { Router, RouterLink } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+import { AlertaComponent } from '../../components/alerta/alerta.component';
 
 @Component({
 	selector: 'app-nuevo-usuario',
@@ -52,7 +54,8 @@ export default class NuevoUsuarioComponent {
 		private rs: RolService,
 		private us: UsuariosService,
 		private datePipe: DatePipe,
-		private router: Router
+		private router: Router,
+		private dialog: MatDialog
 	) {
 		this.rs.getRoles().subscribe((data) => {
 			this.roles = data;
@@ -75,12 +78,51 @@ export default class NuevoUsuarioComponent {
 
 	onSubmit() {
 		if (this.formSubmit.valid) {
-			this.buildRequest();
+			const dialogRef = this.dialog.open(AlertaComponent, {
+				data: {
+					title: 'Advertencias',
+					message: '¿Desea crear el usuario?',
+					type: 1
+				}
+			});
 
-			this.us.postUsuario(this.usuario).subscribe((data) => {
-				alert('Usuario creado correctamente');
-				this.formSubmit.disable();
-				this.router.navigate(['/usuarios']);
+			dialogRef.afterClosed().subscribe((result) => {
+				if (!result) return;
+
+				this.buildRequest();
+
+				this.us.postUsuario(this.usuario).subscribe({
+					next: (data) => {
+						const dialogRef = this.dialog.open(AlertaComponent, {
+							data: {
+								title: 'Usuario creado',
+								message: `El usuario ${data.USERNAME} ha sido creado exitosamente.`,
+								type: 2
+							}
+						});
+						this.formSubmit.disable();
+						dialogRef.afterClosed().subscribe(() => {
+							this.router.navigate(['/usuarios']);
+						});
+					},
+					error: (error) => {
+						this.dialog.open(AlertaComponent, {
+							data: {
+								title: 'Error',
+								message: 'Ha ocurrido un error al crear el usuario.',
+								type: 0
+							}
+						});
+					}
+				});
+			});
+		} else {
+			this.dialog.open(AlertaComponent, {
+				data: {
+					title: 'Error',
+					message: 'Por favor, llene todos los campos requeridos.',
+					type: 0
+				}
 			});
 		}
 	}
