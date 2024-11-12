@@ -19,7 +19,9 @@ export class AlertaComponent {
 	constructor(
 		private dialogRef: MatDialogRef<AlertaComponent>,
 		@Inject(MAT_DIALOG_DATA) public data: { message: string; title: string; type: number }
-	) {}
+	) {
+		this.dialogRef.updateSize('380px', 'auto');
+	}
 
 	cerrar(): void {
 		this.dialogRef.close(); // Cierra el diálogo
