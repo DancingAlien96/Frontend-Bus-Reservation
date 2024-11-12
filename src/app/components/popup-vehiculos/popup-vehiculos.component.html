@@ -166,16 +166,16 @@
 		<div *ngIf="usuario.ID_ROL == 1">
 			@if (disponibilidad) {
 
-			<button mat-button class="pop-container-button" (click)="onDisponibilidad()">
+			<button mat-raised-button class="pop-container-button" (click)="onDisponibilidad()">
 				<mat-icon>arrow_back</mat-icon> Regresar
 			</button>
 			} @else {
-			<button mat-button class="pop-container-button" (click)="onDisponibilidad()">Ver disponibilidad</button>
+			<button mat-raised-button class="pop-container-button" (click)="onDisponibilidad()">Ver disponibilidad</button>
 
 			}
 		</div>
 		<div>
-			<button class="pop-container-button" mat-button [mat-dialog-close]="" cdkFocusInitial>Cerrar</button>
+			<button class="pop-container-button" mat-raised-button [mat-dialog-close]="" cdkFocusInitial>Cerrar</button>
 		</div>
 	</div>
 </mat-dialog-actions>

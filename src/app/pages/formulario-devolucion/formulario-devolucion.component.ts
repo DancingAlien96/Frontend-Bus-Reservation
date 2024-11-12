@@ -1,3 +1,4 @@
+import { MatIconModule } from '@angular/material/icon';
 import { min } from 'rxjs';
 import { Component } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -15,7 +16,7 @@ import { BoolToNumber, CombustiblePipe, KilometrosPipe, ToNumberPipe } from '../
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MAT_DATE_LOCALE, MatNativeDateModule } from '@angular/material/core';
 import { NgxMatTimepickerModule } from 'ngx-mat-timepicker';
-import { MatDialogModule } from '@angular/material/dialog';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { provideMomentDateAdapter } from '@angular/material-moment-adapter';
 import { MY_FORMATS } from '../../shared/utils/date-format.utils';
 import {
@@ -28,12 +29,13 @@ import {
 } from '../../shared/interfaces';
 import { VehiculoService } from '../../shared/services/vehiculo.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { FunctionsService } from '../../shared/services/functions.service';
 import { FdcvService } from '../../shared/services/fdcv.service';
 import { PdfFECVComponent } from '../../shared/pdf/pdf-fecv.component';
 import { PdfFDCVComponent } from '../../shared/pdf/pdf-fdcv.component';
 import { SolicitudesService } from '../../shared/services/solicitudes.service';
+import { AlertaComponent } from '../../components/alerta/alerta.component';
 
 @Component({
 	selector: 'app-formulario-devolucion',
@@ -57,7 +59,9 @@ import { SolicitudesService } from '../../shared/services/solicitudes.service';
 		NgxMatTimepickerModule,
 		MatDialogModule,
 		ToNumberPipe,
-		KilometrosPipe
+		KilometrosPipe,
+		MatIconModule,
+		RouterLink
 	],
 	templateUrl: './formulario-devolucion.component.html',
 	styleUrl: './formulario-devolucion.component.css',
@@ -81,7 +85,8 @@ export class FormularioDevolucionComponent {
 		private route: ActivatedRoute,
 		private fs: FunctionsService,
 		private router: Router,
-		private ss: SolicitudesService
+		private ss: SolicitudesService,
+		private dialog: MatDialog
 	) {
 		const navigation = this.router.getCurrentNavigation();
 		if (navigation?.extras.state && navigation.extras.state['solicitud']) {
@@ -100,38 +105,70 @@ export class FormularioDevolucionComponent {
 
 	onSubmit() {
 		if (this.formSubmit.valid) {
-			this.fdcv = this.buildFdcv();
-			let solicitudbase: SolicitudBaseInterface = {
-				ID_SOLICITUD: this.solicitud.ID_SOLICITUD,
-				ID_USUARIO: this.solicitud.ID_USUARIO,
-				ID_VEHICULO: this.solicitud.ID_VEHICULO,
-				NOMBRE_SOLICITANTE: this.solicitud.NOMBRE_SOLICITANTE,
-				DESTINO: this.solicitud.DESTINO,
-				DILIGENCIA: this.solicitud.DILIGENCIA,
-				FECHA_CREACION: this.solicitud.FECHA_CREACION,
-				FECHA_HORA_ENTREGA: this.solicitud.FECHA_HORA_ENTREGA,
-				FECHA_HORA_DEVOLUCION: this.solicitud.FECHA_HORA_DEVOLUCION,
-				CON_PILOTO: this.solicitud.CON_PILOTO,
-				NOMBRE_PILOTO: this.solicitud.NOMBRE_PILOTO,
-				ESTADO: this.solicitud.ESTADO,
-				MODIFICABLE: this.solicitud.MODIFICABLE,
-				MOTIVO_RECHAZO: this.solicitud.MOTIVO_RECHAZO,
-				ENTREGADO: this.solicitud.ENTREGADO,
-				DEVUELTO: this.solicitud.DEVUELTO
-			};
-			this.fdcvPost = {
-				FDCV: this.fdcv,
-				SOLICITUD: solicitudbase
-			};
+			const dialogRef = this.dialog.open(AlertaComponent, {
+				data: {
+					title: '¿Estás seguro?',
+					message: `¿Desea guardar el formulario de devolución? \n
+					Esta acción no se puede deshacer`,
+					type: 1
+				}
+			});
 
-			this.fdcvs.postFDCV(this.fdcvPost).subscribe((fdcv) => {
-				this._snackBar.open('Formulario de devolucion guardado', 'Cerrar', {
-					duration: 2000
+			dialogRef.afterClosed().subscribe((result) => {
+				if (!result) return;
+
+				this.fdcv = this.buildFdcv();
+				let solicitudbase: SolicitudBaseInterface = {
+					ID_SOLICITUD: this.solicitud.ID_SOLICITUD,
+					ID_USUARIO: this.solicitud.ID_USUARIO,
+					ID_VEHICULO: this.solicitud.ID_VEHICULO,
+					NOMBRE_SOLICITANTE: this.solicitud.NOMBRE_SOLICITANTE,
+					DESTINO: this.solicitud.DESTINO,
+					DILIGENCIA: this.solicitud.DILIGENCIA,
+					FECHA_CREACION: this.solicitud.FECHA_CREACION,
+					FECHA_HORA_ENTREGA: this.solicitud.FECHA_HORA_ENTREGA,
+					FECHA_HORA_DEVOLUCION: this.solicitud.FECHA_HORA_DEVOLUCION,
+					CON_PILOTO: this.solicitud.CON_PILOTO,
+					NOMBRE_PILOTO: this.solicitud.NOMBRE_PILOTO,
+					ESTADO: this.solicitud.ESTADO,
+					MODIFICABLE: this.solicitud.MODIFICABLE,
+					MOTIVO_RECHAZO: this.solicitud.MOTIVO_RECHAZO,
+					ENTREGADO: this.solicitud.ENTREGADO,
+					DEVUELTO: this.solicitud.DEVUELTO
+				};
+				this.fdcvPost = {
+					FDCV: this.fdcv,
+					SOLICITUD: solicitudbase
+				};
+
+				this.fdcvs.postFDCV(this.fdcvPost).subscribe({
+					next: (fdcv) => {
+						this._snackBar.open('Formulario de devolucion guardado', 'Cerrar', {
+							duration: 2000
+						});
+						this.formSubmit.disable();
+						PdfFDCVComponent.createPDF(fdcv, this.vehiculo);
+						this.ss.actualizarEstado(this.solicitud.ID_SOLICITUD, 3, ' ').subscribe((solicitud) => {});
+						this.router.navigate(['/solicitudes']);
+					},
+					error: (error) => {
+						this.dialog.open(AlertaComponent, {
+							data: {
+								title: 'Error',
+								message: 'No se pudo guardar el formulario de devolución',
+								type: 0
+							}
+						});
+					}
 				});
-				this.formSubmit.disable();
-				PdfFDCVComponent.createPDF(fdcv, this.vehiculo);
-				this.ss.actualizarEstado(this.solicitud.ID_SOLICITUD, 3, ' ').subscribe((solicitud) => {});
-				this.router.navigate(['/solicitudes']);
+			});
+		} else {
+			this.dialog.open(AlertaComponent, {
+				data: {
+					title: 'Error',
+					message: 'Por favor llene todos los campos requeridos',
+					type: 0
+				}
 			});
 		}
 	}

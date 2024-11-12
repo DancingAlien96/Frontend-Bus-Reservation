@@ -14,7 +14,6 @@
 				<h3>Detalles de la Solicitud</h3>
 
 				<div class="content-container">
-					
 					<p>
 						<strong>Vehículo Solicitado:</strong> <br />
 						{{ data.VEHICULO.TIPO + ' ' + data.VEHICULO.MARCA + ' ' + data.VEHICULO.COLOR }}
@@ -37,17 +36,15 @@
 				</div>
 				}
 				<p>
-					<strong>
-						Solicitante:
-					</strong>		
-					 {{data.NOMBRE_SOLICITANTE}}
-					</p>
-					
+					<strong> Solicitante: </strong>
+					{{ data.NOMBRE_SOLICITANTE }}
+				</p>
+
 				<p><strong>Destino del viaje:</strong> {{ data.DESTINO }}</p>
 				<p><strong>Diligencia a realizar:</strong> {{ data.DILIGENCIA }}</p>
 			</section>
 
-			<section >
+			<section>
 				<h3>Fechas</h3>
 				<p>
 					<strong>Fecha y Hora de Entrega:</strong>
@@ -62,11 +59,11 @@
 			<section>
 				<h3>Piloto</h3>
 				<p><strong>Con Piloto:</strong> {{ data.CON_PILOTO ? 'Sí' : 'No' }}</p>
-				 @if (data.CON_PILOTO == true) {
-					<p><strong>Nombre del conductor:</strong> {{ data.NOMBRE_PILOTO }}</p>
-	
-				 }
-							</section>
+				@if (data.CON_PILOTO == true) {
+				<p><strong>Nombre del conductor:</strong> {{ data.NOMBRE_PILOTO }}</p>
+
+				}
+			</section>
 
 			<section>
 				<h3>Estado de la Solicitud</h3>
@@ -75,7 +72,7 @@
 				<mat-form-field>
 					<mat-label>Estado</mat-label>
 
-					<mat-select [(value)]="this.estadoTemporal" (selectionChange)="changes($event)">
+					<mat-select [(value)]="this.estadoTemporal" (selectionChange)="selectedValueChanges($event)">
 						@for (estadoSelect of estadosPendiente; track estadoSelect) {
 						<mat-option [value]="estadoSelect.id">{{ estadoSelect.estado }}</mat-option>
 
@@ -87,7 +84,7 @@
 				<mat-form-field>
 					<mat-label>Estado</mat-label>
 
-					<mat-select [(value)]="this.estadoTemporal" (selectionChange)="changes($event)">
+					<mat-select [(value)]="this.estadoTemporal" (selectionChange)="selectedValueChanges($event)">
 						@for (estadoSelect of estadosAprobada; track estadoSelect) {
 						<mat-option [value]="estadoSelect.id">{{ estadoSelect.estado }}</mat-option>
 
@@ -103,7 +100,7 @@
 							<textarea formControlName="motivo" matInput placeholder=""> </textarea>
 							<mat-error *ngIf="formSubmit.get('motivo')?.hasError('required') && formSubmit.get('motivo')?.touched">
 								Este campo es obligatorio
-							  </mat-error>
+							</mat-error>
 						</mat-form-field>
 					</p>
 				</form>
@@ -162,12 +159,12 @@
 	<div class="pop-container">
 		<div>
 			@if (this.currentPage == 1 && this.idRol != 3) {
-			<button mat-button class="pop-container-button" (click)="onPDF()">
+			<button mat-stroked-button class="pop-container-button" (click)="onPDF()">
 				Generar PDF
-				<mat-icon fontIcon="picture_as_pdf" aria-hidden="false"></mat-icon>
+				<mat-icon fontIcon="picture_as_pdf"></mat-icon>
 			</button>
 			} @if (this.currentPage == 2) {
-			<button mat-button class="pop-container-button" (click)="page(1)">
+			<button mat-stroked-button class="pop-container-button" (click)="page(1)">
 				<mat-icon>arrow_back</mat-icon>
 				Regresar
 			</button>
@@ -176,31 +173,37 @@
 			@if (!(this.idRol == 2) && this.currentPage == 1 && (this.data.ESTADO == 1 || this.data.ESTADO == 3) ) {
 			<!-- FECV  -->
 			@if (this.data.FECV == null ) {
-			<button class="pop-container-button" mat-button (click)="onFECV()">Generar Formulario de entrega</button>
+			<button class="pop-container-button" mat-stroked-button (click)="onFECV()">Generar Formulario de entrega</button>
 			} @else {
-			<button class="pop-container-button" mat-button (click)="onFECV()">Ver Formulario de entrega</button>
+			<button class="pop-container-button" mat-stroked-button (click)="onFECV()">
+				<mat-icon fontIcon="picture_as_pdf"></mat-icon>Ver Formulario de entrega
+			</button>
 			<!-- FDCV -->
 			@if (this.data.FDCV == null) {
-			<button class="pop-container-button" mat-button (click)="onFDCV()">Generar Formulario de devolucion</button>
+			<button class="pop-container-button" mat-stroked-button (click)="onFDCV()">
+				Generar Formulario de devolucion
+			</button>
 			} @else if (!(this.data.FDCV == null) ) {
-			<button class="pop-container-button" mat-button (click)="onFDCV()">Ver Formulario de devolucion</button>
+			<button class="pop-container-button" mat-stroked-button (click)="onFDCV()">
+				<mat-icon fontIcon="picture_as_pdf"></mat-icon>Ver Formulario de devolucion
+			</button>
 			} } }
 
 			<!--  -->
 		</div>
 		<div>
 			@if (this.eBoton == true) {
-			<button class="pop-container-button" mat-button (click)="save()">
+			<button class="pop-container-button" mat-stroked-button (click)="save()">
 				Guardar
 				<mat-icon fontIcon="save" aria-hidden="false"></mat-icon>
 			</button>
-			<button class="pop-container-button" mat-button [mat-dialog-close]="" cdkFocusInitial>
+			<button class="pop-container-button" mat-stroked-button [mat-dialog-close]="" cdkFocusInitial>
 				Cancelar
 				<mat-icon fontIcon="close" aria-hidden="false"></mat-icon>
 			</button>
 			} @else {
 
-			<button class="pop-container-button" mat-button [mat-dialog-close]="" cdkFocusInitial>Cerrar</button>
+			<button class="pop-container-button" mat-stroked-button [mat-dialog-close]="" cdkFocusInitial>Cerrar</button>
 			}
 		</div>
 	</div>

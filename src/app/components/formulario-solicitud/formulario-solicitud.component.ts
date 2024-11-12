@@ -21,7 +21,9 @@ import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
 import { min, noop } from 'rxjs';
 import { MY_FORMATS } from '../../shared/utils/date-format.utils';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
+import { AlertaComponent } from '../alerta/alerta.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
 	selector: 'app-formulario-solicitud',
@@ -39,7 +41,9 @@ import { Router } from '@angular/router';
 		MatIconModule,
 		NgxMatTimepickerModule,
 		MatCardModule,
-		MatDividerModule
+		MatDividerModule,
+		MatIconModule,
+		RouterLink
 	],
 	templateUrl: './formulario-solicitud.component.html',
 	styleUrls: ['./formulario-solicitud.component.css'],
@@ -56,7 +60,8 @@ export default class FormularioSolicitudComponent {
 		private vs: VehiculoService,
 		private sps: SolicitudesService,
 		private _snackBar: MatSnackBar,
-		private router: Router
+		private router: Router,
+		private dialog: MatDialog
 	) {
 		this.formSubmit = this.fb.group({
 			nombreSolicitante: [null, [Validators.required, Validators.maxLength(150)]],
@@ -84,49 +89,81 @@ export default class FormularioSolicitudComponent {
 		}
 
 		if (this.formSubmit.valid) {
-			this.solicitud = this.solicitud || {};
-			const entregaFecha = this.formSubmit.get('entrega')?.value;
-			const devolucionFecha = this.formSubmit.get('devolucion')?.value;
-			const horaEntrega = this.formSubmit.get('horaEntrega')?.value;
-			const horaDevolucion = this.formSubmit.get('horaDevolucion')?.value;
-			const timestampEntrega = this.combinarFechaHora(entregaFecha, horaEntrega);
-			const timestampDevolucion = this.combinarFechaHora(devolucionFecha, horaDevolucion);
-
-			const vehiculo = this.formSubmit.get('vehiculo')?.value;
-			delete vehiculo.BITACORA_CONDICIONES;
-
-			this.solicitud.VEHICULO = vehiculo;
-			this.solicitud.USUARIO = usuario;
-
-			this.solicitud.SOLICITUD = {
-				ID_USUARIO: this.solicitud.USUARIO.ID_USUARIO,
-				ID_VEHICULO: this.solicitud.VEHICULO.ID_VEHICULO,
-				NOMBRE_SOLICITANTE: this.formSubmit.get('nombreSolicitante')?.value,
-				DESTINO: this.formSubmit.get('destino')?.value,
-				DILIGENCIA: this.formSubmit.get('diligencia')?.value,
-				FECHA_CREACION: new Date().toJSON(),
-				FECHA_HORA_ENTREGA: new Date(timestampEntrega).toJSON(),
-				FECHA_HORA_DEVOLUCION: new Date(timestampDevolucion).toJSON(),
-				CON_PILOTO: this.formSubmit.get('conPiloto')?.value,
-				NOMBRE_PILOTO: this.formSubmit.get('nombrePiloto')?.value,
-				ESTADO: 0,
-				MODIFICABLE: true,
-				MOTIVO_RECHAZO: ' ',
-				ENTREGADO: false,
-				DEVUELTO: false
-			};
-
-			this.sps.postSolicitud(this.solicitud).subscribe((resp) => {
-				if (resp) {
-					this.openSnackBar(2);
-					this.formSubmit.disable();
-					this.router.navigate(['/solicitudes']);
-				} else {
-					this.openSnackBar(3);
+			const dialogRef = this.dialog.open(AlertaComponent, {
+				width: '400px',
+				data: {
+					title: 'Advertencia',
+					message: '¿Está seguro de enviar la solicitud?',
+					type: 1
 				}
 			});
+
+			dialogRef.afterClosed().subscribe((result) => {
+				if (!result) {
+					return;
+				}
+				this.solicitud = this.solicitud || {};
+				const entregaFecha = this.formSubmit.get('entrega')?.value;
+				const devolucionFecha = this.formSubmit.get('devolucion')?.value;
+				const horaEntrega = this.formSubmit.get('horaEntrega')?.value;
+				const horaDevolucion = this.formSubmit.get('horaDevolucion')?.value;
+				const timestampEntrega = this.combinarFechaHora(entregaFecha, horaEntrega);
+				const timestampDevolucion = this.combinarFechaHora(devolucionFecha, horaDevolucion);
+
+				const vehiculo = this.formSubmit.get('vehiculo')?.value;
+				delete vehiculo.BITACORA_CONDICIONES;
+
+				this.solicitud.VEHICULO = vehiculo;
+				this.solicitud.USUARIO = usuario;
+
+				this.solicitud.SOLICITUD = {
+					ID_USUARIO: this.solicitud.USUARIO.ID_USUARIO,
+					ID_VEHICULO: this.solicitud.VEHICULO.ID_VEHICULO,
+					NOMBRE_SOLICITANTE: this.formSubmit.get('nombreSolicitante')?.value,
+					DESTINO: this.formSubmit.get('destino')?.value,
+					DILIGENCIA: this.formSubmit.get('diligencia')?.value,
+					FECHA_CREACION: new Date().toJSON(),
+					FECHA_HORA_ENTREGA: new Date(timestampEntrega).toJSON(),
+					FECHA_HORA_DEVOLUCION: new Date(timestampDevolucion).toJSON(),
+					CON_PILOTO: this.formSubmit.get('conPiloto')?.value,
+					NOMBRE_PILOTO: this.formSubmit.get('nombrePiloto')?.value,
+					ESTADO: 0,
+					MODIFICABLE: true,
+					MOTIVO_RECHAZO: ' ',
+					ENTREGADO: false,
+					DEVUELTO: false
+				};
+
+				this.sps.postSolicitud(this.solicitud).subscribe({
+					next: (resp) => {
+						if (resp) {
+							this.openSnackBar(2);
+							this.formSubmit.disable();
+							this.router.navigate(['/solicitudes']);
+						}
+					},
+					error: (err) => {
+						// Muestra el diálogo de error en caso de fallo en la API o en la conexión
+						this.dialog.open(AlertaComponent, {
+							width: '400px',
+							data: {
+								title: 'Error',
+								message: 'Hubo un problema al procesar la solicitud. Por favor, intenta de nuevo.',
+								type: 0
+							}
+						});
+					}
+				});
+			});
 		} else {
-			this.openSnackBar(1);
+			const dialogRef = this.dialog.open(AlertaComponent, {
+				width: '400px',
+				data: {
+					title: 'Error',
+					message: 'Faltan campos por completar',
+					type: 0
+				}
+			});
 		}
 	}
 

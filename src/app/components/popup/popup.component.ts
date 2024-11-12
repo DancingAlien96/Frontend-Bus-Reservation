@@ -5,6 +5,7 @@ import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, 
 import { MatButtonModule } from '@angular/material/button';
 import {
 	MAT_DIALOG_DATA,
+	MatDialog,
 	MatDialogActions,
 	MatDialogClose,
 	MatDialogContent,
@@ -30,6 +31,7 @@ import { PdfSolicitudComponent } from '../../shared/pdf/pdf-solicitud.component'
 import { PdfFECVComponent } from '../../shared/pdf/pdf-fecv.component';
 import { PdfFDCVComponent } from '../../shared/pdf/pdf-fdcv.component';
 import { ComunicationService } from '../../shared/services/comunication.service';
+import { AlertaComponent } from '../alerta/alerta.component';
 @Component({
 	selector: 'app-popup',
 	standalone: true,
@@ -39,7 +41,6 @@ import { ComunicationService } from '../../shared/services/comunication.service'
 		MatInputModule,
 		FormsModule,
 		MatButtonModule,
-		MatDialogTitle,
 		MatDialogContent,
 		MatDialogActions,
 		MatDialogClose,
@@ -50,7 +51,8 @@ import { ComunicationService } from '../../shared/services/comunication.service'
 		MatSelectModule,
 		CombustiblePipe,
 		MatProgressBarModule,
-		ReactiveFormsModule
+		ReactiveFormsModule,
+		MatButtonModule
 	],
 	templateUrl: './popup.component.html',
 	styleUrl: './popup.component.css',
@@ -109,7 +111,8 @@ export class PopupComponent {
 		private datePipe: DateFormatPipe,
 		private router: Router,
 		private fb: FormBuilder,
-		private comunicacionService: ComunicationService
+		private comunicacionService: ComunicationService,
+		private dialog: MatDialog
 	) {
 		this.usuarioSession = localStorage.getItem('usuario');
 		this.usuario = JSON.parse(this.usuarioSession);
@@ -159,52 +162,77 @@ export class PopupComponent {
 	}
 
 	save(): void {
-		
 		const config = new MatSnackBarConfig();
 		config.horizontalPosition = 'center';
 		config.verticalPosition = 'bottom';
 		config.panelClass = 'OkSnackBar'; //tipo de snackbar
 		config.duration = 3000;
-		const valorMotivo = this.formSubmit.get('motivo')?.value;
-		if(!valorMotivo){
-			//console.log("El campo 'motivo' está vacío. No se puede continuar.");
-			this.formSubmit.get('motivo')?.markAsTouched(); // Marca el campo como "touched" para mostrar el mensaje de error
-			return;
-		}
 
 		if (this.formSubmit.valid) {
-		   this.motivo = valorMotivo;	
+			const dialogRef = this.dialog.open(AlertaComponent, {
+				width: '400px',
+				data: {
+					title: 'Advertencia',
+					message: '¿Está seguro de cambiar el estado de la solicitud?',
+					type: 1
+				}
+			});
+
+			dialogRef.afterClosed().subscribe((result) => {
+				if (!result) {
+					return;
+				}
+				this.solicitudesService
+					.actualizarEstado(this.data.ID_SOLICITUD, this.estadoTemporal, this.motivo || ' ')
+					.subscribe({
+						next: (res) => {
+							//console.log(res);
+							this.toast.open('Guardado', 'cerrar', config);
+							this.comunicacionService.emitUpdate();
+							this.dialogRef.close(true);
+						},
+						error: (err) => {
+							this.dialog.open(AlertaComponent, {
+								width: '400px',
+								data: {
+									title: 'Error',
+									message: 'Hubo un problema al procesar. Por favor, intenta de nuevo.',
+									type: 0
+								}
+							});
+						}
+					});
+			});
+		} else {
+			this.dialog.open(AlertaComponent, {
+				width: '400px',
+				data: {
+					title: 'Error',
+					message: 'Faltan campos por completar',
+					type: 0
+				}
+			});
+
+			this.formSubmit.markAllAsTouched();
 		}
 		/*
 		console.log(this.data.ID_SOLICITUD);
 		console.log(`el estado temporal es ${this.estadoTemporal}`);
-		console.log(`el motivo es: ${this.motivo}`);
-*/
-		if (this.motivo != null) {
-			this.solicitudesService
-				.actualizarEstado(this.data.ID_SOLICITUD, this.estadoTemporal, this.motivo)
-				.subscribe((res) => {
-					//console.log(res);
-					this.toast.open('guardado', 'cerrar', config);
-					this.comunicacionService.emitUpdate();
-					this.dialogRef.close(true);
-				});
-		} else {
-			this.solicitudesService.actualizarEstado(this.data.ID_SOLICITUD, this.estadoTemporal, '').subscribe((res) => {
-				//console.log(res);
-				this.toast.open('guardado', 'cerrar', config);
-				this.comunicacionService.emitUpdate();
-
-				this.dialogRef.close(true);
-			});
-		}
+		console.log(`el motivo es: ${this.motivo}`);*/
 	}
 
+	/**
+	 *
+	 */
 	onPDF(): void {
 		PdfSolicitudComponent.createPDF(this.data, this.personalService);
 	}
 
-	changes(event: any) {
+	/**
+	 *
+	 * @param event  nuevo valor seleccionado
+	 */
+	selectedValueChanges(event: any) {
 		//console.log(event.value);
 
 		this.estadoTemporal = event.value;
@@ -213,8 +241,12 @@ export class PopupComponent {
 		this.eBoton = true;
 		if (event.value == 2 || event.value == 5) {
 			this.areaJustificacion = true;
+			this.formSubmit.controls['motivo'].setValidators([Validators.required]);
+			this.formSubmit.controls['motivo'].updateValueAndValidity();
 		} else {
 			this.areaJustificacion = false;
+			this.formSubmit.controls['motivo'].setValidators(null);
+			this.formSubmit.controls['motivo'].updateValueAndValidity();
 		}
 	}
 

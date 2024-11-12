@@ -1,0 +1,79 @@
+/* Contenedor principal del contenido del diálogo */
+.confirm-dialog-content {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	text-align: center;
+	padding: 20px;
+}
+
+/* Ícono de advertencia */
+.confirm-dialog-icon {
+	font-size: 30px;
+	padding: 1rem;
+	margin-bottom: 16px;
+}
+
+/* Título del diálogo */
+.confirm-dialog-title {
+	font-size: 24px;
+	font-weight: bold;
+	margin: 0;
+}
+
+/* error */
+.type-0 {
+	color: #d32f2f;
+}
+
+/* warning */
+.type-1 {
+	color: #df9b13;
+}
+
+/* info */
+.type-2 {
+	color: var(--primaryColor);
+}
+
+/* Mensaje del diálogo */
+.confirm-dialog-message {
+	font-size: 16px;
+	color: #555;
+	margin: 12px 0;
+}
+
+/* Botón de cancelar */
+.cancel-button {
+	color: black;
+
+	border: none;
+	padding: 8px 20px;
+	border-radius: 4px;
+}
+
+/* Botón de aceptar */
+.confirm-button {
+	color: black;
+
+	border: none;
+	padding: 8px 20px;
+	border-radius: 4px;
+}
+.cancel-button:hover {
+	cursor: pointer;
+	background-color: var(--primaryColor);
+}
+
+.confirm-button:hover {
+	cursor: pointer;
+	background-color: var(--primaryColor);
+}
+
+.buttons-container {
+	display: flex;
+	justify-content: center;
+	gap: 16px; /* Espaciado entre los botones */
+	width: 100%;
+	margin-top: 20px;
+}

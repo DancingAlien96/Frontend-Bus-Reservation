@@ -7,24 +7,12 @@
 		<div class="container">
 			<form [formGroup]="formSubmit">
 				<mat-form-field appearance="outline">
-					<mat-label>Nombre de usuario</mat-label>
-					<input matInput #username placeholder="Ej. jperez" formControlName="username" />
-					@if (formSubmit.controls['username'].hasError('required')) {
-					<mat-error>Requerido</mat-error>
-					} @if ( username.value.length > 50 ) {
-					<mat-hint class="error-hint" align="end">
-						Límite de caracteres permitidos: {{ username.value.length }} / 50
-					</mat-hint>
-					} @else {
-					<mat-hint align="end"> {{ username.value.length }} / 50 </mat-hint>
-					}
-				</mat-form-field>
-
-				<mat-form-field appearance="outline">
 					<mat-label>Nombre completo</mat-label>
 					<input matInput #nombreCompleto placeholder="Ej. Juan Pérez" formControlName="nombreCompleto" />
 					@if (formSubmit.controls['nombreCompleto'].hasError('required')) {
 					<mat-error>Requerido</mat-error>
+					} @if (formSubmit.controls['nombreCompleto'].hasError('pattern')) {
+					<mat-error>Debe contener nombre y apellido sin tíldes</mat-error>
 					} @if ( nombreCompleto.value.length > 150 ) {
 					<mat-hint class="error-hint" align="end">
 						Límite de caracteres permitidos: {{ nombreCompleto.value.length }} / 150
@@ -142,7 +130,18 @@
 
 				<br />
 				<br />
-				<button mat-flat-button color="primary" #submit (click)="onSubmit()">Enviar</button>
+				<div class="sticky">
+					<div>
+						<button mat-flat-button color="primary" routerLink="/usuarios">
+							<mat-icon>arrow_back</mat-icon>
+							Regresar
+						</button>
+						<button mat-flat-button color="primary" #submit (click)="onSubmit()">
+							<mat-icon>send</mat-icon>
+							Enviar
+						</button>
+					</div>
+				</div>
 			</form>
 		</div>
 	</mat-card-content>

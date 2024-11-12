@@ -31,6 +31,7 @@ import { DateFormatPipe } from '../../shared/pipes/date-time-format.pipe';
 import { UsuariosService } from '../../shared/services/usuarios.service';
 import { UsuarioInterface } from '../../shared/interfaces';
 import { EdadPipe, UsuarioActivoPipe } from '../../shared/pipes/user.pipe';
+import { AlertaComponent } from '../alerta/alerta.component';
 
 @Component({
 	selector: 'app-popup-usuario',
@@ -55,7 +56,8 @@ import { EdadPipe, UsuarioActivoPipe } from '../../shared/pipes/user.pipe';
 		ReactiveFormsModule,
 		MatTableModule,
 		EdadPipe,
-		UsuarioActivoPipe
+		UsuarioActivoPipe,
+		MatButtonModule
 	],
 	templateUrl: './popup-usuario.component.html',
 	styleUrl: './popup-usuario.component.css'
@@ -64,20 +66,48 @@ export class PopupUsuarioComponent {
 	constructor(
 		@Inject(MAT_DIALOG_DATA)
 		public usuario: UsuarioInterface,
-		private usuariosService: UsuariosService
+		private usuariosService: UsuariosService,
+		private dialog: MatDialog
 	) {}
 
 	onActivate(user: UsuarioInterface) {
-		this.usuariosService.patchActivarDesactivarUsuario(user.ID_USUARIO).subscribe((data) => {
-			this.usuario = data;
-			this.usuariosService.emitUpdate();
+		const message = '¿Está seguro de ' + (user.ACTIVO ? 'desactivar' : 'activar') + ' al usuario?';
+		const dialogRef = this.dialog.open(AlertaComponent, {
+			width: '400px',
+			data: {
+				title: 'Advertencia',
+				message: message,
+				type: 1
+			}
+		});
+
+		dialogRef.afterClosed().subscribe((result) => {
+			if (!result) return;
+
+			this.usuariosService.patchActivarDesactivarUsuario(user.ID_USUARIO).subscribe((data) => {
+				this.usuario = data;
+				this.usuariosService.emitUpdate();
+			});
 		});
 	}
 
 	onReset(user: UsuarioInterface) {
-		this.usuariosService.patchResetPassword(user.ID_USUARIO).subscribe((data) => {
-			alert(data.NEW_PASSWORD);
-			this.usuariosService.emitUpdate();
+		const dialogRef = this.dialog.open(AlertaComponent, {
+			width: '400px',
+			data: {
+				title: 'Advertencia',
+				message: '¿Está seguro de resetear la contraseña del usuario?',
+				type: 1
+			}
+		});
+
+		dialogRef.afterClosed().subscribe((result) => {
+			if (!result) return;
+
+			this.usuariosService.patchResetPassword(user.ID_USUARIO).subscribe((data) => {
+				alert(data.NEW_PASSWORD);
+				this.usuariosService.emitUpdate();
+			});
 		});
 	}
 }

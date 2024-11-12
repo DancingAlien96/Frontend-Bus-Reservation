@@ -66,30 +66,19 @@
 				<mat-icon> block </mat-icon>
 				Desactivar
 			</button>
-			} @else {<button
-				matTooltip="Activar"
-				mat-flat-button
-				color="primary"
-				(click)="onActivate(usuario)"
-				class="activate-button"
-			>
+			} @else {
+			<button matTooltip="Activar" mat-flat-button color="primary" (click)="onActivate(usuario)">
 				<mat-icon> check_circle </mat-icon>
 				Activar
 			</button>
 			}
-			<button
-				matTooltip="Reiniciar contraseña"
-				mat-flat-button
-				color="primary"
-				(click)="onReset(usuario)"
-				class="activate-button"
-			>
+			<button matTooltip="Reiniciar contraseña" mat-flat-button color="primary" (click)="onReset(usuario)">
 				<mat-icon>lock_reset</mat-icon>
 				Reiniciar contraseña
 			</button>
 		</div>
 		<div>
-			<button class="pop-container-button" mat-button [mat-dialog-close]="" cdkFocusInitial>Cerrar</button>
+			<button class="pop-container-button" mat-raised-button [mat-dialog-close]="" cdkFocusInitial>Cerrar</button>
 		</div>
 	</div>
 </mat-dialog-actions>

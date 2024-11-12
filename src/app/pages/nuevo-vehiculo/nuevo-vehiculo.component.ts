@@ -1,3 +1,4 @@
+import { MatIconModule } from '@angular/material/icon';
 import { Component } from '@angular/core';
 import { ReactiveFormsModule, FormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -5,7 +6,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatDialogModule } from '@angular/material/dialog';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -18,8 +19,9 @@ import { CombustiblePipe } from '../../shared/pipes/condiciones.pipe';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { VehiculoService } from '../../shared/services/vehiculo.service';
 import { FunctionsService } from '../../shared/services/functions.service';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { VehiculoInterface, VehiculoPostInterface } from '../../shared/interfaces';
+import { AlertaComponent } from '../../components/alerta/alerta.component';
 
 @Component({
 	selector: 'app-nuevo-vehiculo',
@@ -37,11 +39,12 @@ import { VehiculoInterface, VehiculoPostInterface } from '../../shared/interface
 		MatRadioModule,
 		MatSliderModule,
 		FormsModule,
-		CombustiblePipe,
 		MatDatepickerModule,
 		MatNativeDateModule,
 		NgxMatTimepickerModule,
-		MatDialogModule
+		MatDialogModule,
+		MatIconModule,
+		RouterLink
 	],
 	templateUrl: './nuevo-vehiculo.component.html',
 	styleUrl: './nuevo-vehiculo.component.css'
@@ -55,7 +58,8 @@ export default class NuevoVehiculoComponent {
 		private vs: VehiculoService,
 		private _snackBar: MatSnackBar,
 		private fs: FunctionsService,
-		private router: Router
+		private router: Router,
+		private dialog: MatDialog
 	) {
 		this.loadFormSubmit();
 	}
@@ -72,21 +76,52 @@ export default class NuevoVehiculoComponent {
 
 	onSubmit() {
 		if (this.formSubmit.valid) {
-			this.vehiculo = {
-				MARCA: this.formSubmit.controls['marca'].value,
-				PLACA: this.formSubmit.controls['placa'].value,
-				TIPO: this.formSubmit.controls['tipo'].value,
-				COLOR: this.formSubmit.controls['color'].value,
-				REGISTRO_DE_INVENTARIO: this.formSubmit.controls['registroInventario'].value,
-				ESTADO: 0
-			};
+			const dialogRef = this.dialog.open(AlertaComponent, {
+				data: {
+					title: '¿Está seguro?',
+					message: '¿Está seguro de que desea registrar este vehículo?',
+					type: 1
+				}
+			});
 
-			this.vs.postVehiculo(this.vehiculo).subscribe((res) => {
-				if (res) {
-					this._snackBar.open('Vehículo registrado correctamente', 'Cerrar', {
-						duration: 2000
-					});
-					this.router.navigate(['/vehiculos']);
+			dialogRef.afterClosed().subscribe((result) => {
+				if (!result) return;
+
+				this.vehiculo = {
+					MARCA: this.formSubmit.controls['marca'].value,
+					PLACA: this.formSubmit.controls['placa'].value,
+					TIPO: this.formSubmit.controls['tipo'].value,
+					COLOR: this.formSubmit.controls['color'].value,
+					REGISTRO_DE_INVENTARIO: this.formSubmit.controls['registroInventario'].value,
+					ESTADO: 0
+				};
+
+				this.vs.postVehiculo(this.vehiculo).subscribe({
+					next: (res) => {
+						if (res) {
+							this._snackBar.open('Vehículo registrado correctamente', 'Cerrar', {
+								duration: 2000
+							});
+							this.router.navigate(['/vehiculos']);
+						}
+					},
+					error: (err) => {
+						this.dialog.open(AlertaComponent, {
+							data: {
+								title: 'Error',
+								message: 'Ha ocurrido un error al registrar el vehículo.',
+								type: 0
+							}
+						});
+					}
+				});
+			});
+		} else {
+			this.dialog.open(AlertaComponent, {
+				data: {
+					title: 'Error',
+					message: 'Por favor, complete todos los campos requeridos.',
+					type: 0
 				}
 			});
 		}
