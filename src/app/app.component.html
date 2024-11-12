@@ -1,7 +1,11 @@
 @if (this.authService.isLoggedIn()) {
-    <app-navigation></app-navigation>
+    <app-navigation>
+
+    </app-navigation>
+
 }
 
 @else {<app-login></app-login>}
 
 
+<button (click)="executeImportantAction()">Important action</button>
