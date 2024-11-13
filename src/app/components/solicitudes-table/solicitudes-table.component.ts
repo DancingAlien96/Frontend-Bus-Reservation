@@ -105,15 +105,16 @@ export class SolicitudesTableComponent implements AfterViewInit {
 		const fin = this.datePipe.transform(this.formSearch.value.fin, 'yyyy-MM-dd');
 		if (this.rol == 1) {
 			this.solicitudesService.getSolicitudesByDate(inicio, fin).subscribe((data) => {
-				this.dataSource = new MatTableDataSource(data); // Asigna los datos al dataSource
+				const solicitudesNoEliminadas = data.filter((solicitud) => solicitud.ESTADO !== 4);
+				this.dataSource = new MatTableDataSource(solicitudesNoEliminadas); // Asigna los datos al dataSource
 				this.dataSource.paginator = this.paginator;
 				this.dataSource.sort = this.sort;
 				this.solicitudesFiltradas = true;
-				this.dataSource.filterPredicate = (data: SolicitudesInterfaces, filter: string) => {
-					let estadoLabel = this.getEstadoLabel(data.ESTADO);
+				this.dataSource.filterPredicate = (solicitudesNoEliminadas: SolicitudesInterfaces, filter: string) => {
+					let estadoLabel = this.getEstadoLabel(solicitudesNoEliminadas.ESTADO);
 
 					const dataStr =
-						`${data.ID_SOLICITUD} ${data.VEHICULO.PLACA}  ${data.VEHICULO.MARCA}  ${data.VEHICULO.COLOR}  ${data.VEHICULO.TIPO} ${data.FECHA_CREACION} ${data.FECHA_HORA_ENTREGA} ${data.FECHA_HORA_DEVOLUCION} ${data.NOMBRE_SOLICITANTE} ${estadoLabel}`.toLowerCase();
+						`${solicitudesNoEliminadas.ID_SOLICITUD} ${solicitudesNoEliminadas.VEHICULO.PLACA}  ${solicitudesNoEliminadas.VEHICULO.MARCA}  ${solicitudesNoEliminadas.VEHICULO.COLOR}  ${solicitudesNoEliminadas.VEHICULO.TIPO} ${solicitudesNoEliminadas.FECHA_CREACION} ${solicitudesNoEliminadas.FECHA_HORA_ENTREGA} ${solicitudesNoEliminadas.FECHA_HORA_DEVOLUCION} ${solicitudesNoEliminadas.NOMBRE_SOLICITANTE} ${estadoLabel}`.toLowerCase();
 
 					return dataStr.includes(filter.trim().toLowerCase());
 				};
@@ -121,9 +122,11 @@ export class SolicitudesTableComponent implements AfterViewInit {
 		}
 		if (this.rol == 3) {
 			this.solicitudesService.getSolicitudesByDate(inicio, fin).subscribe((data) => {
-				const solicitudesAprobadas = data.filter((solicitud) => solicitud.ESTADO === 1);
+				const solicitudesAprobadasYFinalizadas = data.filter(
+					(solicitud) => solicitud.ESTADO === 1 || solicitud.ESTADO == 3
+				);
 
-				this.dataSource = new MatTableDataSource(solicitudesAprobadas); // Asigna los datos al dataSource
+				this.dataSource = new MatTableDataSource(solicitudesAprobadasYFinalizadas); // Asigna los datos al dataSource
 				this.dataSource.paginator = this.paginator;
 				this.dataSource.sort = this.sort;
 				this.solicitudesFiltradas = true;
@@ -234,16 +237,17 @@ export class SolicitudesTableComponent implements AfterViewInit {
 			this.idUsuario = usuario.ID_USUARIO;
 			if (this.idUsuario == 1) {
 				this.solicitudesService.getSolicitudes().subscribe((data) => {
-					this.dataSource = new MatTableDataSource(data); // Asigna los datos al dataSource
+					const solicitudesNoEliminadas = data.filter((solicitud) => solicitud.ESTADO !== 4);
+					this.dataSource = new MatTableDataSource(solicitudesNoEliminadas); // Asigna los datos al dataSource
 					this.dataSource.paginator = this.paginator;
 					this.dataSource.sort = this.sort;
 					//console.log(data);
 
-					this.dataSource.filterPredicate = (data: SolicitudesInterfaces, filter: string) => {
-						let estadoLabel = this.getEstadoLabel(data.ESTADO);
+					this.dataSource.filterPredicate = (solicitudesNoEliminadas: SolicitudesInterfaces, filter: string) => {
+						let estadoLabel = this.getEstadoLabel(solicitudesNoEliminadas.ESTADO);
 
 						const dataStr =
-							`${data.ID_SOLICITUD} ${data.VEHICULO.PLACA}  ${data.VEHICULO.MARCA}  ${data.VEHICULO.COLOR}  ${data.VEHICULO.TIPO} ${data.FECHA_CREACION} ${data.FECHA_HORA_ENTREGA} ${data.FECHA_HORA_DEVOLUCION} ${data.NOMBRE_SOLICITANTE} ${estadoLabel}`.toLowerCase();
+							`${solicitudesNoEliminadas.ID_SOLICITUD} ${solicitudesNoEliminadas.VEHICULO.PLACA}  ${solicitudesNoEliminadas.VEHICULO.MARCA}  ${solicitudesNoEliminadas.VEHICULO.COLOR}  ${solicitudesNoEliminadas.VEHICULO.TIPO} ${solicitudesNoEliminadas.FECHA_CREACION} ${solicitudesNoEliminadas.FECHA_HORA_ENTREGA} ${solicitudesNoEliminadas.FECHA_HORA_DEVOLUCION} ${solicitudesNoEliminadas.NOMBRE_SOLICITANTE} ${estadoLabel}`.toLowerCase();
 
 						return dataStr.includes(filter.trim().toLowerCase());
 					};
@@ -251,7 +255,7 @@ export class SolicitudesTableComponent implements AfterViewInit {
 			}
 			if (this.rol == 3) {
 				this.solicitudesService.getSolicitudes().subscribe((data) => {
-					const solicitudesAprobadas = data.filter((solicitud) => solicitud.ESTADO === 1);
+					const solicitudesAprobadas = data.filter((solicitud) => solicitud.ESTADO === 1 || solicitud.ESTADO == 3);
 
 					this.dataSource = new MatTableDataSource(solicitudesAprobadas); // Asigna los datos al dataSource
 					this.dataSource.paginator = this.paginator;

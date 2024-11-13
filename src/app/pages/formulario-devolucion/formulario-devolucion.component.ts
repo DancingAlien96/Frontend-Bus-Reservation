@@ -152,6 +152,8 @@ export class FormularioDevolucionComponent {
 						this.router.navigate(['/solicitudes']);
 					},
 					error: (error) => {
+						console.log(error);
+
 						this.dialog.open(AlertaComponent, {
 							data: {
 								title: 'Error',
