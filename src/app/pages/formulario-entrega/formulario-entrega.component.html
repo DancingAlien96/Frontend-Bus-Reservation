@@ -81,7 +81,8 @@
 							<mat-form-field appearance="outline">
 								<mat-label>Nombre del Conductor</mat-label>
 								<input #nombrePiloto formControlName="nombrePiloto" matInput type="text" />
-								@if (formSubmit.controls['nombrePiloto'].hasError('required') ) {
+								@if (formSubmit.controls['nombrePiloto'].hasError('required') ||
+								formSubmit.controls['nombrePiloto'].hasError('whitespace') ) {
 								<mat-error>Requerido</mat-error>
 								} @if ( nombrePiloto.value.length > 150 ) {
 								<mat-hint class="error-hint" align="end">
@@ -96,7 +97,8 @@
 							<mat-form-field appearance="outline">
 								<mat-label>Cargo que Ocupa</mat-label>
 								<input #cargoPiloto formControlName="cargoPiloto" matInput type="text" />
-								@if (formSubmit.controls['cargoPiloto'].hasError('required') ) {
+								@if (formSubmit.controls['cargoPiloto'].hasError('required') ||
+								formSubmit.controls['cargoPiloto'].hasError('whitespace') ) {
 								<mat-error>Requerido</mat-error>
 								} @if ( cargoPiloto.value.length > 100 ) {
 								<mat-hint class="error-hint" align="end">
@@ -113,7 +115,8 @@
 				<mat-form-field appearance="outline">
 					<mat-label>Comisión</mat-label>
 					<textarea #comision formControlName="comision" matInput></textarea>
-					@if (formSubmit.controls['comision'].hasError('required') ) {
+					@if (formSubmit.controls['comision'].hasError('required') ||
+					formSubmit.controls['comision'].hasError('whitespace') ) {
 					<mat-error>Requerido</mat-error>
 					} @if ( comision.value.length > 300 ) {
 					<mat-hint class="error-hint" align="end">
@@ -364,6 +367,8 @@
 							</mat-form-field>
 							@if (formSubmit.controls['kilometraje'].hasError('required') ) {
 							<mat-error>Requerido</mat-error>
+							}@if (formSubmit.controls['kilometraje'].hasError('min') ) {
+							<mat-error>No se permite valores negativos</mat-error>
 							}
 						</td>
 					</tr>
