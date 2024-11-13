@@ -50,10 +50,19 @@
 					<strong>Fecha y Hora de Entrega:</strong>
 					{{ data.FECHA_HORA_ENTREGA | date : "d 'de' MMMM 'de' y 'a las' h:mm a" }}
 				</p>
+
+				@if (data.FECV != null) {
+				<h4>El vehículo ya ha sido entregado.</h4>
+				}
+
 				<p>
 					<strong>Fecha y Hora de Devolución:</strong>
 					{{ data.FECHA_HORA_DEVOLUCION | date : "d 'de' MMMM 'de' y 'a las' h:mm a" }}
 				</p>
+
+				@if (data.FDCV != null) {
+				<h4>El vehículo ya ha sido devuelto.</h4>
+				}
 			</section>
 
 			<section>
@@ -67,47 +76,39 @@
 
 			<section>
 				<h3>Estado de la Solicitud</h3>
-
-				@if (this.idRol == 1 && data.MODIFICABLE==true) { @switch(data.ESTADO){ @case (0) {
-				<mat-form-field>
-					<mat-label>Estado</mat-label>
-
-					<mat-select [(value)]="this.estadoTemporal" (selectionChange)="selectedValueChanges($event)">
-						@for (estadoSelect of estadosPendiente; track estadoSelect) {
-						<mat-option [value]="estadoSelect.id">{{ estadoSelect.estado }}</mat-option>
-
-						}
-					</mat-select>
-				</mat-form-field>
+				<h2>{{ getEstadoLabel(data.ESTADO) }}</h2>
+				@if (this.idRol == 1 && data.MODIFICABLE==true) {
+				<!--  -->
+				@switch(data.ESTADO){
+				<!--  -->
+				@case (0) {
+				<div class="grid-container button-container">
+					<button mat-flat-button class="approve" (click)="cambiarEstadoDeSolicitud(1)">
+						<mat-icon>check_circle</mat-icon> Aprobar
+					</button>
+					<button mat-flat-button class="reject" (click)="cambiarEstadoDeSolicitud(2)">
+						<mat-icon>cancel</mat-icon>
+						Rechazar
+					</button>
+				</div>
 
 				} @case (1) {
-				<mat-form-field>
-					<mat-label>Estado</mat-label>
+				<div class="grid-container button-container">
+					<button mat-flat-button class="reject" (click)="cambiarEstadoDeSolicitud(5)">
+						<mat-icon>do_not_disturb_on</mat-icon> Anular
+					</button>
+					<p></p>
+				</div>
+				} } } @else if (this.idRol === 2 && data.ESTADO == 0) {
+				<button mat-flat-button class="reject" (click)="cambiarEstadoDeSolicitud(4)">
+					<mat-icon>delete</mat-icon>
+					Eliminar
+				</button>
+				}
 
-					<mat-select [(value)]="this.estadoTemporal" (selectionChange)="selectedValueChanges($event)">
-						@for (estadoSelect of estadosAprobada; track estadoSelect) {
-						<mat-option [value]="estadoSelect.id">{{ estadoSelect.estado }}</mat-option>
-
-						}
-					</mat-select>
-				</mat-form-field>
-
-				} } @if (this.areaJustificacion == true) {
-				<form [formGroup]="formSubmit">
-					<p>
-						<mat-form-field appearance="outline" class="areaJustificacion">
-							<mat-label>Justificacion</mat-label>
-							<textarea formControlName="motivo" matInput placeholder=""> </textarea>
-							<mat-error *ngIf="formSubmit.get('motivo')?.hasError('required') && formSubmit.get('motivo')?.touched">
-								Este campo es obligatorio
-							</mat-error>
-						</mat-form-field>
-					</p>
-				</form>
-				} } @else {
-
-				<h2>{{ getEstadoLabel(this.estadoTemporal) }}</h2>
-
+				<!--  -->
+				@if (data.ESTADO == 2 || data.ESTADO == 5 ) {
+				<p><strong>Motivo de rechazo:</strong> {{ data.MOTIVO_RECHAZO }}</p>
 				}
 			</section>
 		</mat-card-content>
