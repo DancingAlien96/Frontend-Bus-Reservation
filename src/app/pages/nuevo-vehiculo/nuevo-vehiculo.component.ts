@@ -22,6 +22,7 @@ import { FunctionsService } from '../../shared/services/functions.service';
 import { Router, RouterLink } from '@angular/router';
 import { VehiculoInterface, VehiculoPostInterface } from '../../shared/interfaces';
 import { AlertaComponent } from '../../components/alerta/alerta.component';
+import { noWhitespaceValidator } from '../../shared/utils/white-space-validator.utils';
 
 @Component({
 	selector: 'app-nuevo-vehiculo',
@@ -66,11 +67,11 @@ export default class NuevoVehiculoComponent {
 
 	loadFormSubmit() {
 		this.formSubmit = this.fb.group({
-			marca: ['', [Validators.required, Validators.maxLength(50)]],
-			placa: ['', [Validators.required, Validators.maxLength(10)]],
-			tipo: ['', [Validators.required, Validators.maxLength(50)]],
-			color: ['', [Validators.required, Validators.maxLength(50)]],
-			registroInventario: ['', [Validators.required, Validators.maxLength(50)]]
+			marca: ['', [Validators.required, Validators.maxLength(50), noWhitespaceValidator()]],
+			placa: ['', [Validators.required, Validators.maxLength(10), noWhitespaceValidator()]],
+			tipo: ['', [Validators.required, Validators.maxLength(50), noWhitespaceValidator()]],
+			color: ['', [Validators.required, Validators.maxLength(50), noWhitespaceValidator()]],
+			registroInventario: ['', [Validators.required, Validators.maxLength(50), noWhitespaceValidator()]]
 		});
 	}
 
