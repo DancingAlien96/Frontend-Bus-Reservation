@@ -106,29 +106,17 @@
 					<ng-container matColumnDef="ESTADO">
 						<th mat-header-cell *matHeaderCellDef mat-sort-header>Estado</th>
 						<td mat-cell *matCellDef="let row">
-						  <!-- Contenedor Flex para alinear el estado y el botón -->
-						  <div style="display: flex; align-items: center; justify-content: space-between;">
-							<!-- Estado -->
-							<div [ngClass]="getEstadoLabel(row.ESTADO) + '-container'" style="display: flex; align-items: center;">
-							  <span [ngClass]="'dot ' + getEstadoLabel(row.ESTADO)"></span>
-							  <span>{{ getEstadoLabel(row.ESTADO) }}</span>
+							<!-- Contenedor Flex para alinear el estado y el botón -->
+							<div style="display: flex; align-items: center; justify-content: space-between">
+								<!-- Estado -->
+								<div [ngClass]="getEstadoLabel(row.ESTADO) + '-container'" style="display: flex; align-items: center">
+									<span [ngClass]="'dot ' + getEstadoLabel(row.ESTADO)"></span>
+									<span>{{ getEstadoLabel(row.ESTADO) }}</span>
+								</div>
 							</div>
-					  
-							<!-- Botón Eliminar -->
-							<ng-container *ngIf="row.ESTADO === 0 && rol === 2">
-							  <button
-								mat-button
-								style="display: flex; align-items: center; color: red; margin-left: 8px;"
-								(click)="alert($event, row.ID_SOLICITUD)"
-							  >
-								<mat-icon fontIcon="delete" aria-hidden="false" style="margin-right: 4px;"></mat-icon>
-								Eliminar
-							  </button>
-							</ng-container>
-						  </div>
 						</td>
-					  </ng-container>
-					  
+					</ng-container>
+
 					<tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
 					<tr (click)="openDialog(row)" class="stylerow" mat-row *matRowDef="let row; columns: displayedColumns"></tr>
 
