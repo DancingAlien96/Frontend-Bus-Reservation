@@ -14,4 +14,8 @@ export class LoginService {
 	access(login: LoginInterface): Observable<any> {
 		return this.http.post<LoginInterface>(`${this.API_URL}/login`, login);
 	}
+
+	recaptcha(token:string): Observable<any>{
+		return this.http.post(`${this.API_URL}/`, token);
+	}
 }

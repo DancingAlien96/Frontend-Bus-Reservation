@@ -158,12 +158,6 @@ export class SolicitudesTableComponent implements AfterViewInit {
 	ngAfterViewInit() {
 		this.getAllRequest();
 		this.cdr.detectChanges();
-		/*
-		this.updateSubscription = this.comunicacionService.getUpdateObservable().subscribe(()=>{
-
-			this.getAllRequest();
-			this.filterByTab(this.tabIndex);
-		})*/
 		this.tabGroup.selectedIndex = 0;
 	}
 
@@ -191,7 +185,7 @@ export class SolicitudesTableComponent implements AfterViewInit {
 				this.dataSource.filter = 'rechazada';
 				break;
 			case 5: //eliminadas
-				this.dataSource.filter = 'eliminada';
+				this.dataSource.filter = 'anulada';
 				break;
 			default:
 				this.dataSource.filter = '';
@@ -217,6 +211,9 @@ export class SolicitudesTableComponent implements AfterViewInit {
 				break;
 			case 4:
 				estadoLabel = 'Eliminada';
+				break;
+			case 5:
+				estadoLabel = 'Anulada';
 				break;
 			default:
 				estadoLabel = 'Desconocido';

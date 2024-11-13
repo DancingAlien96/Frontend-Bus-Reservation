@@ -10,14 +10,16 @@ import { authenticationInterceptor } from './shared/interceptors/authentication.
 //Colocar fechas en español
 import localeEs from '@angular/common/locales/es';
 import { registerLocaleData } from '@angular/common';
+import { RECAPTCHA_V3_SITE_KEY, RecaptchaV3Module } from 'ng-recaptcha';
 registerLocaleData(localeEs, 'es');
 
 export const appConfig: ApplicationConfig = {
 	providers: [
 		provideRouter(routes),
 		provideAnimationsAsync(),
-		importProvidersFrom(ReactiveFormsModule, HttpClientModule),
+		importProvidersFrom(ReactiveFormsModule, HttpClientModule, RecaptchaV3Module),
+
 		provideHttpClient(withInterceptors([authenticationInterceptor])),
-		{ provide: LOCALE_ID, useValue: 'es' } // Proveedor personalizado
+		{ provide: RECAPTCHA_V3_SITE_KEY, useValue: '6LcFz3oqAAAAAODJMu0jIIIj6E1RV1kcFGKhQFDI' } // Proveedor personalizado
 	] //
 };
