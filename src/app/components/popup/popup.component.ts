@@ -163,7 +163,7 @@ export class PopupComponent {
 
 	cambiarEstadoDeSolicitud(nuevoEstado: number) {
 		let tipo = 1;
-		let message = '¿Está seguro de cambiar el estado de la solicitud?';
+		let message = '¿Está seguro de cambiar el estado de la solicitud? Esta acción no se puede revertir.';
 
 		if (nuevoEstado == 2 || nuevoEstado == 5) {
 			tipo = 3;

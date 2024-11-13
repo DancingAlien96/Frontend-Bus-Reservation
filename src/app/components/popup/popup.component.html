@@ -99,7 +99,15 @@
 					</button>
 					<p></p>
 				</div>
-				} } } @if (data.ESTADO == 2 || data.ESTADO == 5 ) {
+				} } } @else if (this.idRol === 2 && data.ESTADO == 0) {
+				<button mat-flat-button class="reject" (click)="cambiarEstadoDeSolicitud(4)">
+					<mat-icon>delete</mat-icon>
+					Eliminar
+				</button>
+				}
+
+				<!--  -->
+				@if (data.ESTADO == 2 || data.ESTADO == 5 ) {
 				<p><strong>Motivo de rechazo:</strong> {{ data.MOTIVO_RECHAZO }}</p>
 				}
 			</section>
