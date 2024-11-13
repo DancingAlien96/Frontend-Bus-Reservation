@@ -14,24 +14,19 @@ import { LoginService } from './shared/services/login.service';
 })
 export class AppComponent {
 	title = 'Sistema de gestion de solicitudes de vehiculos universitarios';
-	constructor(public authService: AuthService,
-   private recaptchaV3Service: ReCaptchaV3Service,
- private captchaService:LoginService
+	constructor(
+		public authService: AuthService,
+		private recaptchaV3Service: ReCaptchaV3Service,
+		private captchaService: LoginService
 	) {}
 
 	public executeImportantAction(): void {
-    this.recaptchaV3Service.execute('submit')
-      .subscribe((token) =>{
-		console.log(token);
-		this.sendToken(token);
-	  });}
+		this.recaptchaV3Service.execute('submit').subscribe((token) => {
+			this.sendToken(token);
+		});
+	}
 
-
-
-  sendToken(token:string){
-	this.captchaService.recaptcha(token).subscribe((res)=>{
-		console.log(res)
-	})
-  }
-
+	sendToken(token: string) {
+		this.captchaService.recaptcha(token).subscribe((res) => {});
+	}
 }
