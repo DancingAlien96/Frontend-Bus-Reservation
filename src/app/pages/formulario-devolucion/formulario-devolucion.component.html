@@ -91,7 +91,8 @@
 							<mat-form-field appearance="outline">
 								<mat-label>Nombre del Conductor</mat-label>
 								<input #nombrePiloto formControlName="nombrePiloto" matInput type="text" />
-								@if (formSubmit.controls['nombrePiloto'].hasError('required') ) {
+								@if (formSubmit.controls['nombrePiloto'].hasError('required') ||
+								formSubmit.controls['nombrePiloto'].hasError('whitespace') ) {
 								<mat-error>Requerido</mat-error>
 								} @if ( nombrePiloto.value.length > 150 ) {
 								<mat-hint class="error-hint" align="end">
@@ -106,7 +107,8 @@
 							<mat-form-field appearance="outline">
 								<mat-label>Cargo que Ocupa</mat-label>
 								<input #cargoPiloto formControlName="cargoPiloto" matInput type="text" />
-								@if (formSubmit.controls['cargoPiloto'].hasError('required') ) {
+								@if (formSubmit.controls['cargoPiloto'].hasError('required') ||
+								formSubmit.controls['cargoPiloto'].hasError('whitespace') ) {
 								<mat-error>Requerido</mat-error>
 								} @if ( cargoPiloto.value.length > 100 ) {
 								<mat-hint class="error-hint" align="end">
@@ -123,7 +125,8 @@
 				<mat-form-field appearance="outline">
 					<mat-label>Comisión</mat-label>
 					<textarea #comision formControlName="comision" matInput></textarea>
-					@if (formSubmit.controls['comision'].hasError('required') ) {
+					@if (formSubmit.controls['comision'].hasError('required') ||
+					formSubmit.controls['comision'].hasError('whitespace') ) {
 					<mat-error>Requerido</mat-error>
 					} @if ( comision.value.length > 300 ) {
 					<mat-hint class="error-hint" align="end">
@@ -533,6 +536,8 @@
 								</mat-form-field>
 								@if (formSubmit.controls['kilometrajeFinal'].hasError('required') ) {
 								<mat-error>Requerido</mat-error>
+								} @if ( formSubmit.controls['kilometrajeFinal'].hasError('min') ) {
+								<mat-error>El kilometraje final no puede ser menor al de entrega</mat-error>
 								}
 							</td>
 						</tr>
@@ -554,6 +559,8 @@
 								</mat-form-field>
 								@if (formSubmit.controls['kilometrosRecorridos'].hasError('required') ) {
 								<mat-error>Requerido</mat-error>
+								} @if (formSubmit.controls['kilometrosRecorridos'].hasError('min') ) {
+								<mat-error>El kilometraje final no puede ser menor o igual al de entrega</mat-error>
 								}
 							</td>
 						</tr>
@@ -592,7 +599,8 @@
 								<mat-form-field appearance="outline">
 									<mat-label>Nombre del encargado de recibir el vehiculo</mat-label>
 									<input #nombreReceptor formControlName="nombreReceptor" matInput type="text" />
-									@if (formSubmit.controls['nombreReceptor'].hasError('required') ) {
+									@if (formSubmit.controls['nombreReceptor'].hasError('required') ||
+									formSubmit.controls['nombreReceptor'].hasError('whitespace') ) {
 									<mat-error>Requerido</mat-error>
 									} @if ( nombreReceptor.value.length > 150 ) {
 									<mat-hint class="error-hint" align="end">

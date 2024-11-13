@@ -36,6 +36,7 @@ import { PdfFECVComponent } from '../../shared/pdf/pdf-fecv.component';
 import { PdfFDCVComponent } from '../../shared/pdf/pdf-fdcv.component';
 import { SolicitudesService } from '../../shared/services/solicitudes.service';
 import { AlertaComponent } from '../../components/alerta/alerta.component';
+import { noWhitespaceValidator } from '../../shared/utils/white-space-validator.utils';
 
 @Component({
 	selector: 'app-formulario-devolucion',
@@ -104,6 +105,25 @@ export class FormularioDevolucionComponent {
 	}
 
 	onSubmit() {
+		let kilometrosRecorridos =
+			this.formSubmit.controls['kilometrajeFinal'].value - this.formSubmit.controls['kilometrajeEntrega'].value;
+		kilometrosRecorridos = parseFloat(kilometrosRecorridos.toFixed(3));
+		console.log(kilometrosRecorridos);
+
+		this.formSubmit.controls['kilometrosRecorridos'].setErrors(null);
+
+		if (kilometrosRecorridos < 0) {
+			this.dialog.open(AlertaComponent, {
+				data: {
+					title: 'Error',
+					message: 'Por favor llene todos los campos requeridos',
+					type: 0
+				}
+			});
+			this.formSubmit.controls['kilometrosRecorridos'].setErrors({ min: true });
+			return;
+		}
+
 		if (this.formSubmit.valid) {
 			const dialogRef = this.dialog.open(AlertaComponent, {
 				data: {
@@ -184,9 +204,12 @@ export class FormularioDevolucionComponent {
 
 		this.formSubmit = this.fb.group({
 			id: [this.solicitud.ID_SOLICITUD, Validators.required],
-			nombrePiloto: [this.fecv.NOMBRE_PILOTO, [Validators.required, Validators.maxLength(150)]],
-			cargoPiloto: [this.fecv.CARGO_PILOTO, [Validators.required, Validators.maxLength(150)]],
-			comision: [this.fecv.COMISION, [Validators.required, Validators.maxLength(150)]],
+			nombrePiloto: [
+				this.fecv.NOMBRE_PILOTO,
+				[Validators.required, Validators.maxLength(150), noWhitespaceValidator()]
+			],
+			cargoPiloto: [this.fecv.CARGO_PILOTO, [Validators.required, Validators.maxLength(150), noWhitespaceValidator()]],
+			comision: [this.fecv.COMISION, [Validators.required, Validators.maxLength(150), noWhitespaceValidator()]],
 			tarjetaCirculacion: [BoolToNumber.prototype.transform(this.fecv.TARJETA_CIRCULACION), Validators.required],
 			llavesEncendido: [BoolToNumber.prototype.transform(this.fecv.LLAVES_ENCENDIDO), Validators.required],
 			llavesGasolina: [BoolToNumber.prototype.transform(this.fecv.LLAVES_GASOLINA), Validators.required],
@@ -219,9 +242,9 @@ export class FormularioDevolucionComponent {
 			horaDevolucion: [horaDevolucion, Validators.required],
 			kilometrajeFinal: [this.fecv.KILOMETRAJE, [Validators.required, Validators.min(0)]],
 			combustibleFinal: [this.fecv.NIVEL_COMBUSTIBLE, Validators.required],
-			kilometrosRecorridos: [0, [Validators.required, Validators.min(0)]],
+			kilometrosRecorridos: [0.0, [Validators.required, Validators.min(0)]],
 			fallaOIncidencia: ['N/A', Validators.maxLength(150)],
-			nombreReceptor: ['', [Validators.required, Validators.maxLength(150)]]
+			nombreReceptor: ['', [Validators.required, Validators.maxLength(150), noWhitespaceValidator()]]
 		});
 	}
 
