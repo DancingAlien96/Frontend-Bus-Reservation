@@ -123,3 +123,16 @@ p {
 	background-color: #2685de;
 }
 
+.approve {
+	background-color: #d4f4e0; /* color verde claro */
+	color: #3c9a5f; /* color verde oscuro */
+}
+
+.reject {
+	background-color: #fde2e2; /* color rojo claro */
+	color: #d9534f; /* color rojo oscuro */
+}
+
+.button-container {
+	width: 60%;
+}

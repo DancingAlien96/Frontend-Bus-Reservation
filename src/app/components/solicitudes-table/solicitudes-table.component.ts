@@ -91,7 +91,7 @@ export class SolicitudesTableComponent implements AfterViewInit {
 		private cdr: ChangeDetectorRef,
 		private fb: FormBuilder,
 		private comunicacionService: ComunicationService,
-		private toast: MatSnackBar,
+		private toast: MatSnackBar
 	) {
 		this.formSearch = this.fb.group({
 			inicio: new FormControl<Date | null>(null, Validators.required),
@@ -158,12 +158,6 @@ export class SolicitudesTableComponent implements AfterViewInit {
 	ngAfterViewInit() {
 		this.getAllRequest();
 		this.cdr.detectChanges();
-		/*
-		this.updateSubscription = this.comunicacionService.getUpdateObservable().subscribe(()=>{
-
-			this.getAllRequest();
-			this.filterByTab(this.tabIndex);
-		})*/
 		this.tabGroup.selectedIndex = 0;
 	}
 
@@ -191,7 +185,7 @@ export class SolicitudesTableComponent implements AfterViewInit {
 				this.dataSource.filter = 'rechazada';
 				break;
 			case 5: //eliminadas
-				this.dataSource.filter = 'eliminada';
+				this.dataSource.filter = 'anulada';
 				break;
 			default:
 				this.dataSource.filter = '';
@@ -218,6 +212,9 @@ export class SolicitudesTableComponent implements AfterViewInit {
 			case 4:
 				estadoLabel = 'Eliminada';
 				break;
+			case 5:
+				estadoLabel = 'Anulada';
+				break;
 			default:
 				estadoLabel = 'Desconocido';
 		}
@@ -227,10 +224,7 @@ export class SolicitudesTableComponent implements AfterViewInit {
 		return estadoLabel;
 	}
 
-	alert(event: Event, idRow:number): void {
-		//console.log(`este es el id de la solicitud ${idRow}`);
-		
-
+	alert(event: Event, idRow: number): void {
 		const config = new MatSnackBarConfig();
 		config.horizontalPosition = 'center';
 		config.verticalPosition = 'bottom';
@@ -243,10 +237,10 @@ export class SolicitudesTableComponent implements AfterViewInit {
 
 		dialogRef.afterClosed().subscribe((result) => {
 			if (result == true) {
-				this.solicitudesService.actualizarEstado(idRow, 4, " ").subscribe(res=>{
+				this.solicitudesService.actualizarEstado(idRow, 4, ' ').subscribe((res) => {
 					this, this.getAllRequest();
 					this.tabGroup.selectedIndex = 0;
-		
+
 					//console.log(res);
 					this.toast.open('solicitud eliminada', 'cerrar', config);
 					dialogRef.close();
@@ -256,6 +250,7 @@ export class SolicitudesTableComponent implements AfterViewInit {
 			}
 		});
 	}
+
 	getAllRequest() {
 		const usuarioSession = localStorage.getItem('usuario');
 

@@ -161,6 +161,50 @@ export class PopupComponent {
 			});
 	}
 
+	cambiarEstadoDeSolicitud(nuevoEstado: number) {
+		let tipo = 1;
+		let message = '¿Está seguro de cambiar el estado de la solicitud? Esta acción no se puede revertir.';
+
+		if (nuevoEstado == 2 || nuevoEstado == 5) {
+			tipo = 3;
+			message = '¿Está seguro de cambiar el estado de la solicitud? Escribe una justificación para realizar el cambio';
+		}
+		const dialogRef = this.dialog.open(AlertaComponent, {
+			data: {
+				title: 'Advertencia',
+				message: message,
+				type: tipo
+			}
+		});
+
+		dialogRef.afterClosed().subscribe((result) => {
+			if (!result) {
+				return;
+			}
+
+			if (tipo === 3) {
+				this.motivo = result;
+			}
+
+			this.solicitudesService.actualizarEstado(this.data.ID_SOLICITUD, nuevoEstado, this.motivo || ' ').subscribe({
+				next: (res) => {
+					this.toast.open('Guardado', 'cerrar');
+					this.comunicacionService.emitUpdate();
+					this.dialogRef.close(true);
+				},
+				error: (err) => {
+					this.dialog.open(AlertaComponent, {
+						data: {
+							title: 'Error',
+							message: 'Hubo un problema al procesar. Por favor, intenta de nuevo.',
+							type: 0
+						}
+					});
+				}
+			});
+		});
+	}
+
 	save(): void {
 		const config = new MatSnackBarConfig();
 		config.horizontalPosition = 'center';

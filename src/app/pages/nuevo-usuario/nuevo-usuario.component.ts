@@ -65,7 +65,7 @@ export default class NuevoUsuarioComponent {
 			correo: [null, [Validators.required, Validators.maxLength(100), Validators.email]],
 			nombreCompleto: [
 				null,
-				[Validators.required, Validators.maxLength(150), Validators.pattern(/^[a-zA-Z]+ [a-zA-Z]+$/)]
+				[Validators.required, Validators.maxLength(150), Validators.pattern(/^[A-Za-z]+(?:\s+[A-Za-z]+)+$/)]
 			],
 			cui: [null, [Validators.required, Validators.maxLength(13), Validators.minLength(13)]],
 			registroPersonal: [null, [Validators.required, Validators.maxLength(15)]],

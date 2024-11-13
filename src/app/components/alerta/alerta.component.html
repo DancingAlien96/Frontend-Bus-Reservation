@@ -1,18 +1,46 @@
 <div mat-dialog-content class="confirm-dialog-content">
-	@switch (data.type) { @case (0) {
+	@switch (data.type) {
+	<!--  -->
+	@case (0) {
 	<mat-icon class="confirm-dialog-icon" [className]="'type-' + data.type">error</mat-icon>
 	} @case (1) {
 	<mat-icon class="confirm-dialog-icon" [className]="'type-' + data.type">warning</mat-icon>
 	} @case (2) {
 	<mat-icon class="confirm-dialog-icon" [className]="'type-' + data.type">check_circle</mat-icon>
+	} @case (3) {
+	<mat-icon class="confirm-dialog-icon" [className]="'type-' + data.type">warning</mat-icon>
 	} }
 	<h2 class="confirm-dialog-title" [className]="'type-' + data.type">{{ data.title }}</h2>
 	<p class="confirm-dialog-message">{{ data.message }}</p>
+
+	@if (data.type === 3) {
+
+	<form [formGroup]="formSubmit">
+		<mat-form-field appearance="outline">
+			<mat-label>Justificación</mat-label>
+			<textarea matInput #motivo placeholder="Ej. Vehiculo no disponible" formControlName="motivo"></textarea>
+			@if (formSubmit.controls['motivo'].hasError('required')) {
+			<mat-error>Requerido</mat-error>
+			} @if ( motivo.value.length > 250 ) {
+			<mat-hint class="error-hint" align="end">
+				Límite de caracteres permitidos: {{ motivo.value.length }} / 250
+			</mat-hint>
+			} @else {
+			<mat-hint align="end"> {{ motivo.value.length }} / 250 </mat-hint>
+			}
+		</mat-form-field>
+	</form>
+	}
 </div>
 
 <mat-dialog-actions align="end">
 	<div class="buttons-container">
 		<button *ngIf="data.type === 1" mat-button (click)="cancelar()" class="cancel-button">Cancelar</button>
+		@if (data.type === 3) {
+		<button mat-button (click)="cancelar()" class="cancel-button">Cancelar</button>
+		<button mat-button color="warn" (click)="guardar()" class="confirm-button">Guardar</button>
+		} @else {
 		<button mat-button color="warn" (click)="confirmar()" class="confirm-button">Aceptar</button>
+		}
 	</div>
 </mat-dialog-actions>
