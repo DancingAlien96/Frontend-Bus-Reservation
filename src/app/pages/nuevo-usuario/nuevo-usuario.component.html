@@ -93,6 +93,8 @@
 					<input matInput #telefonoUno placeholder="Ej. +502 50000001" formControlName="telefonoUno" />
 					@if (formSubmit.controls['telefonoUno'].hasError('required')) {
 					<mat-error>Requerido</mat-error>
+					} @if (formSubmit.controls['telefonoUno'].hasError('pattern')) {
+					<mat-error>Formato no válido</mat-error>
 					} @if ( telefonoUno.value.length > 25 ) {
 					<mat-hint class="error-hint" align="end">
 						Límite de caracteres permitidos: {{ telefonoUno.value.length }} / 25
@@ -107,6 +109,8 @@
 					<input matInput #telefonoDos placeholder="Ej. +502 50000001" formControlName="telefonoDos" />
 					@if (formSubmit.controls['telefonoDos'].hasError('required')) {
 					<mat-error>Requerido</mat-error>
+					} @if (formSubmit.controls['telefonoDos'].hasError('pattern')) {
+					<mat-error>Formato no válido</mat-error>
 					} @if ( telefonoDos.value.length > 25 ) {
 					<mat-hint class="error-hint" align="end">
 						Límite de caracteres permitidos: {{ telefonoDos.value.length }} / 25

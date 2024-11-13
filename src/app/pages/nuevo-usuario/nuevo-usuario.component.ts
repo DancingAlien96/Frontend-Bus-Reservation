@@ -70,13 +70,15 @@ export default class NuevoUsuarioComponent {
 			cui: [null, [Validators.required, Validators.maxLength(13), Validators.minLength(13)]],
 			registroPersonal: [null, [Validators.required, Validators.maxLength(15)]],
 			fechaNacimiento: new FormControl<Date | null>(null, Validators.required),
-			telefonoUno: [null, [Validators.required, Validators.maxLength(25)]],
-			telefonoDos: [null, [Validators.maxLength(25)]],
+			telefonoUno: [null, [Validators.required, Validators.maxLength(25), Validators.pattern(/^[0-9+\-\s()]*$/)]],
+			telefonoDos: [null, [Validators.maxLength(25), Validators.pattern(/^[0-9+\-\s()]*$/)]],
 			idRol: [null, Validators.required]
 		});
 	}
 
 	onSubmit() {
+		this.formSubmit.controls['telefonoUno'].setValue(this.formSubmit.controls['telefonoUno'].value.trim());
+
 		if (this.formSubmit.valid) {
 			const dialogRef = this.dialog.open(AlertaComponent, {
 				data: {
