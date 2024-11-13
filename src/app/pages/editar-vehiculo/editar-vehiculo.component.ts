@@ -97,7 +97,7 @@ export default class EditarVehiculoComponent {
 			luzEmergencia: ['1', Validators.required],
 			condicionesLlanta: ['1', Validators.required],
 			limpiaparabrisas: ['1', Validators.required],
-			kilometraje: [this.vehiculo.BITACORA_CONDICIONES.KILOMETRAJE, Validators.required],
+			kilometraje: [this.vehiculo.BITACORA_CONDICIONES.KILOMETRAJE, [Validators.required, Validators.min(0)]],
 			nivelCombustible: ['1', Validators.required],
 			observaciones: ['N/A', Validators.maxLength(150)]
 		});
