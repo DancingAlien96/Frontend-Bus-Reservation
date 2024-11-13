@@ -65,9 +65,13 @@ export default class NuevoUsuarioComponent {
 			correo: [null, [Validators.required, Validators.maxLength(100), Validators.email]],
 			nombreCompleto: [
 				null,
-				[Validators.required, Validators.maxLength(150), Validators.pattern(/^[A-Za-z]+(?:\s+[A-Za-z]+)+$/)]
+				[
+					Validators.required,
+					Validators.maxLength(150),
+					Validators.pattern(/^[A-Za-zÁÉÍÓÚáéíóúÑñ]+(?:\s+[A-Za-zÁÉÍÓÚáéíóúÑñ]+)+$/)
+				]
 			],
-			cui: [null, [Validators.required, Validators.maxLength(13), Validators.minLength(13)]],
+			cui: [null, [Validators.required, Validators.maxLength(13), Validators.minLength(13), Validators.min(0)]],
 			registroPersonal: [null, [Validators.required, Validators.maxLength(15)]],
 			fechaNacimiento: new FormControl<Date | null>(null, Validators.required),
 			telefonoUno: [null, [Validators.required, Validators.maxLength(25), Validators.pattern(/^[0-9+\-\s()]*$/)]],

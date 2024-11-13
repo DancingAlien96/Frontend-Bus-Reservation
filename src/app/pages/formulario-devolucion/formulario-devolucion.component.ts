@@ -108,7 +108,6 @@ export class FormularioDevolucionComponent {
 		let kilometrosRecorridos =
 			this.formSubmit.controls['kilometrajeFinal'].value - this.formSubmit.controls['kilometrajeEntrega'].value;
 		kilometrosRecorridos = parseFloat(kilometrosRecorridos.toFixed(3));
-		console.log(kilometrosRecorridos);
 
 		this.formSubmit.controls['kilometrosRecorridos'].setErrors(null);
 
@@ -172,8 +171,6 @@ export class FormularioDevolucionComponent {
 						this.router.navigate(['/solicitudes']);
 					},
 					error: (error) => {
-						console.log(error);
-
 						this.dialog.open(AlertaComponent, {
 							data: {
 								title: 'Error',

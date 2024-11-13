@@ -142,7 +142,6 @@ export class VehiculosComponent implements AfterViewInit {
 
 	onActionEdit(event: Event, row: VehiculoInterface) {
 		event.stopPropagation();
-		console.log(row);
 		this.router.navigate(['/editar-vehiculo'], { state: { vehiculo: row } });
 	}
 

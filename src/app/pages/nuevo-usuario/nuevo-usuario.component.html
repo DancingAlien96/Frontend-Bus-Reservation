@@ -43,6 +43,8 @@
 					<input matInput #cui placeholder="Ej. 2400000002001" formControlName="cui" type="number" />
 					@if (formSubmit.controls['cui'].hasError('required')) {
 					<mat-error>Requerido</mat-error>
+					} @if (formSubmit.controls['cui'].hasError('min')) {
+					<mat-error>Formato no válido</mat-error>
 					} @if ( cui.value.length > 13 ) {
 					<mat-hint class="error-hint" align="end">
 						Límite de caracteres permitidos: {{ cui.value.length }} / 13

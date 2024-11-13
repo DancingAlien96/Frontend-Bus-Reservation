@@ -221,11 +221,9 @@ export default class FormularioSolicitudComponent {
 			this.formSubmit.controls['devolucion'].reset();
 			this.formSubmit.controls['devolucion'].setValidators([
 				Validators.required,
-				Validators.min(this.formSubmit.controls['entrega'].value),
-				noWhitespaceValidator()
+				Validators.min(this.formSubmit.controls['entrega'].value)
 			]);
 
-			this.formSubmit.controls['horaDevolucion'].enable();
 			this.formSubmit.controls['horaDevolucion'].reset();
 		} else {
 			this.formSubmit.controls['devolucion'].disable();
@@ -250,6 +248,9 @@ export default class FormularioSolicitudComponent {
 			this.formSubmit.controls['horaDevolucion'].setValidators([Validators.required]);
 			this.minHoraDevolucion = '0:00';
 		}
+
+		this.formSubmit.controls['horaDevolucion'].enable();
+		this.formSubmit.controls['horaDevolucion'].reset();
 	}
 
 	combinarFechaHora(fecha: Date, hora: string): Date {
