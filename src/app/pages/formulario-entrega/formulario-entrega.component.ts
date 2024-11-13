@@ -27,6 +27,7 @@ import { MY_FORMATS } from '../../shared/utils/date-format.utils';
 import { PdfFECVComponent } from '../../shared/pdf/pdf-fecv.component';
 import { MatIconModule } from '@angular/material/icon';
 import { AlertaComponent } from '../../components/alerta/alerta.component';
+import { noWhitespaceValidator } from '../../shared/utils/white-space-validator.utils';
 
 @Component({
 	selector: 'app-formulario-entrega',
@@ -160,9 +161,12 @@ export default class FormularioEntregaComponent {
 
 		this.formSubmit = this.fb.group({
 			id: [this.solicitud.ID_SOLICITUD, Validators.required],
-			nombrePiloto: [this.solicitud.NOMBRE_PILOTO, [Validators.required, Validators.maxLength(150)]],
-			cargoPiloto: ['Piloto', [Validators.required, Validators.maxLength(150)]],
-			comision: [this.solicitud.DILIGENCIA, [Validators.required, Validators.maxLength(150)]],
+			nombrePiloto: [
+				this.solicitud.NOMBRE_PILOTO,
+				[Validators.required, Validators.maxLength(150), noWhitespaceValidator()]
+			],
+			cargoPiloto: ['Piloto', [Validators.required, Validators.maxLength(150), noWhitespaceValidator()]],
+			comision: [this.solicitud.DILIGENCIA, [Validators.required, Validators.maxLength(150), noWhitespaceValidator()]],
 			tarjetaCirculacion: ['1', Validators.required],
 			llavesEncendido: ['1', Validators.required],
 			llavesGasolina: ['1', Validators.required],
@@ -180,7 +184,7 @@ export default class FormularioEntregaComponent {
 			luzEmergencia: ['1', Validators.required],
 			condicionesLlanta: ['1', Validators.required],
 			limpiaparabrisas: ['1', Validators.required],
-			kilometraje: [null, Validators.required],
+			kilometraje: [null, [Validators.required, Validators.min(0)]],
 			nivelCombustible: ['1', Validators.required],
 			observaciones: ['N/A', Validators.maxLength(150)],
 			fecha: new FormControl<Date | null>(fechaHoraEntrega, Validators.required),

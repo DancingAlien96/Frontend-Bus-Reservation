@@ -24,6 +24,7 @@ import { MY_FORMATS } from '../../shared/utils/date-format.utils';
 import { Router, RouterLink } from '@angular/router';
 import { AlertaComponent } from '../alerta/alerta.component';
 import { MatDialog } from '@angular/material/dialog';
+import { noWhitespaceValidator } from '../../shared/utils/white-space-validator.utils';
 
 @Component({
 	selector: 'app-formulario-solicitud',
@@ -64,16 +65,16 @@ export default class FormularioSolicitudComponent {
 		private dialog: MatDialog
 	) {
 		this.formSubmit = this.fb.group({
-			nombreSolicitante: [null, [Validators.required, Validators.maxLength(150)]],
-			destino: [null, [Validators.required, Validators.maxLength(200)]],
-			diligencia: [null, [Validators.required, Validators.maxLength(200)]],
+			nombreSolicitante: [null, [Validators.required, Validators.maxLength(150), noWhitespaceValidator()]],
+			destino: [null, [Validators.required, Validators.maxLength(200), noWhitespaceValidator()]],
+			diligencia: [null, [Validators.required, Validators.maxLength(200), noWhitespaceValidator()]],
 			entrega: new FormControl<Date | null>(null, Validators.required),
 			devolucion: new FormControl<Date | null>(null, Validators.required),
 			horaEntrega: [null, Validators.required],
 			horaDevolucion: [null, Validators.required],
 			vehiculo: [null, Validators.required],
 			conPiloto: ['1', Validators.required],
-			nombrePiloto: [null, [Validators.maxLength(150), Validators.required]]
+			nombrePiloto: [null, [Validators.maxLength(150), Validators.required, noWhitespaceValidator()]]
 		});
 		this.formSubmit.controls['devolucion'].disable();
 		this.formSubmit.controls['horaDevolucion'].disable();
@@ -220,7 +221,8 @@ export default class FormularioSolicitudComponent {
 			this.formSubmit.controls['devolucion'].reset();
 			this.formSubmit.controls['devolucion'].setValidators([
 				Validators.required,
-				Validators.min(this.formSubmit.controls['entrega'].value)
+				Validators.min(this.formSubmit.controls['entrega'].value),
+				noWhitespaceValidator()
 			]);
 
 			this.formSubmit.controls['horaDevolucion'].enable();

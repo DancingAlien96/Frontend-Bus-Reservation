@@ -273,11 +273,13 @@
 								<td><mat-label>Kilometraje</mat-label></td>
 								<td>
 									<mat-form-field appearance="outline">
-										<mat-label>Kilometraje al Momento de Recibir</mat-label>
+										<mat-label>Kilometraje</mat-label>
 										<input formControlName="kilometraje" matInput type="number" />
 									</mat-form-field>
 									@if (formSubmit.controls['kilometraje'].hasError('required') ) {
 									<mat-error>Requerido</mat-error>
+									} @if (formSubmit.controls['kilometraje'].hasError('min') ) {
+									<mat-error>No se permiten valores negativos</mat-error>
 									}
 								</td>
 							</tr>
@@ -286,7 +288,7 @@
 						<h3>Combustible</h3>
 						<div class="center-content">
 							<div class="example-label-container">
-								<label>Nivel del tanque al recibir el vehículos </label>
+								<label>Nivel del tanque de gasolina </label>
 								<strong>
 									<label class="example-value-label">{{ slider.value | combustiblePipe }}</label>
 								</strong>
