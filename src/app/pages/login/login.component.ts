@@ -37,6 +37,8 @@ export class LoginComponent {
 	}
 
 	onSubmit() {
+		this.formSubmit.controls['USERNAME'].setValue(this.formSubmit.controls['USERNAME'].value.trim());
+
 		if (this.formSubmit.valid) {
 			this.loginService.access(this.formSubmit.value).subscribe({
 				next: (res) => {
