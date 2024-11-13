@@ -224,33 +224,6 @@ export class SolicitudesTableComponent implements AfterViewInit {
 		return estadoLabel;
 	}
 
-	alert(event: Event, idRow: number): void {
-		const config = new MatSnackBarConfig();
-		config.horizontalPosition = 'center';
-		config.verticalPosition = 'bottom';
-		config.panelClass = 'OkSnackBar'; //tipo de snackbar
-		config.duration = 3000;
-		event.stopPropagation();
-		const dialogRef = this.dialog.open(AlertaEliminadoComponent, {
-			width: '400px'
-		});
-
-		dialogRef.afterClosed().subscribe((result) => {
-			if (result == true) {
-				this.solicitudesService.actualizarEstado(idRow, 4, ' ').subscribe((res) => {
-					this, this.getAllRequest();
-					this.tabGroup.selectedIndex = 0;
-
-					//console.log(res);
-					this.toast.open('solicitud eliminada', 'cerrar', config);
-					dialogRef.close();
-				});
-			} else {
-				dialogRef.close();
-			}
-		});
-	}
-
 	getAllRequest() {
 		const usuarioSession = localStorage.getItem('usuario');
 
