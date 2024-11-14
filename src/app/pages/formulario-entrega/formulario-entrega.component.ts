@@ -184,7 +184,7 @@ export default class FormularioEntregaComponent {
 			luzEmergencia: ['1', Validators.required],
 			condicionesLlanta: ['1', Validators.required],
 			limpiaparabrisas: ['1', Validators.required],
-			kilometraje: [null, [Validators.required, Validators.min(0)]],
+			kilometraje: [null, [Validators.required, Validators.min(0), Validators.max(100000000)]],
 			nivelCombustible: ['1', Validators.required],
 			observaciones: ['N/A', Validators.maxLength(150)],
 			fecha: new FormControl<Date | null>(fechaHoraEntrega, Validators.required),

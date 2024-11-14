@@ -48,6 +48,7 @@ export default class NuevoUsuarioComponent {
 	usuario!: UsuarioPostInterface;
 	formSubmit: FormGroup;
 	roles!: RolInterface[];
+	maxDate!: Date;
 
 	constructor(
 		private fb: FormBuilder,
@@ -59,6 +60,7 @@ export default class NuevoUsuarioComponent {
 	) {
 		this.rs.getRoles().subscribe((data) => {
 			this.roles = data;
+
 		});
 
 		this.formSubmit = this.fb.group({
@@ -68,16 +70,22 @@ export default class NuevoUsuarioComponent {
 				[
 					Validators.required,
 					Validators.maxLength(150),
-					Validators.pattern(/^[A-Za-zÁÉÍÓÚáéíóúÑñ]+(?:\s+[A-Za-zÁÉÍÓÚáéíóúÑñ]+)+$/)
+					Validators.pattern(/^[A-Za-zÁÉÍÓÚáéíóúÑñ'']+(?:\s+[A-Za-zÁÉÍÓÚáéíóúÑñ'']+)+$/)
+
 				]
 			],
-			cui: [null, [Validators.required, Validators.maxLength(13), Validators.minLength(13), Validators.min(0)]],
+			cui: [null, [Validators.required, Validators.maxLength(13), Validators.minLength(13), Validators.min(0),
+				Validators.pattern(/^[0-9]+$/) // Solo permite números
+			]],
 			registroPersonal: [null, [Validators.required, Validators.maxLength(15)]],
 			fechaNacimiento: new FormControl<Date | null>(null, Validators.required),
 			telefonoUno: [null, [Validators.required, Validators.maxLength(25), Validators.pattern(/^[0-9+\-\s()]*$/)]],
 			telefonoDos: [null, [Validators.maxLength(25), Validators.pattern(/^[0-9+\-\s()]*$/)]],
 			idRol: [null, Validators.required]
 		});
+
+		const today = new Date();
+		this.maxDate = new Date(today.getFullYear() - 18, today.getMonth(), today.getDate());
 	}
 
 	onSubmit() {
@@ -132,7 +140,16 @@ export default class NuevoUsuarioComponent {
 			});
 		}
 	}
-
+	validateNumberInput(event: KeyboardEvent): void {
+		const allowedKeys = ['Backspace', 'ArrowLeft', 'ArrowRight', 'Delete', 'Tab'];
+		const key = event.key;
+	  
+		// Permite solo números y teclas de navegación
+		if (!/^[0-9]$/.test(key) && !allowedKeys.includes(key)) {
+		  event.preventDefault();
+		}
+	  }
+	  
 	buildRequest() {
 		const fechaForm = this.formSubmit.get('fechaNacimiento')?.value;
 		const fecha = this.datePipe.transform(fechaForm, 'yyyy-MM-dd');

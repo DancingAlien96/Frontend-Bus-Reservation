@@ -11,17 +11,19 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { AlertaComponent } from '../../components/alerta/alerta.component';
+import { MatIcon } from '@angular/material/icon';
 
 @Component({
 	selector: 'app-login',
 	standalone: true,
-	imports: [CommonModule, ReactiveFormsModule, MatInputModule, MatButtonModule, MatCardModule],
+	imports: [CommonModule, ReactiveFormsModule, MatInputModule, MatButtonModule, MatCardModule, MatIcon],
 	templateUrl: './login.component.html',
 	styleUrl: './login.component.css'
 })
 export class LoginComponent {
 	public formSubmit: FormGroup;
 	public user!: UsuarioInterface;
+	hidePassword: boolean = true;
 
 	constructor(
 		private fb: FormBuilder,

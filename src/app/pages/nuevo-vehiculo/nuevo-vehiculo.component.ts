@@ -23,6 +23,7 @@ import { Router, RouterLink } from '@angular/router';
 import { VehiculoInterface, VehiculoPostInterface } from '../../shared/interfaces';
 import { AlertaComponent } from '../../components/alerta/alerta.component';
 import { noWhitespaceValidator } from '../../shared/utils/white-space-validator.utils';
+import { CommonModule } from '@angular/common';
 
 @Component({
 	selector: 'app-nuevo-vehiculo',
@@ -45,7 +46,8 @@ import { noWhitespaceValidator } from '../../shared/utils/white-space-validator.
 		NgxMatTimepickerModule,
 		MatDialogModule,
 		MatIconModule,
-		RouterLink
+		RouterLink,
+		CommonModule
 	],
 	templateUrl: './nuevo-vehiculo.component.html',
 	styleUrl: './nuevo-vehiculo.component.css'
@@ -70,7 +72,15 @@ export default class NuevoVehiculoComponent {
 			marca: ['', [Validators.required, Validators.maxLength(50), noWhitespaceValidator()]],
 			placa: ['', [Validators.required, Validators.maxLength(10), noWhitespaceValidator()]],
 			tipo: ['', [Validators.required, Validators.maxLength(50), noWhitespaceValidator()]],
-			color: ['', [Validators.required, Validators.maxLength(50), noWhitespaceValidator()]],
+			color: [
+				'', 
+				[
+				  Validators.required, 
+				  Validators.maxLength(50), 
+				  noWhitespaceValidator(), 
+				  Validators.pattern(/^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/) // Solo letras y espacios
+				]
+			  ],
 			registroInventario: ['', [Validators.required, Validators.maxLength(50), noWhitespaceValidator()]]
 		});
 	}

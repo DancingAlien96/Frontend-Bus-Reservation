@@ -378,6 +378,14 @@
 							@if (formSubmit.controls['kilometrajeEntrega'].hasError('required') ) {
 							<mat-error>Requerido</mat-error>
 							}
+							@if (formSubmit.controls['kilometrajeEntrega'].hasError('max') ) {
+								<mat-error>sobre pasa el limite de kilometraje</mat-error>
+								}
+								
+								@if (formSubmit.controls['kilometrajeEntrega'].hasError('min') ) {
+									<mat-error>no se permiten numeros negativos</mat-error>
+									}
+									
 						</td>
 					</tr>
 				</table>
@@ -539,6 +547,10 @@
 								} @if ( formSubmit.controls['kilometrajeFinal'].hasError('min') ) {
 								<mat-error>El kilometraje final no puede ser menor al de entrega</mat-error>
 								}
+								
+								@if (formSubmit.controls['kilometrajeFinal'].hasError('max') ) {
+									<mat-error>sobre pasa el valor maximo permitido</mat-error>
+									}
 							</td>
 						</tr>
 						<tr>

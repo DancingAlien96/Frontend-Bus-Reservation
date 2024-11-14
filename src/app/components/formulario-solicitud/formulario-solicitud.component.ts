@@ -65,7 +65,10 @@ export default class FormularioSolicitudComponent {
 		private dialog: MatDialog
 	) {
 		this.formSubmit = this.fb.group({
-			nombreSolicitante: [null, [Validators.required, Validators.maxLength(150), noWhitespaceValidator()]],
+			nombreSolicitante: [null, [Validators.required, Validators.maxLength(150), noWhitespaceValidator(),
+		   Validators.pattern(/^[A-Za-zÁÉÍÓÚáéíóúÑñ'']+(?:\s+[A-Za-zÁÉÍÓÚáéíóúÑñ'']+)+$/)
+
+			]],
 			destino: [null, [Validators.required, Validators.maxLength(200), noWhitespaceValidator()]],
 			diligencia: [null, [Validators.required, Validators.maxLength(200), noWhitespaceValidator()]],
 			entrega: new FormControl<Date | null>(null, Validators.required),

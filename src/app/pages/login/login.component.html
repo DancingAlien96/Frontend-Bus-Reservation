@@ -21,18 +21,37 @@
           
           </mat-form-field>
   
-          <!-- Campo de Contraseña -->
+          <!-- Campo de Contraseña 
           <mat-form-field class="example-full-width">
             <mat-label>Contraseña</mat-label>
             <input matInput placeholder="Escribe tu constraseña" formControlName="PASSWORD" type="password" />
             @if ((this.formSubmit.get('password')?.hasError('required')) ) {
               <mat-error>la contraseña es requerida!</mat-error>
             }
-          </mat-form-field>
-          <div class="forgot-password">
-            <a href="#" mat-stroked-button color="accent">¿Olvidaste tu contraseña?</a>
-          </div>
+          </mat-form-field>-->
+
+
+          <!-- Campo de Contraseña -->
+<mat-form-field class="example-full-width">
+  <mat-label>Contraseña</mat-label>
   
+  <input matInput 
+         placeholder="Escribe tu contraseña" 
+         formControlName="PASSWORD" 
+         [type]="hidePassword ? 'password' : 'text'" />
+
+  <!-- Botón para alternar la visibilidad de la contraseña -->
+  <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword" type="button">
+    <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+  </button>
+
+  <!-- Mensaje de error para contraseña requerida -->
+  <mat-error *ngIf="formSubmit.get('PASSWORD')?.hasError('required')">
+    ¡La contraseña es requerida!
+  </mat-error>
+</mat-form-field>
+
+         
           <!-- Botón de Enviar -->
           <button mat-raised-button color="primary" type="submit" [disabled]="formSubmit.invalid">
             Iniciar Sesión
