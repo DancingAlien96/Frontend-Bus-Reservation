@@ -12,7 +12,11 @@
 					@if (formSubmit.controls['nombreSolicitante'].hasError('required') ||
 					formSubmit.controls['nombreSolicitante'].hasError('whitespace') ) {
 					<mat-error>Requerido</mat-error>
-					}@if ( nombreSolicitante.value.length > 150 ) {
+					}
+					@if (formSubmit.controls['nombreSolicitante'].hasError('pattern') ) {
+					<mat-error>no se admiten numeros</mat-error>
+					}
+					@if ( nombreSolicitante.value.length > 150 ) {
 					<mat-hint class="error-hint" align="end">
 						Límite de caracteres permitidos: {{ nombreSolicitante.value.length }} / 150
 					</mat-hint>

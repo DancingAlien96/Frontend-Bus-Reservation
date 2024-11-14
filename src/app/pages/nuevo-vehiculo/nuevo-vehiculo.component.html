@@ -25,6 +25,7 @@
 								}
 							</mat-form-field>
 						</td>
+						<!--
 						<td>
 							<mat-form-field appearance="outline">
 								<mat-label>Color</mat-label>
@@ -40,7 +41,33 @@
 								<mat-hint align="end"> {{ color.value.length }} / 50 </mat-hint>
 								}
 							</mat-form-field>
-						</td>
+						</td>-->
+
+						<td>
+							<mat-form-field appearance="outline">
+							  <mat-label>Color</mat-label>
+							  <input matInput #color placeholder="Ej. Gris" formControlName="color" />
+							  
+							  <!-- Mensaje de error de campo requerido o espacio en blanco -->
+							  <mat-error *ngIf="formSubmit.controls['color'].hasError('required') || formSubmit.controls['color'].hasError('whitespace')">
+								Requerido
+							  </mat-error>
+							  
+							  <!-- Mensaje de error de patrón (para números) -->
+							  <mat-error *ngIf="formSubmit.controls['color'].hasError('pattern')">
+								Solo se permiten nombres de colores
+							  </mat-error>
+							  
+							  <!-- Límite de caracteres -->
+							  <mat-hint *ngIf="color.value.length > 50" class="error-hint" align="end">
+								Límite de caracteres permitidos: {{ color.value.length }} / 50
+							  </mat-hint>
+							  <mat-hint *ngIf="color.value.length <= 50" align="end">
+								{{ color.value.length }} / 50
+							  </mat-hint>
+							</mat-form-field>
+						  </td>
+						  
 					</tr>
 					<tr>
 						<td>

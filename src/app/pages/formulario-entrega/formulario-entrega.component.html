@@ -370,6 +370,9 @@
 							}@if (formSubmit.controls['kilometraje'].hasError('min') ) {
 							<mat-error>No se permite valores negativos</mat-error>
 							}
+							@if (formSubmit.controls['kilometraje'].hasError('max') ) {
+								<mat-error>sobre pasa el limite de kilometraje</mat-error>
+								}
 						</td>
 					</tr>
 				</table>

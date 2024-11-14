@@ -8,7 +8,7 @@ export const userUnwishGuard: CanActivateFn = (route, state) => {
   if (usuarioSession) {
     try {
       const usuario = JSON.parse(usuarioSession);
-      const idUsuario = usuario.ID_USUARIO;
+      const idUsuario = usuario.ID_ROL;
 
       if (idUsuario === 3) {
         router.navigate(['/home']);
