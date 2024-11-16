@@ -235,7 +235,7 @@ export class SolicitudesTableComponent implements AfterViewInit {
 			const id = usuario.ID_USUARIO;
 			this.rol = usuario.ROL.ID_ROL;
 			this.idUsuario = usuario.ID_USUARIO;
-			if (this.idUsuario == 1) {
+			if (this.rol == 1) {
 				this.solicitudesService.getSolicitudes().subscribe((data) => {
 					const solicitudesNoEliminadas = data.filter((solicitud) => solicitud.ESTADO !== 4);
 					this.dataSource = new MatTableDataSource(solicitudesNoEliminadas); // Asigna los datos al dataSource
