@@ -60,7 +60,6 @@ export default class NuevoUsuarioComponent {
 	) {
 		this.rs.getRoles().subscribe((data) => {
 			this.roles = data;
-
 		});
 
 		this.formSubmit = this.fb.group({
@@ -71,12 +70,18 @@ export default class NuevoUsuarioComponent {
 					Validators.required,
 					Validators.maxLength(150),
 					Validators.pattern(/^[A-Za-zÁÉÍÓÚáéíóúÑñ'']+(?:\s+[A-Za-zÁÉÍÓÚáéíóúÑñ'']+)+$/)
-
 				]
 			],
-			cui: [null, [Validators.required, Validators.maxLength(13), Validators.minLength(13), Validators.min(0),
-				Validators.pattern(/^[0-9]+$/) // Solo permite números
-			]],
+			cui: [
+				null,
+				[
+					Validators.required,
+					Validators.maxLength(13),
+					Validators.minLength(13),
+					Validators.min(1000000000000),
+					Validators.pattern(/^[0-9]+$/) // Solo permite números
+				]
+			],
 			registroPersonal: [null, [Validators.required, Validators.maxLength(15)]],
 			fechaNacimiento: new FormControl<Date | null>(null, Validators.required),
 			telefonoUno: [null, [Validators.required, Validators.maxLength(25), Validators.pattern(/^[0-9+\-\s()]*$/)]],
@@ -89,7 +94,11 @@ export default class NuevoUsuarioComponent {
 	}
 
 	onSubmit() {
-		this.formSubmit.controls['telefonoUno'].setValue(this.formSubmit.controls['telefonoUno'].value.trim());
+		if (this.formSubmit.controls['telefonoDos'].value)
+			this.formSubmit.controls['telefonoDos'].setValue(this.formSubmit.controls['telefonoDos'].value.trim());
+
+		if (this.formSubmit.controls['telefonoUno'].value)
+			this.formSubmit.controls['telefonoUno'].setValue(this.formSubmit.controls['telefonoUno'].value.trim());
 
 		if (this.formSubmit.valid) {
 			const dialogRef = this.dialog.open(AlertaComponent, {
@@ -120,6 +129,8 @@ export default class NuevoUsuarioComponent {
 						});
 					},
 					error: (error) => {
+						console.log(error);
+
 						this.dialog.open(AlertaComponent, {
 							data: {
 								title: 'Error',
@@ -140,16 +151,7 @@ export default class NuevoUsuarioComponent {
 			});
 		}
 	}
-	validateNumberInput(event: KeyboardEvent): void {
-		const allowedKeys = ['Backspace', 'ArrowLeft', 'ArrowRight', 'Delete', 'Tab'];
-		const key = event.key;
-	  
-		// Permite solo números y teclas de navegación
-		if (!/^[0-9]$/.test(key) && !allowedKeys.includes(key)) {
-		  event.preventDefault();
-		}
-	  }
-	  
+
 	buildRequest() {
 		const fechaForm = this.formSubmit.get('fechaNacimiento')?.value;
 		const fecha = this.datePipe.transform(fechaForm, 'yyyy-MM-dd');

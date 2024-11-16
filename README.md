@@ -1,27 +1,70 @@
-# Pruebas
+# SISVEC - Guía de Despliegue en Entorno de Desarrollo
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.3.8.
+Este proyecto fue generado con [Angular CLI](https://github.com/angular/angular-cli) versión 17.3.8.
 
-## Development server
+## Requisitos Previos
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+Antes de comenzar, asegúrate de tener instalado lo siguiente en tu sistema:
 
-## Code scaffolding
+1. **Node.js**: Descarga e instala la última versión de [Node.js](https://nodejs.org/).
+2. **Angular CLI**: Instala la CLI de Angular globalmente ejecutando el siguiente comando:
+   ```bash
+   npm install -g @angular/cli@17
+   ```
+3. **Dependencias del proyecto**: Una vez clonado el repositorio, instala las dependencias ejecutando:
+   ```bash
+   npm install
+   ```
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+## Clonar el repositorio
 
-## Build
+    ``` bash
+    git clone https://github.com/KenethUrrutia/SGSVU_API.git
+    cd SGSVU_API
+    ```
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+## Despliegue en Entorno de Desarrollo
 
-## Running unit tests
+1. **Servidor de Desarrollo**
+   Para iniciar el servidor de desarrollo, ejecuta:
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+   ```bash
+   ng serve
+   ```
 
-## Running end-to-end tests
+   Esto iniciará el servidor en la dirección: [http://localhost:4200/](http://localhost:4200/).
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+   El servidor recargará automáticamente la aplicación si realizas cambios en los archivos fuente.
 
-## Further help
+2. **Configuración Adicional**
+   Si necesitas cambiar el puerto por defecto (4200), puedes especificarlo de la siguiente manera:
+   ```bash
+   ng serve --port 4300
+   ```
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+## Generación de Código
+
+Para generar nuevos elementos en el proyecto, utiliza los comandos de Angular CLI. Por ejemplo:
+
+- **Componente**:
+  ```bash
+  ng generate component nombre-componente
+  ```
+- **Servicio**:
+  ```bash
+  ng generate service nombre-servicio
+  ```
+- **Guard**:
+  ```bash
+  ng generate guard nombre-guard
+  ```
+
+## Construcción del Proyecto
+
+Para compilar el proyecto y generar los artefactos necesarios para producción, utiliza:
+
+```bash
+ng build
+```
+
+Los archivos generados estarán disponibles en la carpeta `dist/`.

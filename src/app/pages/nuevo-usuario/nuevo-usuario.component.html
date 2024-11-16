@@ -6,14 +6,13 @@
 	<mat-card-content>
 		<div class="container">
 			<form [formGroup]="formSubmit">
-				<!--
 				<mat-form-field appearance="outline">
 					<mat-label>Nombre completo</mat-label>
 					<input matInput #nombreCompleto placeholder="Ej. Juan Pérez" formControlName="nombreCompleto" />
 					@if (formSubmit.controls['nombreCompleto'].hasError('required')) {
 					<mat-error>Requerido</mat-error>
 					} @if (formSubmit.controls['nombreCompleto'].hasError('pattern')) {
-					<mat-error>Ingrese un formato valido, no ingrese caracteres raros</mat-error>
+					<mat-error>Ingrese un formato válido, Nombre y Apellido sin caracteres raros</mat-error>
 					} @if ( nombreCompleto.value.length > 150 ) {
 					<mat-hint class="error-hint" align="end">
 						Límite de caracteres permitidos: {{ nombreCompleto.value.length }} / 150
@@ -22,24 +21,7 @@
 					<mat-hint align="end"> {{ nombreCompleto.value.length }} / 150 </mat-hint>
 					}
 				</mat-form-field>
--->
-<mat-form-field appearance="outline">
-	<mat-label>Nombre completo</mat-label>
-	<input matInput #nombreCompleto placeholder="Ej. Juan Pérez" formControlName="nombreCompleto" />
-	
-	<!-- Mensajes de error -->
-	<mat-error *ngIf="formSubmit.controls['nombreCompleto'].hasError('required')">Requerido</mat-error>
-	<mat-error *ngIf="formSubmit.controls['nombreCompleto'].hasError('pattern')">Ingrese solo letras</mat-error>
-	
-	<!-- Contador de caracteres -->
-	<mat-hint *ngIf="nombreCompleto.value.length > 150" class="error-hint" align="end">
-	  Límite de caracteres permitidos: {{ nombreCompleto.value.length }} / 150
-	</mat-hint>
-	<mat-hint *ngIf="nombreCompleto.value.length <= 150" align="end">
-	  {{ nombreCompleto.value.length }} / 150
-	</mat-hint>
-  </mat-form-field>
-  
+
 				<mat-form-field appearance="outline">
 					<mat-label>Correo</mat-label>
 					<input matInput #correo placeholder="Ej. juan.perez@gmail.com" formControlName="correo" />
@@ -55,7 +37,7 @@
 					<mat-hint align="end"> {{ correo.value.length }} / 100 </mat-hint>
 					}
 				</mat-form-field>
-<!--
+
 				<mat-form-field appearance="outline">
 					<mat-label>CUI / DPI</mat-label>
 					<input matInput #cui placeholder="Ej. 2400000002001" formControlName="cui" type="number" />
@@ -63,45 +45,19 @@
 					<mat-error>Requerido</mat-error>
 					} @if (formSubmit.controls['cui'].hasError('min')) {
 					<mat-error>Formato no válido</mat-error>
-					}
-				     @if (formSubmit.controls['cui'].hasError('pattern')) {
-					<mat-error>solo se permiten numeros</mat-error>
-					}
-					@if ( cui.value.length > 13 ) {
+					} @if (formSubmit.controls['cui'].hasError('pattern')) {
+					<mat-error>Formato no válido</mat-error>
+					} @if ( cui.value.length > 13 ) {
 					<mat-hint class="error-hint" align="end">
 						Límite de caracteres permitidos: {{ cui.value.length }} / 13
 					</mat-hint>
-					} @else if ( cui.value.length < 13 ) {
-					<mat-hint class="error-hint" align="end">
-						Cantidad de caracteres necesarios: {{ cui.value.length }} / 13
-					</mat-hint>
+					} @if ( cui.value.length < 13) {
+					<mat-hint align="end"> Cantidad de caracteres necesarios: {{ cui.value.length }} / 13 </mat-hint>
 					} @else {
 					<mat-hint align="end"> {{ cui.value.length }} / 13 </mat-hint>
 					}
 				</mat-form-field>
--->
-<mat-form-field appearance="outline">
-	<mat-label>CUI / DPI</mat-label>
-	<input 
-	  matInput 
-	  #cui 
-	  placeholder="Ej. 2400000002001" 
-	  formControlName="cui" 
-	  type="text" 
-	  (keypress)="validateNumberInput($event)" 
-	  maxlength="13"
-	/>
-  
-	<!-- Mensajes de error y de longitud -->
-	<mat-error *ngIf="formSubmit.controls['cui'].hasError('required')">Requerido</mat-error>
-	<mat-error *ngIf="formSubmit.controls['cui'].hasError('pattern')">Solo se permiten números</mat-error>
-	
-	<mat-hint *ngIf="cui.value.length !== 13" align="end">
-	  {{ cui.value.length < 13 ? 'Cantidad de caracteres necesarios: ' : 'Límite de caracteres permitidos: ' }}
-	  {{ cui.value.length }} / 13
-	</mat-hint>
-  </mat-form-field>
-  
+
 				<mat-form-field appearance="outline">
 					<mat-label>Registro personal</mat-label>
 					<input
@@ -121,37 +77,19 @@
 					<mat-hint align="end"> {{ registroPersonal.value.length }} / 15 </mat-hint>
 					}
 				</mat-form-field>
-<!--
-				
+
 				<mat-form-field appearance="outline">
 					<mat-label>Fecha de nacimiento</mat-label>
-					<input matInput [matDatepicker]="dpNacimiento" formControlName="fechaNacimiento" />
+					<input matInput [matDatepicker]="dpNacimiento" formControlName="fechaNacimiento" [max]="maxDate" />
 					<mat-datepicker-toggle matIconSuffix [for]="dpNacimiento"></mat-datepicker-toggle>
 					<mat-datepicker #dpNacimiento startView="multi-year"></mat-datepicker>
-					@if (formSubmit.controls["fechaNacimiento"].hasError('')) {
+					@if (formSubmit.controls["fechaNacimiento"].hasError('') ||
+					formSubmit.controls['fechaNacimiento'].hasError('matDatepickerMin') ) {
 					<mat-error>Fecha de nacimiento no válido</mat-error>
 					} @if (formSubmit.controls['fechaNacimiento'].hasError('required') ) {
 					<mat-error>Requerido</mat-error>
 					}
 				</mat-form-field>
--->
-<mat-form-field appearance="outline">
-	<mat-label>Fecha de nacimiento</mat-label>
-	<input matInput [matDatepicker]="dpNacimiento" formControlName="fechaNacimiento" [max]="maxDate" />
-	<mat-datepicker-toggle matIconSuffix [for]="dpNacimiento"></mat-datepicker-toggle>
-	<mat-datepicker #dpNacimiento startView="multi-year"></mat-datepicker>
-	
-	<ng-container *ngIf="formSubmit.controls['fechaNacimiento']">
-	  <mat-error *ngIf="formSubmit.controls['fechaNacimiento'].hasError('matDatepickerMin')">
-		Fecha de nacimiento no válida
-	  </mat-error>
-	  <mat-error *ngIf="formSubmit.controls['fechaNacimiento'].hasError('required') && formSubmit.controls['fechaNacimiento'].touched">
-		Requerido
-	  </mat-error>
-	</ng-container>
-  </mat-form-field>
-  
-
 
 				<mat-form-field appearance="outline">
 					<mat-label>Telefono</mat-label>
